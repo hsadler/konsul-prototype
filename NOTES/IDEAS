@@ -1,0 +1,40 @@
+
+
+IDEAS
+
+
+Grid style galaxy:
+    - galaxy has a large black hole with stationary systems
+    - each sytem has a star with square orbiting planets
+    - resources of different types and ratios are present and extractable from the various galactic objects
+    - resources can be routed and processed by structures
+
+
+Tech-Tree:
+    - Gatherers
+    - Routers
+    - Load-balancers
+    - Sorters
+    - Storage
+    - Processors
+    - Power
+
+
+Resources:
+    - Light
+    - Gases
+    - Metals
+    - Rock
+    - Water
+    - Organics
+
+
+Core Mechanics:
+    - resource gathering
+    - resource routing
+    - resource processing
+
+
+Other Mechanics:
+    - upgrades
+    
