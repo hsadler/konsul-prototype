@@ -37,14 +37,12 @@ public class GalaxySceneManager : MonoBehaviour
         this.GenerateStarSystems();
     }
 
-    void Update()
-    {
-
-    }
+    void Update() { }
 
     private void OnGUI()
     {
         this.HandleCameraZoom();
+        this.HandleCameraMovement();
     }
 
     // INTERFACE METHODS
@@ -99,7 +97,7 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        float zoomMultiplier = 1f;
+        float zoomMultiplier = 4f;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             zoomMultiplier = 10f;
@@ -107,7 +105,7 @@ public class GalaxySceneManager : MonoBehaviour
         const float CAMERA_SIZE_MIN = 10f;
         const float CAMERA_SIZE_MAX = 1000f;
         float cameraSize = Camera.main.orthographicSize;
-        cameraSize += Input.mouseScrollDelta.y * zoomMultiplier;
+        cameraSize -= Input.mouseScrollDelta.y * zoomMultiplier;
         if (cameraSize < CAMERA_SIZE_MIN)
         {
             cameraSize = CAMERA_SIZE_MIN;
@@ -117,6 +115,17 @@ public class GalaxySceneManager : MonoBehaviour
             cameraSize = CAMERA_SIZE_MAX;
         }
         Camera.main.orthographicSize = cameraSize;
+    }
+
+    private void HandleCameraMovement()
+    {
+        const float CAMERA_MOVE_SPEED = 2f;
+        if (Input.GetMouseButton(0))
+        {
+            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
+            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
+            Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
+        }
     }
 
 

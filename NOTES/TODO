@@ -3,9 +3,9 @@
 TODO
 
 X create grid
-- add camera movement and zoom
-- add black hole
-- add stars
-- add planets, astroid belts, comets
+X add camera movement and zoom
+X add black hole
+X add placeholder stars
+- add placeholder planets, astroid belts, comets
 - add proceedural generation of galaxy
 
