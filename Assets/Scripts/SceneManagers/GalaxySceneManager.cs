@@ -6,10 +6,11 @@ public class GalaxySceneManager : MonoBehaviour
 {
 
 
+    public GameObject gridLinePrefab;
     public GameObject starSystemPrefab;
 
     private int galaxySize = 500;
-    private int starsQuantity = 200;
+    private int starsQuantity = 100;
 
 
     // the static reference to the singleton instance
@@ -32,6 +33,7 @@ public class GalaxySceneManager : MonoBehaviour
 
     void Start()
     {
+        this.GenerateGrid();
         this.GenerateStarSystems();
     }
 
@@ -43,6 +45,42 @@ public class GalaxySceneManager : MonoBehaviour
     // INTERFACE METHODS
 
     // IMPLEMENTATION METHODS
+
+    private void GenerateGrid()
+    {
+        int galaxyLowerBound = -(this.galaxySize / 2);
+        int galaxyUpperBound = (this.galaxySize / 2);
+        for (int i = 0; i < this.galaxySize / 2; i++)
+        {
+            this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);
+            this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, i);
+            if (i > 0)
+            {
+                this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, -i);
+                this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, -i);
+            }
+        }
+    }
+
+    // grid line creation helpers
+    private void CreateYGridLine(int lowerBound, int upperBound, int xAxisPos)
+    {
+        GameObject yGridLine = Instantiate(this.gridLinePrefab, Vector3.zero, Quaternion.identity);
+        LineRenderer yLr = yGridLine.GetComponent<LineRenderer>();
+        var yPoints = new Vector3[2];
+        yPoints[0] = new Vector3(xAxisPos, lowerBound, 0);
+        yPoints[1] = new Vector3(xAxisPos, upperBound, 0);
+        yLr.SetPositions(yPoints);
+    }
+    private void CreateXGridLine(int lowerBound, int upperBound, int yAxisPos)
+    {
+        GameObject xGridLine = Instantiate(this.gridLinePrefab, Vector3.zero, Quaternion.identity);
+        LineRenderer xLr = xGridLine.GetComponent<LineRenderer>();
+        var xPoints = new Vector3[2];
+        xPoints[0] = new Vector3(lowerBound, yAxisPos, 0);
+        xPoints[1] = new Vector3(upperBound, yAxisPos, 0);
+        xLr.SetPositions(xPoints);
+    }
 
     private void GenerateStarSystems()
     {
