@@ -217,6 +217,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StarSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 3205261443848033154, guid: e8d069c695bb9bb48b8ec97c0612f2d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3205261443848033213, guid: e8d069c695bb9bb48b8ec97c0612f2d9, type: 3}
       propertyPath: m_RootOrder
       value: 3

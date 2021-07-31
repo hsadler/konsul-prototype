@@ -42,6 +42,11 @@ public class GalaxySceneManager : MonoBehaviour
 
     }
 
+    private void OnGUI()
+    {
+        this.HandleCameraZoom();
+    }
+
     // INTERFACE METHODS
 
     // IMPLEMENTATION METHODS
@@ -90,6 +95,28 @@ public class GalaxySceneManager : MonoBehaviour
             int randY = Random.Range(-(this.galaxySize / 2), this.galaxySize / 2);
             Instantiate(this.starSystemPrefab, new Vector3(randX, randY, 0), Quaternion.identity);
         }
+    }
+
+    private void HandleCameraZoom()
+    {
+        float zoomMultiplier = 1f;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            zoomMultiplier = 10f;
+        }
+        const float CAMERA_SIZE_MIN = 10f;
+        const float CAMERA_SIZE_MAX = 1000f;
+        float cameraSize = Camera.main.orthographicSize;
+        cameraSize += Input.mouseScrollDelta.y * zoomMultiplier;
+        if (cameraSize < CAMERA_SIZE_MIN)
+        {
+            cameraSize = CAMERA_SIZE_MIN;
+        }
+        else if (cameraSize > CAMERA_SIZE_MAX)
+        {
+            cameraSize = CAMERA_SIZE_MAX;
+        }
+        Camera.main.orthographicSize = cameraSize;
     }
 
 
