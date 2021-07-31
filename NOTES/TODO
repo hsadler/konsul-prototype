@@ -6,6 +6,7 @@ X create grid
 X add camera movement and zoom
 X add black hole
 X add placeholder stars
-- add placeholder planets, astroid belts, comets
-- add proceedural generation of galaxy
+
+- Environment Generation:
+    - 
 

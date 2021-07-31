@@ -7,7 +7,7 @@ public class GalaxySceneManager : MonoBehaviour
 
 
     public GameObject gridLinePrefab;
-    public GameObject starSystemPrefab;
+    public GameObject planetarySystemPrefab;
 
     private int galaxySize = 500;
     private int starsQuantity = 100;
@@ -87,23 +87,26 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void GenerateStarSystems()
     {
+        int galaxyLowerBound = -(this.galaxySize / 2);
+        int galaxyUpperBound = (this.galaxySize / 2);
         for (int i = 0; i < this.starsQuantity; i++)
         {
-            int randX = Random.Range(-(this.galaxySize / 2), this.galaxySize / 2);
-            int randY = Random.Range(-(this.galaxySize / 2), this.galaxySize / 2);
-            Instantiate(this.starSystemPrefab, new Vector3(randX, randY, 0), Quaternion.identity);
+            int randX = Random.Range(galaxyLowerBound, galaxyUpperBound);
+            int randY = Random.Range(galaxyLowerBound, galaxyUpperBound);
+            Instantiate(this.planetarySystemPrefab, new Vector3(randX, randY, 0), Quaternion.identity);
         }
     }
 
     private void HandleCameraZoom()
     {
+        // TODO: tune the camera zoom values
+        const float CAMERA_SIZE_MIN = 10f;
+        const float CAMERA_SIZE_MAX = 1000f;
         float zoomMultiplier = 4f;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             zoomMultiplier = 10f;
         }
-        const float CAMERA_SIZE_MIN = 10f;
-        const float CAMERA_SIZE_MAX = 1000f;
         float cameraSize = Camera.main.orthographicSize;
         cameraSize -= Input.mouseScrollDelta.y * zoomMultiplier;
         if (cameraSize < CAMERA_SIZE_MIN)
@@ -119,9 +122,11 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void HandleCameraMovement()
     {
+        // TODO: tune the camera move speed
         const float CAMERA_MOVE_SPEED = 2f;
         if (Input.GetMouseButton(0))
         {
+            // scale camera move amount with size of camera view
             float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
