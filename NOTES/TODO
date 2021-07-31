@@ -7,6 +7,13 @@ X add camera movement and zoom
 X add black hole
 X add placeholder stars
 
-- Environment Generation:
-    - 
+- Planetary system generation:
+    - single or binary star system
+    - star sizes
+    - star light production
+    - planets orbiting star system
+    - planet sizes
+    - planet compositions
+    - planet orbits
+    - planetary system separation to prevent overlap
 
