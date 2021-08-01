@@ -54,7 +54,13 @@ public class PlanetarySystemScript : MonoBehaviour
 
     private void GenPlanets()
     {
-        // STUB
+        int numPlanets = Random.Range(Constants.PLANETARY_SYSTEMS_MIN_PLANETS, Constants.PLANETARY_SYSTEMS_MAX_PLANETS);
+        for (int i = 0; i < numPlanets; i++)
+        {
+            GameObject planet = Instantiate(planetPrefab, this.transform.position, Quaternion.identity, this.transform);
+            planet.GetComponent<PlanetScript>().ProcGen();
+            this.planets.Add(planet);
+        }
     }
 
 

@@ -48,9 +48,10 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        int galaxyLowerBound = -(Constants.GALAXY_SIZE / 2);
-        int galaxyUpperBound = (Constants.GALAXY_SIZE / 2);
-        for (int i = 0; i < Constants.GALAXY_SIZE / 2; i++)
+        const int GALAXY_BUFFER = 200;
+        int galaxyLowerBound = -(Constants.GALAXY_SIZE / 2) - GALAXY_BUFFER;
+        int galaxyUpperBound = (Constants.GALAXY_SIZE / 2) + GALAXY_BUFFER;
+        for (int i = 0; i < galaxyUpperBound; i++)
         {
             this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);
             this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, i);
