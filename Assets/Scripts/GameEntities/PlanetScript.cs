@@ -6,9 +6,9 @@ public class PlanetScript : MonoBehaviour
 {
 
 
-    public float sizeRadius;
+    public int sizeRadius;
     public int orbitRadius;
-    public float orbitSpeed;
+    public int orbitSpeed;
 
     public float pctWater;
     public float pctGases;

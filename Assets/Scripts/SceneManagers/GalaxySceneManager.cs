@@ -9,9 +9,6 @@ public class GalaxySceneManager : MonoBehaviour
     public GameObject gridLinePrefab;
     public GameObject planetarySystemPrefab;
 
-    private int galaxySize = 500;
-    private int starsQuantity = 100;
-
 
     // the static reference to the singleton instance
     public static GalaxySceneManager instance;
@@ -34,7 +31,7 @@ public class GalaxySceneManager : MonoBehaviour
     void Start()
     {
         this.GenerateGrid();
-        this.GenerateStarSystems();
+        this.GeneratePlanetarySystems();
     }
 
     void Update() { }
@@ -51,9 +48,9 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void GenerateGrid()
     {
-        int galaxyLowerBound = -(this.galaxySize / 2);
-        int galaxyUpperBound = (this.galaxySize / 2);
-        for (int i = 0; i < this.galaxySize / 2; i++)
+        int galaxyLowerBound = -(Constants.GALAXY_SIZE / 2);
+        int galaxyUpperBound = (Constants.GALAXY_SIZE / 2);
+        for (int i = 0; i < Constants.GALAXY_SIZE / 2; i++)
         {
             this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);
             this.CreateXGridLine(galaxyLowerBound, galaxyUpperBound, i);
@@ -85,15 +82,12 @@ public class GalaxySceneManager : MonoBehaviour
         xLr.SetPositions(xPoints);
     }
 
-    private void GenerateStarSystems()
+    private void GeneratePlanetarySystems()
     {
-        int galaxyLowerBound = -(this.galaxySize / 2);
-        int galaxyUpperBound = (this.galaxySize / 2);
-        for (int i = 0; i < this.starsQuantity; i++)
+        for (int i = 0; i < Constants.PLANETARY_SYSTEMS_COUNT; i++)
         {
-            int randX = Random.Range(galaxyLowerBound, galaxyUpperBound);
-            int randY = Random.Range(galaxyLowerBound, galaxyUpperBound);
-            Instantiate(this.planetarySystemPrefab, new Vector3(randX, randY, 0), Quaternion.identity);
+            GameObject planetarySystem = Instantiate(this.planetarySystemPrefab, Vector3.zero, Quaternion.identity);
+            planetarySystem.GetComponent<PlanetarySystemScript>().ProcGen();
         }
     }
 

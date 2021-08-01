@@ -6,8 +6,8 @@ public class StarScript : MonoBehaviour
 {
 
 
-    public float sizeRadius;
-    public float luminosity;
+    public int sizeRadius;
+    public int luminosity;
 
 
     // UNITY HOOKS
@@ -26,7 +26,11 @@ public class StarScript : MonoBehaviour
 
     public void ProcGen()
     {
-        // STUB
+        // gen star size
+        this.sizeRadius = Random.Range(Constants.STAR_MIN_RADIUS, Constants.STAR_MAX_RADIUS);
+        this.transform.localScale = new Vector3(this.sizeRadius, this.sizeRadius, 0);
+        // gen star luminosity
+        this.luminosity = Random.Range(Constants.STAR_MIN_LUMINOSITY, Constants.STAR_MAX_LUMINOSITY);
     }
 
     // IMPLEMENTATION METHODS
