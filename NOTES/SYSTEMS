@@ -1,9 +1,36 @@
 
 
-SYSTEMS (likely systems):
-    - galactic grid
-    - camera move and zoom
-    - galaxy objects environment
-    - code to create, destroy, manipulate structures
+SYSTEMS
+
+
+Galactic Grid:
+    - horizontal and vertical lines per Unity unit of distance
+    - origin is at center of black hole
+
+
+Camera:
+    - mouse wheel for zoom
+    - mouse grab-drag for camera pan
+
+
+Planetary Systems:
+    - PlanetarySystemScript:
+        - held within galaxy-scene-manager
+        - contains references to all bodies scripts such as star, planets, etc.
+        - provides an interface for randomization of system parameters
+    - StarScript:
+        - contains information about star size and luminosity
+        - causes spawning of light emission
+    - PlanetScript:
+        - contains information about planet size, orbit path and speed, and composition
+        - contains, as children gameObjects, orbit waypoints and orbit path lines
+        - provides and interface for resource transfer
+
+
+Other likely systems:
+    - more galactic object types
+    - player code input to create, destroy, manipulate structures
     - resources
     - tech tree
+
+    

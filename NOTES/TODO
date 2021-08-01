@@ -2,18 +2,33 @@
 
 TODO
 
-X create grid
-X add camera movement and zoom
-X add black hole
-X add placeholder stars
 
 - Planetary system generation:
-    - single or binary star system
-    - star sizes
-    - star light production
+    - single star
+    - variable star sizes
+    - variable star light emission
     - planets orbiting star system
     - planet sizes
     - planet compositions
     - planet orbits
     - planetary system separation to prevent overlap
+    - maybes:
+        - binary star systems
+        - stars of red-to-blue types maybe emitting different types of light
+
+
+- Structure placement and relationships:
+    - TODO
+
+
+- CLI:
+    - TODO
+
+
+- Resource and items:
+    - TODO
+
+
+- Tech Tree:
+    - TODO
 
