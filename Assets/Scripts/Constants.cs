@@ -16,6 +16,8 @@ public static class Constants
 
     public const float PLANET_MIN_SIZE_RADIUS = 0.1f;
     public const float PLANET_MAX_SIZE_RADIUS = 1.9f;
+    public const int PLANET_MIN_ORBIT_RADIUS = 4;
+    public const int PLANET_MAX_ORBIT_RADIUS = 20;
 
 
 }

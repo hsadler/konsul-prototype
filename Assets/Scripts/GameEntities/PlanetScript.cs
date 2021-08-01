@@ -34,12 +34,13 @@ public class PlanetScript : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void ProcGen()
+    public int ProcGen(List<int> occupiedOrbits)
     {
         this.GenPlanetSize();
         this.GenPlanetColor();
-        this.GenPlanetOrbit();
         this.GenPlanetComposition();
+        this.GenPlanetOrbit(occupiedOrbits);
+        return this.orbitRadius;
     }
 
     // IMPLEMENTATION METHODS
@@ -66,12 +67,16 @@ public class PlanetScript : MonoBehaviour
         return (byte)Random.Range(50f, 150f);
     }
 
-    private void GenPlanetOrbit()
+    private void GenPlanetOrbit(List<int> occupiedOrbits)
     {
-        // TODO: implement (this is a mock)
-        float randX = Random.Range(-10f, 10f);
-        float randY = Random.Range(-10f, 10f);
-        this.transform.localPosition = new Vector3(randX, randY, 0);
+        int randOrbit;
+        do
+        {
+            randOrbit = Random.Range(Constants.PLANET_MIN_ORBIT_RADIUS, Constants.PLANET_MAX_ORBIT_RADIUS);
+        } while (occupiedOrbits.Contains(randOrbit));
+        this.orbitRadius = randOrbit;
+        // TODO: implement fully
+        this.transform.localPosition = new Vector3(randOrbit, 0, 0);
     }
 
     private void GenPlanetComposition()

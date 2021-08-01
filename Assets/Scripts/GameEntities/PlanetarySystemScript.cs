@@ -12,6 +12,8 @@ public class PlanetarySystemScript : MonoBehaviour
     public List<GameObject> stars = new List<GameObject>();
     public List<GameObject> planets = new List<GameObject>();
 
+    private List<int> occupiedOrbits = new List<int>();
+
 
     // UNITY HOOKS
 
@@ -58,7 +60,9 @@ public class PlanetarySystemScript : MonoBehaviour
         for (int i = 0; i < numPlanets; i++)
         {
             GameObject planet = Instantiate(planetPrefab, this.transform.position, Quaternion.identity, this.transform);
-            planet.GetComponent<PlanetScript>().ProcGen();
+            var planetScript = planet.GetComponent<PlanetScript>();
+            int orbit = planetScript.ProcGen(this.occupiedOrbits);
+            this.occupiedOrbits.Add(orbit);
             this.planets.Add(planet);
         }
     }
