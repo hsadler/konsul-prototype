@@ -57,7 +57,7 @@ public class PlanetScript : MonoBehaviour
     private void GenPlanetSize()
     {
         this.sizeRadius = Random.Range(Constants.PLANET_MIN_SIZE_RADIUS, Constants.PLANET_MAX_SIZE_RADIUS);
-        this.planetBody.transform.localScale = new Vector3(this.sizeRadius, this.sizeRadius, 0);
+        this.planetBody.transform.localScale = new Vector3(this.sizeRadius * 2, this.sizeRadius * 2, 0);
     }
 
     private void GenPlanetColor()

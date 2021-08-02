@@ -6,6 +6,9 @@ public class LightEmissionScript : MonoBehaviour
 {
 
 
+    // TODO: remove once replaced by star light beam
+
+
     public GameObject emissionGO;
 
     public int energy;

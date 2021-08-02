@@ -6,7 +6,7 @@ public class StarScript : MonoBehaviour
 {
 
 
-    public GameObject lightEmissionPrefab;
+    public GameObject starLightBeamPrefab;
 
     public int sizeRadius;
     public int luminosity;
@@ -21,12 +21,7 @@ public class StarScript : MonoBehaviour
     };
     private float starColorBrightnessMultiplier = 1.2f;
 
-    private Vector3[] directions = new Vector3[4] {
-        Vector3.up,
-        Vector3.down,
-        Vector3.right,
-        Vector3.left
-    };
+    private int[] starLightRotations = new int[4] { 0, 90, 180, -90 };
 
 
     // UNITY HOOKS
@@ -46,12 +41,8 @@ public class StarScript : MonoBehaviour
     public void ProcGen()
     {
         this.GenStarSize();
-        // gen star color
-        this.starColor = this.starColors[Random.Range(0, this.starColors.Count)];
-        this.gameObject.GetComponent<SpriteRenderer>().color = this.starColor * this.starColorBrightnessMultiplier;
-        // gen star luminosity
-        this.luminosity = Random.Range(Constants.STAR_MIN_LUMINOSITY, Constants.STAR_MAX_LUMINOSITY);
-        InvokeRepeating("EmitLight", 0.0f, 1.0f / luminosity);
+        this.GenStarColor();
+        this.GenStarLight();
     }
 
     // IMPLEMENTATION METHODS
@@ -59,20 +50,54 @@ public class StarScript : MonoBehaviour
     private void GenStarSize()
     {
         this.sizeRadius = Random.Range(Constants.STAR_MIN_SIZE_RADIUS, Constants.STAR_MAX_SIZE_RADIUS);
-        this.transform.localScale = new Vector3(this.sizeRadius, this.sizeRadius, 0);
+        this.transform.localScale = new Vector3(this.sizeRadius * 2, this.sizeRadius * 2, 0);
     }
 
-    private void EmitLight()
+    private void GenStarColor()
     {
-        Vector3 randDirection = this.directions[Random.Range(0, this.directions.Length)];
-        GameObject lightEmission = Instantiate(this.lightEmissionPrefab, this.transform.position, Quaternion.identity);
-        var leScript = lightEmission.GetComponent<LightEmissionScript>();
-        if (randDirection.Equals(Vector3.up) || randDirection.Equals(Vector3.down))
+        this.starColor = this.starColors[Random.Range(0, this.starColors.Count)];
+        this.gameObject.GetComponent<SpriteRenderer>().color = this.starColor * this.starColorBrightnessMultiplier;
+    }
+
+    private void GenStarLight()
+    {
+        // gen luminosity
+        this.luminosity = Random.Range(Constants.STAR_MIN_LUMINOSITY, Constants.STAR_MAX_LUMINOSITY);
+        // create star light beams based on star size and color
+        foreach (int rot in this.starLightRotations)
         {
-            leScript.RotateEmissionVertical();
+            for (int i = 0; i < this.sizeRadius; i++)
+            {
+                this.CreateLightBeam(i, rot);
+                if (i > 0)
+                {
+                    this.CreateLightBeam(-i, rot);
+                }
+            }
         }
-        leScript.emissionDirection = randDirection;
-        leScript.SetColor(this.starColor);
+    }
+
+    private void CreateLightBeam(int offset, int rotation)
+    {
+        var starLightBeam = Instantiate(
+            this.starLightBeamPrefab,
+            this.transform.position,
+            Quaternion.identity
+        );
+        starLightBeam.transform.Rotate(new Vector3(0, 0, rotation));
+        if (rotation == 0 || rotation == 180)
+        {
+            starLightBeam.transform.localPosition += new Vector3(offset, 0, 0);
+        }
+        else
+        {
+            starLightBeam.transform.localPosition += new Vector3(0, offset, 0);
+        }
+        var slbScript = starLightBeam.GetComponent<StarLightBeamScript>();
+        var lineRenderer = slbScript.beam.GetComponent<LineRenderer>();
+        // TODO NEXT
+        // lineRenderer.startColor = this.starColor;
+        // lineRenderer.endColor = this.starColor;
     }
 
 
