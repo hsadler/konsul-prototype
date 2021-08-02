@@ -39,13 +39,19 @@ public class GalaxySceneManager : MonoBehaviour
         this.GeneratePlanetarySystems();
     }
 
-    void Update() { }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Application.Quit();
+        }
+    }
 
     private void OnGUI()
     {
         this.HandleCameraZoom();
         this.HandleCameraMovement();
-        this.RenderSceneTelemetry();
+        this.DisplaySceneTelemetry();
     }
 
     // INTERFACE METHODS
@@ -134,7 +140,7 @@ public class GalaxySceneManager : MonoBehaviour
         }
     }
 
-    private void RenderSceneTelemetry()
+    private void DisplaySceneTelemetry()
     {
         if (this.uiVisible)
         {
