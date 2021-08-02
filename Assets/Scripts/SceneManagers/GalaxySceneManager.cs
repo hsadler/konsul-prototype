@@ -9,6 +9,11 @@ public class GalaxySceneManager : MonoBehaviour
     public GameObject gridLinePrefab;
     public GameObject planetarySystemPrefab;
 
+    public bool uiVisible = true;
+
+    private Rect guiSceneTelemetryRect = new Rect(10, 10, 210, 110);
+
+
 
     // the static reference to the singleton instance
     public static GalaxySceneManager instance;
@@ -40,6 +45,7 @@ public class GalaxySceneManager : MonoBehaviour
     {
         this.HandleCameraZoom();
         this.HandleCameraMovement();
+        this.RenderSceneTelemetry();
     }
 
     // INTERFACE METHODS
@@ -125,6 +131,21 @@ public class GalaxySceneManager : MonoBehaviour
             float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
+        }
+    }
+
+    private void RenderSceneTelemetry()
+    {
+        if (this.uiVisible)
+        {
+            // show scene telemetry
+            GUI.contentColor = Color.green;
+            int fps = (int)(1.0f / Time.smoothDeltaTime);
+            string displayText = "FPS: " + fps.ToString();
+            GUI.Label(
+                this.guiSceneTelemetryRect,
+                displayText
+            );
         }
     }
 
