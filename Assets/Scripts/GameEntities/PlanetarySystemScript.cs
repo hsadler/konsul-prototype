@@ -12,6 +12,8 @@ public class PlanetarySystemScript : MonoBehaviour
     public List<GameObject> stars = new List<GameObject>();
     public List<GameObject> planets = new List<GameObject>();
 
+    public string orbitDirection;
+
     private List<int> occupiedOrbits = new List<int>();
 
 
@@ -32,6 +34,7 @@ public class PlanetarySystemScript : MonoBehaviour
     public void ProcGen()
     {
         this.GenLocation();
+        this.GenOrbitDirection();
         this.GenStars();
         this.GenPlanets();
     }
@@ -45,6 +48,12 @@ public class PlanetarySystemScript : MonoBehaviour
         int randX = Random.Range(galaxyLowerBound, galaxyUpperBound);
         int randY = Random.Range(galaxyLowerBound, galaxyUpperBound);
         this.transform.position = new Vector3(randX, randY, 0);
+    }
+
+    private void GenOrbitDirection()
+    {
+        int randDirectionValue = Random.Range(0, 2);
+        this.orbitDirection = randDirectionValue == 0 ? "right" : "left";
     }
 
     private void GenStars()
@@ -61,7 +70,7 @@ public class PlanetarySystemScript : MonoBehaviour
         {
             GameObject planet = Instantiate(planetPrefab, this.transform.position, Quaternion.identity, this.transform);
             var planetScript = planet.GetComponent<PlanetScript>();
-            int orbit = planetScript.ProcGen(this.occupiedOrbits);
+            int orbit = planetScript.ProcGen(this.orbitDirection, this.occupiedOrbits);
             this.occupiedOrbits.Add(orbit);
             this.planets.Add(planet);
         }

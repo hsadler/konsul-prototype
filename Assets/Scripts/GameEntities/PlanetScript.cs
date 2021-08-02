@@ -12,12 +12,13 @@ public class PlanetScript : MonoBehaviour
     public GameObject waypoint3;
     public GameObject waypoint4;
     public GameObject orbitLine;
+    private Vector3[] waypointPositions;
+    private int currentWaypointIndex;
 
     public float sizeRadius;
 
     public int orbitRadius;
     public int orbitSpeed;
-    public string orbitDirection;
 
     public float pctWater;
     public float pctGases;
@@ -37,17 +38,17 @@ public class PlanetScript : MonoBehaviour
 
     void Update()
     {
-
+        this.MovePlanetAlongOrbit();
     }
 
     // INTERFACE METHODS
 
-    public int ProcGen(List<int> occupiedOrbits)
+    public int ProcGen(string orbitDirection, List<int> occupiedOrbits)
     {
         this.GenPlanetSize();
         this.GenPlanetColor();
         this.GenPlanetComposition();
-        this.GenPlanetOrbit(occupiedOrbits);
+        this.GenPlanetOrbit(orbitDirection, occupiedOrbits);
         return this.orbitRadius;
     }
 
@@ -75,7 +76,7 @@ public class PlanetScript : MonoBehaviour
         return (byte)Random.Range(50f, 150f);
     }
 
-    private void GenPlanetOrbit(List<int> occupiedOrbits)
+    private void GenPlanetOrbit(string orbitDirection, List<int> occupiedOrbits)
     {
         // generate an unoccupied random orbit
         int randOrbit;
@@ -84,12 +85,9 @@ public class PlanetScript : MonoBehaviour
             randOrbit = Random.Range(Constants.PLANET_MIN_ORBIT_RADIUS, Constants.PLANET_MAX_ORBIT_RADIUS);
         } while (occupiedOrbits.Contains(randOrbit));
         this.orbitRadius = randOrbit;
-        // generate random orbit direction
-        int randDirectionValue = Random.Range(0, 2);
-        this.orbitDirection = randDirectionValue == 0 ? "right" : "left";
-        // set waypoint locations
+        // set waypoint positions
         this.waypoint1.transform.localPosition = new Vector3(this.orbitRadius, this.orbitRadius, 0);
-        if (this.orbitDirection == "right")
+        if (orbitDirection == "right")
         {
             this.waypoint2.transform.localPosition = new Vector3(this.orbitRadius, -this.orbitRadius, 0);
             this.waypoint3.transform.localPosition = new Vector3(-this.orbitRadius, -this.orbitRadius, 0);
@@ -101,6 +99,17 @@ public class PlanetScript : MonoBehaviour
             this.waypoint3.transform.localPosition = new Vector3(-this.orbitRadius, -this.orbitRadius, 0);
             this.waypoint4.transform.localPosition = new Vector3(this.orbitRadius, -this.orbitRadius, 0);
         }
+        // set waypoint positions array
+        this.waypointPositions = new Vector3[4] {
+            this.waypoint1.transform.localPosition,
+            this.waypoint2.transform.localPosition,
+            this.waypoint3.transform.localPosition,
+            this.waypoint4.transform.localPosition
+        };
+        // set current waypoint
+        this.currentWaypointIndex = 1;
+        // set orbit speed
+        this.orbitSpeed = Random.Range(Constants.PLANET_MIN_ORBIT_SPEED, Constants.PLANET_MAX_ORBIT_SPEED);
         // set orbit line
         var orbitLineRenderer = this.orbitLine.GetComponent<LineRenderer>();
         var linePositions = new Vector3[5];
@@ -118,6 +127,21 @@ public class PlanetScript : MonoBehaviour
     private void GenPlanetComposition()
     {
         // STUB
+    }
+
+    private void MovePlanetAlongOrbit()
+    {
+        Vector3 currentWaypointPosition = this.waypointPositions[this.currentWaypointIndex];
+        if (Vector3.Distance(this.planetBody.transform.localPosition, currentWaypointPosition) < 0.001f)
+        {
+            this.currentWaypointIndex = this.currentWaypointIndex < 3 ? this.currentWaypointIndex + 1 : 0;
+            currentWaypointPosition = this.waypointPositions[this.currentWaypointIndex];
+        }
+        this.planetBody.transform.localPosition = Vector3.MoveTowards(
+            this.planetBody.transform.localPosition,
+            currentWaypointPosition,
+            this.orbitSpeed * Time.deltaTime
+        );
     }
 
 
