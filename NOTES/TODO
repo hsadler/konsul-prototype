@@ -31,6 +31,7 @@ TODO
 
 
 Polish:
+    - polish black hole, need high-rez sprite image
     - prevent star overlap by implementing generation buffer
-    X smooth camera zoom
+    - decide on quit-game button
     

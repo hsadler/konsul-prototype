@@ -6,15 +6,22 @@ public class GalaxySceneManager : MonoBehaviour
 {
 
 
+    // prefabs
     public GameObject gridLinePrefab;
     public GameObject planetarySystemPrefab;
+    public GameObject harvesterPrefab;
 
+    // manager components
+    public Functions functions;
+
+    // UI
     public bool uiVisible = true;
-
     private Rect guiSceneTelemetryRect = new Rect(10, 10, 210, 110);
 
+    // camera
     private float cameraSize;
 
+    // scene metrics
     public int planetarySystemCount = 0;
     public int starCount = 0;
     public int planetCount = 0;
@@ -36,6 +43,7 @@ public class GalaxySceneManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        this.functions = new Functions();
     }
 
     void Start()
@@ -50,6 +58,10 @@ public class GalaxySceneManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            this.HandleRightClick();
         }
     }
 
@@ -144,6 +156,13 @@ public class GalaxySceneManager : MonoBehaviour
             float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
+    }
+
+    private void HandleRightClick()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 harvesterPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+        Instantiate(this.harvesterPrefab, harvesterPosition, Quaternion.identity);
     }
 
     private void DisplaySceneTelemetry()
