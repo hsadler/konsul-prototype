@@ -13,6 +13,11 @@ public class GalaxySceneManager : MonoBehaviour
 
     private Rect guiSceneTelemetryRect = new Rect(10, 10, 210, 110);
 
+    private float cameraSize;
+
+    private int planetarySystemCount = 0;
+    private int starCount = 0;
+    private int planetCount = 0;
 
 
     // the static reference to the singleton instance
@@ -35,13 +40,14 @@ public class GalaxySceneManager : MonoBehaviour
 
     void Start()
     {
+        this.cameraSize = Camera.main.orthographicSize;
         this.GenerateGrid();
         this.GeneratePlanetarySystems();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
@@ -106,36 +112,35 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        // TODO: tune the camera zoom values
-        const float CAMERA_SIZE_MIN = 10f;
-        const float CAMERA_SIZE_MAX = 1000f;
-        float zoomMultiplier = 4f;
+        float zoomMultiplier = 25f;
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            zoomMultiplier = 10f;
+            zoomMultiplier = 150f;
         }
-        float cameraSize = Camera.main.orthographicSize;
-        cameraSize -= Input.mouseScrollDelta.y * zoomMultiplier;
-        if (cameraSize < CAMERA_SIZE_MIN)
+        float currCameraSize = Camera.main.orthographicSize;
+        if (Input.mouseScrollDelta.y != 0)
         {
-            cameraSize = CAMERA_SIZE_MIN;
+            this.cameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
+            // clamp
+            if (this.cameraSize < Constants.CAMERA_SIZE_MIN)
+            {
+                this.cameraSize = Constants.CAMERA_SIZE_MIN;
+            }
+            else if (this.cameraSize > Constants.CAMERA_SIZE_MAX)
+            {
+                this.cameraSize = Constants.CAMERA_SIZE_MAX;
+            }
         }
-        else if (cameraSize > CAMERA_SIZE_MAX)
-        {
-            cameraSize = CAMERA_SIZE_MAX;
-        }
-        Camera.main.orthographicSize = cameraSize;
+        Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * Constants.CAMERA_ZOOM_SPEED);
     }
 
     private void HandleCameraMovement()
     {
-        // TODO: tune the camera move speed
-        const float CAMERA_MOVE_SPEED = 2f;
         if (Input.GetMouseButton(0))
         {
             // scale camera move amount with size of camera view
-            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
-            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * CAMERA_MOVE_SPEED;
+            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
     }

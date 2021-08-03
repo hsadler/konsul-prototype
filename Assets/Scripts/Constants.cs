@@ -25,5 +25,10 @@ public static class Constants
     public const int RESOURCE_METAL = 4;
     public const int RESOURCE_ORGANIC = 5;
 
+    public const float CAMERA_SIZE_MIN = 10f;
+    public const float CAMERA_SIZE_MAX = 1000f;
+    public const float CAMERA_ZOOM_SPEED = 3f;
+    public const float CAMERA_MOVE_SPEED = 1.2f;
+
 
 }
