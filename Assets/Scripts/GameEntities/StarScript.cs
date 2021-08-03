@@ -21,11 +21,11 @@ public class StarScript : MonoBehaviour
         // yellow
         new Color32(230, 188, 108, 255),
         // blue
-        new Color32(147, 200, 203, 255),
+        new Color32(113, 214, 234, 255),
         // white
         new Color32(233, 241, 250, 255)
     };
-    private float starColorBrightnessMultiplier = 1.2f;
+    private float starColorBrightnessMultiplier = 1.5f;
 
     public int luminosity;
     public int[] luminosities = new int[4] { 10, 20, 30, 40 };
@@ -97,11 +97,13 @@ public class StarScript : MonoBehaviour
 
     private void CreateLightBeam(int offset, int rotation)
     {
+        // create gameobject
         var starLightBeam = Instantiate(
             this.starLightBeamPrefab,
             this.transform.position,
             Quaternion.identity
         );
+        // do rotations and offsets
         starLightBeam.transform.Rotate(new Vector3(0, 0, rotation));
         if (rotation == 0 || rotation == 180)
         {
@@ -111,11 +113,17 @@ public class StarScript : MonoBehaviour
         {
             starLightBeam.transform.localPosition += new Vector3(0, offset, 0);
         }
+        // set beam luminosity, color, and length
         var slbScript = starLightBeam.GetComponent<StarLightBeamScript>();
+        slbScript.luminosity = this.luminosity;
         var lineRenderer = slbScript.beam.GetComponent<LineRenderer>();
-        // TODO NEXT
-        // lineRenderer.startColor = this.starColor;
-        // lineRenderer.endColor = this.starColor;
+        // TODO: tuning values
+        lineRenderer.startColor = new Color(this.starColor.r, this.starColor.g, this.starColor.b, lineRenderer.startColor.a);
+        lineRenderer.endColor = new Color(this.starColor.r, this.starColor.g, this.starColor.b, lineRenderer.endColor.a);
+        lineRenderer.SetPosition(
+            1,
+            new Vector3(0, lineRenderer.GetPosition(1).y + (this.sizeRadius * 10), 0)
+        );
     }
 
 

@@ -8,6 +8,8 @@ public class StarLightBeamScript : MonoBehaviour
 
     public GameObject beam;
 
+    public int luminosity;
+
 
     // UNITY HOOKS
 

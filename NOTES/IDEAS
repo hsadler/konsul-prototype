@@ -45,8 +45,8 @@ Stars:
     - 4 types:
         - red
         - yellow
-        - green
         - blue
+        - white
     - 4 sizes
     - type informs luminosity
     - size informs amount and length of beams
