@@ -6,9 +6,9 @@ TODO
 - Planetary system generation:
     X single star
     X variable star sizes
-    - variable star light emission
+    X variable star light emission
     X variable planet sizes
-    - planet compositions
+    X planet compositions
     X planet orbits
     - planetary system separation to prevent overlap
     - maybes:

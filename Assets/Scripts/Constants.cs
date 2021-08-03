@@ -19,5 +19,11 @@ public static class Constants
     public const int PLANET_MIN_ORBIT_SPEED = 1;
     public const int PLANET_MAX_ORBIT_SPEED = 10;
 
+    public const int RESOURCE_WATER = 1;
+    public const int RESOURCE_GAS = 2;
+    public const int RESOURCE_ROCK = 3;
+    public const int RESOURCE_METAL = 4;
+    public const int RESOURCE_ORGANIC = 5;
+
 
 }

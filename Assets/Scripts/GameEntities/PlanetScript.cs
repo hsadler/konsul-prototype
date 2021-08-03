@@ -6,26 +6,56 @@ public class PlanetScript : MonoBehaviour
 {
 
 
+    // game object references
     public GameObject planetBody;
     public GameObject waypoint1;
     public GameObject waypoint2;
     public GameObject waypoint3;
     public GameObject waypoint4;
     public GameObject orbitLine;
+
+    // size
+    public float sizeRadius;
+
+    // orbit
+    public int orbitRadius;
+    public int orbitSpeed;
     private Vector3[] waypointPositions;
     private int currentWaypointIndex;
 
-    public float sizeRadius;
-
-    public int orbitRadius;
-    public int orbitSpeed;
-
+    // resources
     public float pctWater;
     public float pctGases;
     public float pctRocks;
     public float pctMetals;
     public float pctOrganics;
 
+    private int[] resourceTypes = new int[5] {
+        Constants.RESOURCE_WATER,
+        Constants.RESOURCE_GAS,
+        Constants.RESOURCE_ROCK,
+        Constants.RESOURCE_METAL,
+        Constants.RESOURCE_ORGANIC
+    };
+    private IDictionary<int, string> resourceTypeToName = new Dictionary<int, string>()
+    {
+        { Constants.RESOURCE_WATER, "water" },
+        { Constants.RESOURCE_GAS, "gas" },
+        { Constants.RESOURCE_ROCK, "rock" },
+        { Constants.RESOURCE_METAL, "metal" },
+        { Constants.RESOURCE_ORGANIC, "organic" }
+    };
+    private List<int> resources = new List<int>();
+    private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>() {
+        { Constants.RESOURCE_WATER, 0 },
+        { Constants.RESOURCE_GAS, 0 },
+        { Constants.RESOURCE_ROCK, 0 },
+        { Constants.RESOURCE_METAL, 0 },
+        { Constants.RESOURCE_ORGANIC, 0 }
+    };
+
+    // planet color
+    public Color planetColor;
     private float planetColorBrightnessMultiplier = 0.9f;
 
 
@@ -47,9 +77,14 @@ public class PlanetScript : MonoBehaviour
     {
         this.GenPlanetSize();
         this.GenPlanetColor();
-        this.GenPlanetComposition();
+        this.GenPlanetResourceComposition();
         this.GenPlanetOrbit(orbitDirection, occupiedOrbits);
         return this.orbitRadius;
+    }
+
+    public int ExtractResource()
+    {
+        return this.resources[Random.Range(0, this.resources.Count)];
     }
 
     // IMPLEMENTATION METHODS
@@ -62,7 +97,7 @@ public class PlanetScript : MonoBehaviour
 
     private void GenPlanetColor()
     {
-        Color planetColor = new Color32(
+        this.planetColor = new Color32(
             this.GetRandomPlanetRGB(),
             this.GetRandomPlanetRGB(),
             this.GetRandomPlanetRGB(),
@@ -124,9 +159,18 @@ public class PlanetScript : MonoBehaviour
         this.planetBody.transform.localPosition = this.waypoint1.transform.localPosition;
     }
 
-    private void GenPlanetComposition()
+    private void GenPlanetResourceComposition()
     {
-        // STUB
+        // populate resources list
+        foreach (int resource in this.resourceTypes)
+        {
+            int resourceSampleAmount = Random.Range(0, 11);
+            for (int i = 0; i < resourceSampleAmount; i++)
+            {
+                this.resources.Add(resource);
+                this.resourceTypeToCount[resource] += 1;
+            }
+        }
     }
 
     private void MovePlanetAlongOrbit()
