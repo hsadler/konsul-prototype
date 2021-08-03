@@ -45,8 +45,8 @@ public class PlanetarySystemScript : MonoBehaviour
     {
         int galaxyLowerBound = -(Constants.GALAXY_SIZE / 2);
         int galaxyUpperBound = (Constants.GALAXY_SIZE / 2);
-        int randX = Random.Range(galaxyLowerBound, galaxyUpperBound);
-        int randY = Random.Range(galaxyLowerBound, galaxyUpperBound);
+        int randX = Random.Range(galaxyLowerBound, galaxyUpperBound + 1);
+        int randY = Random.Range(galaxyLowerBound, galaxyUpperBound + 1);
         this.transform.position = new Vector3(randX, randY, 0);
     }
 
@@ -65,7 +65,7 @@ public class PlanetarySystemScript : MonoBehaviour
 
     private void GenPlanets()
     {
-        int numPlanets = Random.Range(Constants.PLANETARY_SYSTEMS_MIN_PLANETS, Constants.PLANETARY_SYSTEMS_MAX_PLANETS);
+        int numPlanets = Random.Range(Constants.PLANETARY_SYSTEMS_MIN_PLANETS, Constants.PLANETARY_SYSTEMS_MAX_PLANETS + 1);
         for (int i = 0; i < numPlanets; i++)
         {
             GameObject planet = Instantiate(planetPrefab, this.transform.position, Quaternion.identity, this.transform);

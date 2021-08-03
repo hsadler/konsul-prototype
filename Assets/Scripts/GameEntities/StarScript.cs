@@ -9,17 +9,26 @@ public class StarScript : MonoBehaviour
     public GameObject starLightBeamPrefab;
 
     public int sizeRadius;
-    public int luminosity;
+
+    public int starType;
+    private int[] starTypes = new int[4] { 1, 2, 3, 4 };
 
     public Color starColor;
-    private List<Color32> starColors = new List<Color32>
+    private Color32[] starColors = new Color32[4]
     {
-        new Color32(147, 200, 203, 255),
-        new Color32(233, 241, 250, 255),
+        // red
         new Color32(187, 58, 15, 255),
-        new Color32(229, 150, 97, 255)
+        // yellow
+        new Color32(230, 188, 108, 255),
+        // blue
+        new Color32(147, 200, 203, 255),
+        // white
+        new Color32(233, 241, 250, 255)
     };
     private float starColorBrightnessMultiplier = 1.2f;
+
+    public int luminosity;
+    public int[] luminosities = new int[4] { 10, 20, 30, 40 };
 
     private int[] starLightRotations = new int[4] { 0, 90, 180, -90 };
 
@@ -40,30 +49,39 @@ public class StarScript : MonoBehaviour
 
     public void ProcGen()
     {
+        this.GenStarType();
         this.GenStarSize();
-        this.GenStarColor();
-        this.GenStarLight();
+        this.SetStarColor();
+        this.SetStarLight();
     }
 
     // IMPLEMENTATION METHODS
 
+    private void GenStarType()
+    {
+        // assign random type
+        this.starType = this.starTypes[Random.Range(0, this.starTypes.Length)];
+    }
+
     private void GenStarSize()
     {
-        this.sizeRadius = Random.Range(Constants.STAR_MIN_SIZE_RADIUS, Constants.STAR_MAX_SIZE_RADIUS);
+        // assign random size
+        this.sizeRadius = Random.Range(Constants.STAR_MIN_SIZE_RADIUS, Constants.STAR_MAX_SIZE_RADIUS + 1);
         this.transform.localScale = new Vector3(this.sizeRadius * 2, this.sizeRadius * 2, 0);
     }
 
-    private void GenStarColor()
+    private void SetStarColor()
     {
-        this.starColor = this.starColors[Random.Range(0, this.starColors.Count)];
+        // assign color from star type
+        this.starColor = this.starColors[this.starType - 1];
         this.gameObject.GetComponent<SpriteRenderer>().color = this.starColor * this.starColorBrightnessMultiplier;
     }
 
-    private void GenStarLight()
+    private void SetStarLight()
     {
-        // gen luminosity
-        this.luminosity = Random.Range(Constants.STAR_MIN_LUMINOSITY, Constants.STAR_MAX_LUMINOSITY);
-        // create star light beams based on star size and color
+        // assign luminosity from star type
+        this.luminosity = this.luminosities[Random.Range(0, this.luminosities.Length)];
+        // create star light beams based on star size and star type (color)
         foreach (int rot in this.starLightRotations)
         {
             for (int i = 0; i < this.sizeRadius; i++)

@@ -38,3 +38,15 @@ Core Mechanics:
 Other Mechanics:
     - upgrades
     
+
+MECHANICS DETAILS:
+
+Stars:
+    - 4 types:
+        - red
+        - yellow
+        - green
+        - blue
+    - 4 sizes
+    - type informs luminosity
+    - size informs amount and length of beams

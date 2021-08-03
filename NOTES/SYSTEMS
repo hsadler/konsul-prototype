@@ -20,7 +20,7 @@ Planetary Systems:
         - provides an interface for randomization of system parameters
     - StarScript:
         - contains information about star size and luminosity
-        - causes spawning of light emission
+        - stars have interactable light beams
     - PlanetScript:
         - contains information about planet size, orbit path and speed, and composition
         - contains, as children gameObjects, orbit waypoints and orbit path lines
@@ -32,5 +32,5 @@ Other likely systems:
     - player code input to create, destroy, manipulate structures
     - resources
     - tech tree
-
+    
     

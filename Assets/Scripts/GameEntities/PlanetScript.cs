@@ -82,7 +82,7 @@ public class PlanetScript : MonoBehaviour
         int randOrbit;
         do
         {
-            randOrbit = Random.Range(Constants.PLANET_MIN_ORBIT_RADIUS, Constants.PLANET_MAX_ORBIT_RADIUS);
+            randOrbit = Random.Range(Constants.PLANET_MIN_ORBIT_RADIUS, Constants.PLANET_MAX_ORBIT_RADIUS + 1);
         } while (occupiedOrbits.Contains(randOrbit));
         this.orbitRadius = randOrbit;
         // set waypoint positions
@@ -109,7 +109,7 @@ public class PlanetScript : MonoBehaviour
         // set current waypoint
         this.currentWaypointIndex = 1;
         // set orbit speed
-        this.orbitSpeed = Random.Range(Constants.PLANET_MIN_ORBIT_SPEED, Constants.PLANET_MAX_ORBIT_SPEED);
+        this.orbitSpeed = Random.Range(Constants.PLANET_MIN_ORBIT_SPEED, Constants.PLANET_MAX_ORBIT_SPEED + 1);
         // set orbit line
         var orbitLineRenderer = this.orbitLine.GetComponent<LineRenderer>();
         var linePositions = new Vector3[5];
