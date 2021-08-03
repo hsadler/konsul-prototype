@@ -61,6 +61,7 @@ public class PlanetarySystemScript : MonoBehaviour
         GameObject star = Instantiate(starPrefab, this.transform.position, Quaternion.identity, this.transform);
         star.GetComponent<StarScript>().ProcGen();
         this.stars.Add(star);
+        GalaxySceneManager.instance.starCount += 1;
     }
 
     private void GenPlanets()
@@ -73,6 +74,7 @@ public class PlanetarySystemScript : MonoBehaviour
             int orbit = planetScript.ProcGen(this.orbitDirection, this.occupiedOrbits);
             this.occupiedOrbits.Add(orbit);
             this.planets.Add(planet);
+            GalaxySceneManager.instance.planetCount += 1;
         }
     }
 

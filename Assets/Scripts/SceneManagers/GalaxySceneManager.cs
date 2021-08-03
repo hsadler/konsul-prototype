@@ -15,9 +15,9 @@ public class GalaxySceneManager : MonoBehaviour
 
     private float cameraSize;
 
-    private int planetarySystemCount = 0;
-    private int starCount = 0;
-    private int planetCount = 0;
+    public int planetarySystemCount = 0;
+    public int starCount = 0;
+    public int planetCount = 0;
 
 
     // the static reference to the singleton instance
@@ -106,6 +106,7 @@ public class GalaxySceneManager : MonoBehaviour
         for (int i = 0; i < Constants.PLANETARY_SYSTEMS_COUNT; i++)
         {
             GameObject planetarySystem = Instantiate(this.planetarySystemPrefab, Vector3.zero, Quaternion.identity);
+            this.planetarySystemCount += 1;
             planetarySystem.GetComponent<PlanetarySystemScript>().ProcGen();
         }
     }
@@ -152,7 +153,11 @@ public class GalaxySceneManager : MonoBehaviour
             // show scene telemetry
             GUI.contentColor = Color.green;
             int fps = (int)(1.0f / Time.smoothDeltaTime);
-            string displayText = "FPS: " + fps.ToString();
+            string displayText =
+                "FPS: " + fps.ToString() +
+                "\nPlanetary Systems: " + this.planetarySystemCount.ToString() +
+                "\nStars: " + this.starCount.ToString() +
+                "\nPlanets: " + this.planetCount.ToString();
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText
