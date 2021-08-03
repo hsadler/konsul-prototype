@@ -23,7 +23,11 @@ public class HarvesterBodyScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("other tag: " + other.gameObject.tag);
+        if (other.gameObject.CompareTag("Planet"))
+        {
+            int resource = other.gameObject.GetComponent<PlanetBodyScript>().planetScript.ExtractResource();
+            Debug.Log("extracted resource type from planet: " + resource.ToString());
+        }
     }
 
 
