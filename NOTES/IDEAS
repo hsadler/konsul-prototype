@@ -29,6 +29,18 @@ Resources:
     - Organics
 
 
+Maybes:
+    - binary star systems
+    - comets
+    - asteriod fields
+    - rogue planets
+    - nebula
+    - dark matter
+    
+
+
+MECHANICS:
+
 Core Mechanics:
     - resource gathering
     - resource routing
@@ -37,9 +49,6 @@ Core Mechanics:
 
 Other Mechanics:
     - upgrades
-    
-
-MECHANICS DETAILS:
 
 Stars:
     - 4 types:
@@ -50,3 +59,12 @@ Stars:
     - 4 sizes
     - type informs luminosity
     - size informs amount and length of beams
+
+Planets:
+    - resource types extractable:
+        - water
+        - gas
+        - rock
+        - metal
+        - organic
+

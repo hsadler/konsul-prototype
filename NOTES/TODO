@@ -3,26 +3,9 @@
 TODO
 
 
-- Planetary system generation:
-    X single star
-    X variable star sizes
-    X variable star light emission
-    X variable planet sizes
-    X planet compositions
-    X planet orbits
-    - planetary system separation to prevent overlap
-    - maybes:
-        - binary star systems
-        - stars of red-to-blue types maybe emitting different types of light
-        - comets
-        - asteriod fields
-        - rogue planets
-        - nebula
-        - dark matter
-
-
-- Structure placement and relationships:
-    - TODO
+- Player factory building:
+    - placement of structures
+    - 
 
 
 - CLI:
@@ -36,3 +19,7 @@ TODO
 - Tech Tree:
     - TODO
 
+
+Polish:
+    - prevent star overlap by implementing generation buffer
+    
