@@ -30,10 +30,9 @@ public class HarvesterScript : MonoBehaviour
 
     public void CheckSetSelected(GameObject selectedGO)
     {
-        if (this.gameObject == selectedGO)
+        if (selectedGO == this.harvesterBody)
         {
-            this.isSelected = true;
-            this.selectedLabel.SetActive(true);
+            this.SetSelected(!this.isSelected);
         }
     }
 
@@ -43,9 +42,14 @@ public class HarvesterScript : MonoBehaviour
     {
         if (this.isSelected && Input.GetKeyDown(KeyCode.Q))
         {
-            this.isSelected = false;
-            this.selectedLabel.SetActive(false);
+            this.SetSelected(false);
         }
+    }
+
+    private void SetSelected(bool isSelected)
+    {
+        this.isSelected = isSelected;
+        this.selectedLabel.SetActive(isSelected);
     }
 
 }
