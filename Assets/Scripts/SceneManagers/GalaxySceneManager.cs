@@ -59,23 +59,29 @@ public class GalaxySceneManager : MonoBehaviour
         {
             Application.Quit();
         }
-        if (Input.GetMouseButtonDown(1))
+        // on left click
+        if (Input.GetMouseButtonDown(0))
         {
-            this.HandleRightClick();
+            this.HandleLeftClick();
         }
+        this.HandleCameraZoom();
     }
 
     private void OnGUI()
     {
-        this.HandleCameraZoom();
-        this.HandleCameraMovement();
         this.DisplaySceneTelemetry();
+        // right click held
+        if (Input.GetMouseButton(1))
+        {
+            this.HandleCameraMovement();
+        }
     }
 
     // INTERFACE METHODS
 
     // IMPLEMENTATION METHODS
 
+    // galaxy grid
     private void GenerateGrid()
     {
         const int GALAXY_BUFFER = 200;
@@ -92,7 +98,6 @@ public class GalaxySceneManager : MonoBehaviour
             }
         }
     }
-
     // grid line creation helpers
     private void CreateYGridLine(int lowerBound, int upperBound, int xAxisPos)
     {
@@ -113,6 +118,7 @@ public class GalaxySceneManager : MonoBehaviour
         xLr.SetPositions(xPoints);
     }
 
+    // procedural generation
     private void GeneratePlanetarySystems()
     {
         for (int i = 0; i < Constants.PLANETARY_SYSTEMS_COUNT; i++)
@@ -123,6 +129,15 @@ public class GalaxySceneManager : MonoBehaviour
         }
     }
 
+    // player input
+    private void HandleLeftClick()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 harvesterPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+        Instantiate(this.harvesterPrefab, harvesterPosition, Quaternion.identity);
+    }
+
+    // camera
     private void HandleCameraZoom()
     {
         float zoomMultiplier = 25f;
@@ -146,25 +161,15 @@ public class GalaxySceneManager : MonoBehaviour
         }
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * Constants.CAMERA_ZOOM_SPEED);
     }
-
     private void HandleCameraMovement()
     {
-        if (Input.GetMouseButton(0))
-        {
-            // scale camera move amount with size of camera view
-            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-            Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
-        }
+        // scale camera move amount with size of camera view
+        float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+        float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+        Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
     }
 
-    private void HandleRightClick()
-    {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 harvesterPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-        Instantiate(this.harvesterPrefab, harvesterPosition, Quaternion.identity);
-    }
-
+    // UI
     private void DisplaySceneTelemetry()
     {
         if (this.uiVisible)
