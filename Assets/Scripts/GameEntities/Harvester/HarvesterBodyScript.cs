@@ -30,5 +30,9 @@ public class HarvesterBodyScript : MonoBehaviour
         }
     }
 
+    // INTERFACE METHODS
+
+    // IMPLEMENTATION METHODS
+
 
 }

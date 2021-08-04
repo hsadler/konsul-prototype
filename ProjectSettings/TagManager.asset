@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Planet
   - Harvester
+  - FactoryStructure
   layers:
   - Default
   - TransparentFX

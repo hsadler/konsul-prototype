@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 
 public static class Constants
 {
@@ -6,7 +8,12 @@ public static class Constants
     public const float CAMERA_SIZE_MIN = 10f;
     public const float CAMERA_SIZE_MAX = 1000f;
     public const float CAMERA_ZOOM_SPEED = 3f;
-    public const float CAMERA_MOVE_SPEED = 1.2f;
+    public const float CAMERA_MOVE_SPEED = 4f;
+
+
+    public const int PLAYER_INPUT_MODE_STRUCTURE_PLACE = 1;
+    public const int PLAYER_INPUT_MODE_STRUCTURE_SELECT = 2;
+    public const int PLAYER_INPUT_MODE_STRUCTURE_EDIT = 3;
 
 
     public const int GALAXY_SIZE = 3000;

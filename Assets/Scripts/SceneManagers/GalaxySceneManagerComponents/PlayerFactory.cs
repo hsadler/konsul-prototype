@@ -14,6 +14,17 @@ public class PlayerFactory : MonoBehaviour
     public GameObject accumulatorPrefab;
 
 
+    public IDictionary<int, string> structureTypeToDisplayString = new Dictionary<int, string>()
+    {
+        { Constants.STRUCTURE_TYPE_HARVESTER, "harvester" },
+        { Constants.STRUCTURE_TYPE_STORAGE, "storage" },
+        { Constants.STRUCTURE_TYPE_SPLITTER, "splitter" },
+        { Constants.STRUCTURE_TYPE_MERGER, "merger" },
+        { Constants.STRUCTURE_TYPE_MIRROR, "mirror" },
+        { Constants.STRUCTURE_TYPE_PHOTOVOLTAIC, "photovoltaic" },
+        { Constants.STRUCTURE_TYPE_ACCUMULATOR, "accumulator" },
+    };
+
     private IDictionary<int, GameObject> structureTypeToPrefab;
 
 

@@ -14,14 +14,18 @@ public class GalaxySceneManager : MonoBehaviour
     public Functions functions;
     public PlayerInput playerInput;
     public PlayerFactory playerFactory;
+
     // UI
     public bool uiVisible = true;
-    private Rect guiSceneTelemetryRect = new Rect(10, 10, 210, 110);
+    private Rect guiSceneTelemetryRect = new Rect(10, 10, 500, 500);
 
     // scene metrics
     public int planetarySystemCount = 0;
     public int starCount = 0;
     public int planetCount = 0;
+
+    // unity events (TODO: maybe break this out into a module)
+    public FactoryStructureSelectedEvent factoryStructureSelectedEvent = new FactoryStructureSelectedEvent();
 
 
     // the static reference to the singleton instance
@@ -124,7 +128,8 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nPlanetary Systems: " + this.planetarySystemCount.ToString() +
                 "\nStars: " + this.starCount.ToString() +
                 "\nPlanets: " + this.planetCount.ToString() +
-                "\n\nSelected Factory Structure Type: " + this.playerInput.currentlySelectedFactoryStructureType.ToString();
+                "\n\nSelected Factory Structure Type: " + this.playerFactory.structureTypeToDisplayString[this.playerInput.currentlySelectedFactoryStructureType] +
+                "\nPlayer Input Mode: " + this.playerInput.inputModeToDisplayString[this.playerInput.inputMode];
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText

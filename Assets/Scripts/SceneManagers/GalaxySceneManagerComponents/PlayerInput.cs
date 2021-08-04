@@ -8,15 +8,30 @@ public class PlayerInput : MonoBehaviour
 
     private float cameraSize;
 
+    public int inputMode;
+    public IDictionary<int, string> inputModeToDisplayString = new Dictionary<int, string>()
+    {
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT, "select" },
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_EDIT, "edit" },
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_PLACE, "place" },
+    };
+
     public int currentlySelectedFactoryStructureType = Constants.STRUCTURE_TYPE_HARVESTER;
     private IDictionary<UnityEngine.KeyCode, int> keyToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
     {
         { KeyCode.Alpha1, Constants.STRUCTURE_TYPE_HARVESTER },
         { KeyCode.Alpha2, Constants.STRUCTURE_TYPE_STORAGE },
+        { KeyCode.Alpha3, Constants.STRUCTURE_TYPE_SPLITTER },
+        { KeyCode.Alpha4, Constants.STRUCTURE_TYPE_MERGER },
     };
 
 
     // UNITY HOOKS
+
+    void Awake()
+    {
+        this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+    }
 
     void Start()
     {
@@ -25,29 +40,34 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        // upon escape press
+        this.HandleFactoryStructurePlacementSelection();
+        this.HandleFactoryStructurePlacement();
+        this.HandleFactoryStructureSelect();
+        this.HandleFactoryStructureEdit();
+        this.HandleCameraMovement();
+        this.HandleCameraZoom();
+        // mode change
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+        }
+        // quit game
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        this.HandleFactoryStructureSelection();
-        this.HandleFactoryStructurePlacement();
-        this.HandleCameraZoom();
-    }
-
-    void OnGUI()
-    {
-        this.HandleCameraMovement();
     }
 
     // IMPLEMENTATION METHODS
 
-    private void HandleFactoryStructureSelection()
+    private void HandleFactoryStructurePlacementSelection()
     {
+        // any of the number keys containing a factory structure are pressed
         foreach (var numkey in this.keyToFactoryStructureType.Keys)
         {
             if (Input.GetKeyDown(numkey))
             {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_PLACE;
                 this.currentlySelectedFactoryStructureType = this.keyToFactoryStructureType[numkey];
             }
         }
@@ -55,8 +75,33 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleFactoryStructurePlacement()
     {
-        // left click
-        if (Input.GetMouseButtonDown(0))
+        // left click and placement mode
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_PLACE && Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+            GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentlySelectedFactoryStructureType, placementPosition);
+        }
+    }
+
+    private void HandleFactoryStructureSelect()
+    {
+        // left click and select mode
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT && Input.GetMouseButtonDown(0))
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
+            {
+                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(hit.gameObject);
+            }
+        }
+    }
+
+    private void HandleFactoryStructureEdit()
+    {
+        // left click and edit mode
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_EDIT && Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
