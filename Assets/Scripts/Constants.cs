@@ -25,19 +25,19 @@ public static class Constants
     public const int PLANET_MIN_ORBIT_SPEED = 1;
     public const int PLANET_MAX_ORBIT_SPEED = 10;
 
-    public const int RESOURCE_WATER = 1;
-    public const int RESOURCE_GAS = 2;
-    public const int RESOURCE_ROCK = 3;
-    public const int RESOURCE_METAL = 4;
-    public const int RESOURCE_ORGANIC = 5;
+    public const int RESOURCE_TYPE_WATER = 1;
+    public const int RESOURCE_TYPE_GAS = 2;
+    public const int RESOURCE_TYPE_ROCK = 3;
+    public const int RESOURCE_TYPE_METAL = 4;
+    public const int RESOURCE_TYPE_ORGANIC = 5;
 
-    public const int STRUCTURE_HARVESTER = 1;
-    public const int STRUCTURE_STORAGE = 2;
-    public const int STRUCTURE_SPLITTER = 3;
-    public const int STRUCTURE_MERGER = 4;
-    public const int STRUCTURE_MIRROR = 5;
-    public const int STRUCTURE_PHOTOVOLTAIC = 6;
-    public const int STRUCTURE_ACCUMULATOR = 7;
+    public const int STRUCTURE_TYPE_HARVESTER = 1;
+    public const int STRUCTURE_TYPE_STORAGE = 2;
+    public const int STRUCTURE_TYPE_SPLITTER = 3;
+    public const int STRUCTURE_TYPE_MERGER = 4;
+    public const int STRUCTURE_TYPE_MIRROR = 5;
+    public const int STRUCTURE_TYPE_PHOTOVOLTAIC = 6;
+    public const int STRUCTURE_TYPE_ACCUMULATOR = 7;
 
 
 }

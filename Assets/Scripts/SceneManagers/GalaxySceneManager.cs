@@ -123,7 +123,8 @@ public class GalaxySceneManager : MonoBehaviour
                 "FPS: " + fps.ToString() +
                 "\nPlanetary Systems: " + this.planetarySystemCount.ToString() +
                 "\nStars: " + this.starCount.ToString() +
-                "\nPlanets: " + this.planetCount.ToString();
+                "\nPlanets: " + this.planetCount.ToString() +
+                "\n\nSelected Factory Structure Type: " + this.playerInput.currentlySelectedFactoryStructureType.ToString();
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText

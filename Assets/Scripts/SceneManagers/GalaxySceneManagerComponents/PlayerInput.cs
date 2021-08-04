@@ -8,6 +8,13 @@ public class PlayerInput : MonoBehaviour
 
     private float cameraSize;
 
+    public int currentlySelectedFactoryStructureType = Constants.STRUCTURE_TYPE_HARVESTER;
+    private IDictionary<UnityEngine.KeyCode, int> keyToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
+    {
+        { KeyCode.Alpha1, Constants.STRUCTURE_TYPE_HARVESTER },
+        { KeyCode.Alpha2, Constants.STRUCTURE_TYPE_STORAGE },
+    };
+
 
     // UNITY HOOKS
 
@@ -23,11 +30,8 @@ public class PlayerInput : MonoBehaviour
         {
             Application.Quit();
         }
-        // upon left click
-        if (Input.GetMouseButtonDown(0))
-        {
-            this.HandleLeftClick();
-        }
+        this.HandleFactoryStructureSelection();
+        this.HandleFactoryStructurePlacement();
         this.HandleCameraZoom();
     }
 
@@ -41,11 +45,27 @@ public class PlayerInput : MonoBehaviour
     }
 
     // IMPLEMENTATION METHODS
-    private void HandleLeftClick()
+
+    private void HandleFactoryStructureSelection()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-        GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(Constants.STRUCTURE_HARVESTER, placementPosition);
+        foreach (var numkey in this.keyToFactoryStructureType.Keys)
+        {
+            if (Input.GetKeyDown(numkey))
+            {
+                this.currentlySelectedFactoryStructureType = this.keyToFactoryStructureType[numkey];
+            }
+        }
+    }
+
+    private void HandleFactoryStructurePlacement()
+    {
+        // left click
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+            GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentlySelectedFactoryStructureType, placementPosition);
+        }
     }
 
     private void HandleCameraMovement()
