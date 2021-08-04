@@ -37,11 +37,7 @@ public class PlayerInput : MonoBehaviour
 
     void OnGUI()
     {
-        // right click held
-        if (Input.GetMouseButton(1))
-        {
-            this.HandleCameraMovement();
-        }
+        this.HandleCameraMovement();
     }
 
     // IMPLEMENTATION METHODS
@@ -70,10 +66,14 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleCameraMovement()
     {
-        // scale camera move amount with size of camera view
-        float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-        float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-        Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
+        // right click held
+        if (Input.GetMouseButton(1))
+        {
+            // scale camera move amount with size of camera view
+            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+            Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
+        }
     }
 
     private void HandleCameraZoom()

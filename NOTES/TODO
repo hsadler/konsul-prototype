@@ -5,6 +5,9 @@ TODO
 
 - Player factory building:
     X placement of mock structure
+    X player input structure selection
+    - implement Harvester
+    - implement Storage
     - create structures:
         - Harvester
         - Storage
@@ -13,8 +16,6 @@ TODO
         - Mirror
         - Photovoltaic
         - Accumulator
-    - implement Harvester
-    - implement Storage
     - send items from Harvester to Storage
 
 
