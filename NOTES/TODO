@@ -7,9 +7,9 @@ TODO
     - placement of mock structure
     - create structures:
         - Harvester
-        - Merge
-        - Split
         - Storage
+        - Merger
+        - Splitter
         - Mirror
         - Photovoltaic
         - Accumulator

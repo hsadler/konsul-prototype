@@ -8,6 +8,7 @@ Grid style galaxy:
     - each sytem has a star with square orbiting planets
     - resources of different types and ratios are present and extractable from the various galactic objects
     - resources can be routed and processed by structures
+    - grid displays coordinates (terminal version of game)
 
 
 Tech-Tree:
@@ -27,6 +28,12 @@ Resources:
     - Rocks
     - Water
     - Organics
+
+
+Terminal Commands Player Input:
+    - cursor in middle of screen
+    - cursor displays coordinates 
+    - cursor highlights current grid position
 
 
 Maybes:

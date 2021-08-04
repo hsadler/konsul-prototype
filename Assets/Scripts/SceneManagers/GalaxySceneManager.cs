@@ -9,10 +9,10 @@ public class GalaxySceneManager : MonoBehaviour
     // prefabs
     public GameObject gridLinePrefab;
     public GameObject planetarySystemPrefab;
-    public GameObject harvesterPrefab;
 
     // manager components
     public Functions functions;
+    public PlayerFactory playerFactory;
 
     // UI
     public bool uiVisible = true;
@@ -55,11 +55,12 @@ public class GalaxySceneManager : MonoBehaviour
 
     void Update()
     {
+        // upon escape press
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        // on left click
+        // upon left click
         if (Input.GetMouseButtonDown(0))
         {
             this.HandleLeftClick();
@@ -69,12 +70,12 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void OnGUI()
     {
-        this.DisplaySceneTelemetry();
         // right click held
         if (Input.GetMouseButton(1))
         {
             this.HandleCameraMovement();
         }
+        this.DisplaySceneTelemetry();
     }
 
     // INTERFACE METHODS
@@ -133,8 +134,8 @@ public class GalaxySceneManager : MonoBehaviour
     private void HandleLeftClick()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 harvesterPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-        Instantiate(this.harvesterPrefab, harvesterPosition, Quaternion.identity);
+        Vector3 placementPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+        this.playerFactory.PlaceFactoryStructure(Constants.STRUCTURE_HARVESTER, placementPosition);
     }
 
     // camera
