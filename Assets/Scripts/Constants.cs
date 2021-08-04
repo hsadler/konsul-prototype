@@ -11,9 +11,9 @@ public static class Constants
 
     public const int GALAXY_SIZE = 3000;
 
-    public const int PLANETARY_SYSTEMS_COUNT = 250;
+    public const int PLANETARY_SYSTEMS_COUNT = 200;
     public const int PLANETARY_SYSTEMS_MIN_PLANETS = 0;
-    public const int PLANETARY_SYSTEMS_MAX_PLANETS = 10;
+    public const int PLANETARY_SYSTEMS_MAX_PLANETS = 8;
 
     public const int STAR_MIN_SIZE_RADIUS = 1;
     public const int STAR_MAX_SIZE_RADIUS = 4;
@@ -33,8 +33,8 @@ public static class Constants
 
     public const int STRUCTURE_HARVESTER = 1;
     public const int STRUCTURE_STORAGE = 2;
-    public const int STRUCTURE_MERGER = 3;
-    public const int STRUCTURE_SPLITTER = 4;
+    public const int STRUCTURE_SPLITTER = 3;
+    public const int STRUCTURE_MERGER = 4;
     public const int STRUCTURE_MIRROR = 5;
     public const int STRUCTURE_PHOTOVOLTAIC = 6;
     public const int STRUCTURE_ACCUMULATOR = 7;

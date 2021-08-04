@@ -12,14 +12,11 @@ public class GalaxySceneManager : MonoBehaviour
 
     // manager components
     public Functions functions;
+    public PlayerInput playerInput;
     public PlayerFactory playerFactory;
-
     // UI
     public bool uiVisible = true;
     private Rect guiSceneTelemetryRect = new Rect(10, 10, 210, 110);
-
-    // camera
-    private float cameraSize;
 
     // scene metrics
     public int planetarySystemCount = 0;
@@ -48,33 +45,17 @@ public class GalaxySceneManager : MonoBehaviour
 
     void Start()
     {
-        this.cameraSize = Camera.main.orthographicSize;
         this.GenerateGrid();
         this.GeneratePlanetarySystems();
     }
 
     void Update()
     {
-        // upon escape press
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-        // upon left click
-        if (Input.GetMouseButtonDown(0))
-        {
-            this.HandleLeftClick();
-        }
-        this.HandleCameraZoom();
+
     }
 
     private void OnGUI()
     {
-        // right click held
-        if (Input.GetMouseButton(1))
-        {
-            this.HandleCameraMovement();
-        }
         this.DisplaySceneTelemetry();
     }
 
@@ -128,46 +109,6 @@ public class GalaxySceneManager : MonoBehaviour
             this.planetarySystemCount += 1;
             planetarySystem.GetComponent<PlanetarySystemScript>().ProcGen();
         }
-    }
-
-    // player input
-    private void HandleLeftClick()
-    {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 placementPosition = this.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-        this.playerFactory.PlaceFactoryStructure(Constants.STRUCTURE_HARVESTER, placementPosition);
-    }
-
-    // camera
-    private void HandleCameraZoom()
-    {
-        float zoomMultiplier = 25f;
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            zoomMultiplier = 150f;
-        }
-        float currCameraSize = Camera.main.orthographicSize;
-        if (Input.mouseScrollDelta.y != 0)
-        {
-            this.cameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
-            // clamp
-            if (this.cameraSize < Constants.CAMERA_SIZE_MIN)
-            {
-                this.cameraSize = Constants.CAMERA_SIZE_MIN;
-            }
-            else if (this.cameraSize > Constants.CAMERA_SIZE_MAX)
-            {
-                this.cameraSize = Constants.CAMERA_SIZE_MAX;
-            }
-        }
-        Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * Constants.CAMERA_ZOOM_SPEED);
-    }
-    private void HandleCameraMovement()
-    {
-        // scale camera move amount with size of camera view
-        float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-        float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-        Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
     }
 
     // UI
