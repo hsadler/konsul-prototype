@@ -20,6 +20,8 @@ public class HarvesterScript : MonoBehaviour
         this.selectedLabel.SetActive(false);
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
+        GalaxySceneManager.instance.factoryStructureIOPlacementEvent.AddListener(this.AddIO);
+        GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
     }
 
     void Update()
@@ -53,5 +55,20 @@ public class HarvesterScript : MonoBehaviour
         this.isSelected = isSelected;
         this.selectedLabel.SetActive(isSelected);
     }
+
+    private void AddIO(GameObject fromGO, GameObject toGO)
+    {
+        // TODO: implement
+        Debug.Log("Creating transit-line from: " + fromGO.name + " to: " + toGO.name);
+    }
+
+    private void RemoveSelf(GameObject removedGO)
+    {
+        if (removedGO == this.harvesterBody)
+        {
+            Object.Destroy(this.gameObject);
+        }
+    }
+
 
 }

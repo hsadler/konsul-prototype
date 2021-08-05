@@ -24,9 +24,11 @@ public class GalaxySceneManager : MonoBehaviour
     public int starCount = 0;
     public int planetCount = 0;
 
-    // unity events (TODO: maybe break this out into a module)
+    // unity events
     public FactoryStructureSelectedEvent factoryStructureSelectedEvent = new FactoryStructureSelectedEvent();
     public FactoryStructureDelesectAllEvent factoryStructureDelesectAllEvent = new FactoryStructureDelesectAllEvent();
+    public FactoryStructureRemovalEvent factoryStructureRemovalEvent = new FactoryStructureRemovalEvent();
+    public FactoryStructureIOPlacementEvent factoryStructureIOPlacementEvent = new FactoryStructureIOPlacementEvent();
 
 
     // the static reference to the singleton instance
@@ -122,10 +124,10 @@ public class GalaxySceneManager : MonoBehaviour
         if (this.uiVisible)
         {
             // prepare data for display
-            string selectedStructureType = "none";
+            string selectedForPlacement = "none";
             if (this.playerInput.currentPlacementStructureType != 0)
             {
-                selectedStructureType = this.playerFactory.structureTypeToDisplayString[this.playerInput.currentPlacementStructureType];
+                selectedForPlacement = this.playerFactory.structureTypeToDisplayString[this.playerInput.currentPlacementStructureType];
             }
             string playerInputMode = this.playerInput.inputModeToDisplayString[this.playerInput.inputMode];
             // show scene telemetry
@@ -137,8 +139,8 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nStars: " + this.starCount.ToString() +
                 "\nPlanets: " + this.planetCount.ToString() +
                 "\n" +
-                "\nSelected Factory Structure Type: " + selectedStructureType +
-                "\nPlayer Input Mode: " + playerInputMode;
+                "\nPlayer Input Mode: " + playerInputMode +
+                "\nSelected for Placement: " + selectedForPlacement;
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText

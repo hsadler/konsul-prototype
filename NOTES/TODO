@@ -15,15 +15,15 @@ TODO
         X Photovoltaic
         X Accumulator
     - implement v1 player controls for factory building:
-        - input modes
-        - structure placement mode
-        - structure placement
-        - structure pickup mode???
-        - structure selection
-        - structure reselection
-        - structure io edit mode
-        - structure io creation
-        - structure io deletion
+        X input modes
+        X structure placement mode
+        X structure placement
+        X structure selection
+        X structure reselection
+        X structure io edit mode
+        - transit line creation
+        X remove mode
+        - remove structure or transit line
     - implement Harvester:
         - selection of Harvester should allow selection of output 
             to factory structures that allow inputs

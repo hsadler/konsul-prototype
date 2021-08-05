@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
         { Constants.PLAYER_INPUT_MODE_PLACEMENT, "placement" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT, "select" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "io" },
+        { Constants.PLAYER_INPUT_MODE_REMOVAL, "removal" },
     };
 
     public int currentPlacementStructureType;
@@ -26,7 +27,7 @@ public class PlayerInput : MonoBehaviour
         { KeyCode.Alpha4, Constants.STRUCTURE_TYPE_MERGER },
     };
 
-    public GameObject currentSelected;
+    public GameObject currentStructureSelected;
 
 
     // UNITY HOOKS
@@ -44,19 +45,25 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        // TODO: maybe optimize these calls to be fewer since they can be treated as a tree
-        this.HandlePlacementMode();
-        this.HandlePlacement();
-        this.HandleStructureSelection();
-        this.HandleStructureIOMode();
+        // factory building
+        if (Input.anyKeyDown)
+        {
+            this.HandlePlacementMode();
+            this.HandleStructureIOMode();
+            this.HandleRemovalMode();
+            this.HandleModeRevert();
+            this.HandleGameQuit();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            this.HandlePlacement();
+            this.HandleStructureSelection();
+            this.HandleStructureIO();
+            this.HandleRemoval();
+        }
+        // camera
         this.HandleCameraMovement();
         this.HandleCameraZoom();
-        this.HandleModeRevert();
-        // quit game
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
     }
 
     // IMPLEMENTATION METHODS
@@ -72,7 +79,7 @@ public class PlayerInput : MonoBehaviour
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_PLACEMENT;
                 this.currentPlacementStructureType = this.keyCodeToFactoryStructureType[numkey];
-                this.DeselectStructures();
+                this.DeselectAllStructures();
             }
         }
     }
@@ -80,7 +87,7 @@ public class PlayerInput : MonoBehaviour
     private void HandlePlacement()
     {
         // placement mode and left click
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT && Input.GetMouseButtonDown(0))
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
@@ -91,10 +98,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleStructureSelection()
     {
         // init mode or structure-select mode and left click
-        if (
-            (this.inputMode == Constants.PLAYER_INPUT_MODE_INIT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
-            && Input.GetMouseButtonDown(0)
-        )
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_INIT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
@@ -102,48 +106,94 @@ public class PlayerInput : MonoBehaviour
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
                 GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(hit.gameObject);
-                this.currentSelected = hit.gameObject;
+                this.currentStructureSelected = hit.gameObject;
             }
         }
     }
 
     private void HandleStructureIOMode()
     {
-        // structure-select mode and space bar pressed
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT && Input.GetKeyDown(KeyCode.Space))
+        // structure-select mode and key press
+        if (
+            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT &&
+            Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY)
+        )
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
-            // TODO NEXT: implement io logic
         }
     }
 
-    private void HandleModeRevert()
+    private void HandleStructureIO()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        // structure-io mode and left click
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
         {
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentStructureSelected, hit.gameObject);
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+        }
+    }
+
+    private void HandleRemovalMode()
+    {
+        // removal mode key press
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_MODE_KEY))
+        {
+            this.inputMode = Constants.PLAYER_INPUT_MODE_REMOVAL;
+            this.DeselectAllStructures();
+        }
+    }
+
+    private void HandleRemoval()
+    {
+        // removal mode and left click
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_REMOVAL)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Collider2D hit = Physics2D.OverlapPoint(mousePos);
+            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
-                this.DeselectStructures();
+                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(hit.gameObject);
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
+        }
+    }
+
+
+    private void HandleModeRevert()
+    {
+        // revert key press
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REVERT_MODE_KEY))
+        {
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
                 this.InitCurrentPlacementStrutureType();
             }
-
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+            {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+                this.DeselectAllStructures();
+            }
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+            {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+            }
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_REMOVAL)
+            {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+            }
         }
     }
 
     // factory building controls helpers
 
-    private void DeselectStructures()
+    private void DeselectAllStructures()
     {
-        this.currentSelected = null;
+        this.currentStructureSelected = null;
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.Invoke();
     }
 
@@ -189,6 +239,14 @@ public class PlayerInput : MonoBehaviour
             }
         }
         Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * Constants.CAMERA_ZOOM_SPEED);
+    }
+
+    private void HandleGameQuit()
+    {
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_QUIT_GAME_KEY))
+        {
+            Application.Quit();
+        }
     }
 
 
