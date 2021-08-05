@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplitterScript : MonoBehaviour
+public class MergerScript : MonoBehaviour
 {
-
-
-    public GameObject splitterBody;
 
 
     // UNITY HOOKS
@@ -20,6 +17,10 @@ public class SplitterScript : MonoBehaviour
     {
 
     }
+
+    // INTERFACE METHODS
+
+    // IMPLEMENTATION METHODS
 
 
 }

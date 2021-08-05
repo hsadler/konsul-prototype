@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MergerScript : MonoBehaviour
+public class StorageScript : MonoBehaviour
 {
-
-
-    public GameObject mergerBody;
 
 
     // UNITY HOOKS
@@ -20,6 +17,10 @@ public class MergerScript : MonoBehaviour
     {
 
     }
+
+    // INTERFACE METHODS
+
+    // IMPLEMENTATION METHODS
 
 
 }

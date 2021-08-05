@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvesterScript : MonoBehaviour
+public class FactoryStructureBehavior : MonoBehaviour
 {
 
 
-    public GameObject harvesterBody;
+    public GameObject rootGO;
     public GameObject selectedLabel;
 
     private bool isSelected = false;
-
 
 
     // UNITY HOOKS
@@ -20,7 +19,6 @@ public class HarvesterScript : MonoBehaviour
         this.selectedLabel.SetActive(false);
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
-        GalaxySceneManager.instance.factoryStructureIOPlacementEvent.AddListener(this.AddIO);
         GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
     }
 
@@ -35,7 +33,7 @@ public class HarvesterScript : MonoBehaviour
 
     private void CheckSetSelected(GameObject selectedGO)
     {
-        if (selectedGO == this.harvesterBody)
+        if (selectedGO == this.gameObject)
         {
             this.SetSelected(true);
         }
@@ -56,17 +54,11 @@ public class HarvesterScript : MonoBehaviour
         this.selectedLabel.SetActive(isSelected);
     }
 
-    private void AddIO(GameObject fromGO, GameObject toGO)
-    {
-        // TODO: implement
-        Debug.Log("Creating transit-line from: " + fromGO.name + " to: " + toGO.name);
-    }
-
     private void RemoveSelf(GameObject removedGO)
     {
-        if (removedGO == this.harvesterBody)
+        if (removedGO == this.gameObject)
         {
-            Object.Destroy(this.gameObject);
+            Object.Destroy(this.rootGO);
         }
     }
 

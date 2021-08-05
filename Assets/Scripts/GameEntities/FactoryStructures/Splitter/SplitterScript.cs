@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageScript : MonoBehaviour
+public class SplitterScript : MonoBehaviour
 {
-
-
-    public GameObject storageBody;
 
 
     // UNITY HOOKS
@@ -20,6 +17,10 @@ public class StorageScript : MonoBehaviour
     {
 
     }
+
+    // INTERFACE METHODS
+
+    // IMPLEMENTATION METHODS
 
 
 }
