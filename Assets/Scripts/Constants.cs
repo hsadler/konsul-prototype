@@ -11,9 +11,10 @@ public static class Constants
     public const float CAMERA_MOVE_SPEED = 4f;
 
 
-    public const int PLAYER_INPUT_MODE_STRUCTURE_PLACE = 1;
-    public const int PLAYER_INPUT_MODE_STRUCTURE_SELECT = 2;
-    public const int PLAYER_INPUT_MODE_STRUCTURE_EDIT = 3;
+    public const int PLAYER_INPUT_MODE_INIT = 1;
+    public const int PLAYER_INPUT_MODE_PLACEMENT = 2;
+    public const int PLAYER_INPUT_MODE_STRUCTURE_SELECT = 3;
+    public const int PLAYER_INPUT_MODE_STRUCTURE_IO = 4;
 
 
     public const int GALAXY_SIZE = 3000;

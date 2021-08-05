@@ -6,24 +6,36 @@ TODO
 - Player factory building:
     X placement of mock structure
     X player input structure selection
-    - implement Harvester
-    - implement Storage
-    - create structures:
-        - Harvester
-        - Storage
-        - Merger
-        - Splitter
-        - Mirror
-        - Photovoltaic
-        - Accumulator
-    - send items from Harvester to Storage
+    X create factory structures:
+        X Harvester
+        X Storage
+        X Merger
+        X Splitter
+        X Mirror
+        X Photovoltaic
+        X Accumulator
+    - implement v1 player controls for factory building:
+        - input modes
+        - structure placement
+        - structure selection
+        - structure io edit
+    - implement Harvester:
+        - selection of Harvester should allow selection of output 
+            to factory structures that allow inputs
+        - harvester spawns Resource and sends in direction of output
+    - implement Storage:
+        - reference to inputs
+        - should store resources that collide with it by destoroying 
+            resource object and storing held resource state
+    - get sending items from Harvester to Storage working
+    - don't allow double placement
 
 
-- CLI:
+- Resources, items, structures:
     - TODO
 
 
-- Resource and items:
+- CLI:
     - TODO
 
 
@@ -34,5 +46,6 @@ TODO
 Polish:
     - polish black hole, need high-rez sprite image
     - prevent star overlap by implementing generation buffer
-    - decide on quit-game button
+    - prevent planetary system overlap with black hole
+    - revisit quit-game button
     

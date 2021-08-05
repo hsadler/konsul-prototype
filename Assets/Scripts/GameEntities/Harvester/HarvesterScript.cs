@@ -19,6 +19,7 @@ public class HarvesterScript : MonoBehaviour
     {
         this.selectedLabel.SetActive(false);
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
+        GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
     }
 
     void Update()
@@ -28,22 +29,23 @@ public class HarvesterScript : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void CheckSetSelected(GameObject selectedGO)
+    // IMPLEMENTATION METHODS
+
+    private void CheckSetSelected(GameObject selectedGO)
     {
         if (selectedGO == this.harvesterBody)
         {
-            this.SetSelected(!this.isSelected);
+            this.SetSelected(true);
         }
-    }
-
-    // IMPLEMENTATION METHODS
-
-    private void CheckDeselect()
-    {
-        if (this.isSelected && Input.GetKeyDown(KeyCode.Q))
+        else
         {
             this.SetSelected(false);
         }
+    }
+
+    private void Deselect()
+    {
+        this.SetSelected(false);
     }
 
     private void SetSelected(bool isSelected)

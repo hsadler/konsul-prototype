@@ -3,6 +3,27 @@
 IDEAS
 
 
+Player experience POC:
+    - scene start with presentation of galaxy
+    - player controls:
+        - move camera to view planetary systems
+        - zoom camera
+        - change mode to "placement" by pressing alphaNum key:
+            * this mode should display a "ghost" form of the structure under the cursor 
+            - click on galaxy grid to place
+            - change placement selection by pressing different alphaNum key
+            - change mode to "init" by pressing "Q"
+        - change mode to "structure select" by clicking structure:
+            * this mode should display information about the selected structure
+            - select a different structure by clicking another
+                (prototype will limit structure selection to one at a time)
+            - change mode to "structure io" by pressing "spacebar": 
+                - create output->input relationship by clicking another structure
+                    (once this is completed, mode reverts to "structure select")
+                - cancel io by pressing "Q" to go back to "structure select" mode
+            - change mode to "init" by pressing "Q"
+
+
 Grid style galaxy:
     - galaxy has a large black hole with stationary systems
     - each sytem has a star with square orbiting planets
@@ -34,6 +55,20 @@ Terminal Commands Player Input:
     - cursor in middle of screen
     - cursor displays coordinates 
     - cursor highlights current grid position
+
+
+Factory UX and rules things to think about:
+    - Throughput of resource transfer
+    - Who should manage the link relationships between factory structures? 
+        Two way pointers? Output -> Input pointers?
+    - What should be responsible for resource getting for building? Workers? A single player avatar? 
+        If it is workers, there will need to be a queue system for tasks to be carried out.
+    - Categorizing resource types:
+        - raw
+        - processed
+        - structure
+    - Should all resources live as game entities or should some be currencies?
+    - Should all factory structure IO require resource type? How will the controls for this work?
 
 
 Maybes:
