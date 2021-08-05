@@ -16,9 +16,14 @@ TODO
         X Accumulator
     - implement v1 player controls for factory building:
         - input modes
+        - structure placement mode
         - structure placement
+        - structure pickup mode???
         - structure selection
-        - structure io edit
+        - structure reselection
+        - structure io edit mode
+        - structure io creation
+        - structure io deletion
     - implement Harvester:
         - selection of Harvester should allow selection of output 
             to factory structures that allow inputs
@@ -29,6 +34,10 @@ TODO
             resource object and storing held resource state
     - get sending items from Harvester to Storage working
     - don't allow double placement
+
+
+- Bugs:
+    X structure reselection not working
 
 
 - Resources, items, structures:

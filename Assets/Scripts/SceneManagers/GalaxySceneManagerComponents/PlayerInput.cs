@@ -79,7 +79,7 @@ public class PlayerInput : MonoBehaviour
 
     private void HandlePlacement()
     {
-        // left click and placement mode
+        // placement mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT && Input.GetMouseButtonDown(0))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -90,8 +90,11 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleStructureSelection()
     {
-        // left click and select mode
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_INIT && Input.GetMouseButtonDown(0))
+        // init mode or structure-select mode and left click
+        if (
+            (this.inputMode == Constants.PLAYER_INPUT_MODE_INIT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+            && Input.GetMouseButtonDown(0)
+        )
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
@@ -106,7 +109,7 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleStructureIOMode()
     {
-        // selection mode
+        // structure-select mode and space bar pressed
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT && Input.GetKeyDown(KeyCode.Space))
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
