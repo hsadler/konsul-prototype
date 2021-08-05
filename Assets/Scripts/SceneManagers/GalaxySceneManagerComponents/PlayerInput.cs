@@ -130,7 +130,11 @@ public class PlayerInput : MonoBehaviour
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(mousePos);
-            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
+            if (
+                hit != null &&
+                hit.gameObject.CompareTag("FactoryStructure") &&
+                hit.gameObject.GetComponent<FactoryStructureIOBehavior>() != null
+            )
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
                 GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentStructureSelected, hit.gameObject);

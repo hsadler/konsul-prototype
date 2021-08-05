@@ -27,6 +27,8 @@ public static class Constants
     public const int GALAXY_SIZE = 3000;
 
     public const int PLANETARY_SYSTEMS_COUNT = 200;
+    // TESTING
+    // public const int PLANETARY_SYSTEMS_COUNT = 0;
     public const int PLANETARY_SYSTEMS_MIN_PLANETS = 0;
     public const int PLANETARY_SYSTEMS_MAX_PLANETS = 8;
 

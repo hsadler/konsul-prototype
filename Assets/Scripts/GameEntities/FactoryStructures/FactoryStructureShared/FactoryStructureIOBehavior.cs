@@ -6,6 +6,9 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 {
 
 
+    public GameObject transitLinePrefab;
+
+
     // UNITY HOOKS
 
     void Start()
@@ -24,8 +27,15 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     private void AddIO(GameObject fromGO, GameObject toGO)
     {
-        // TODO: implement
-        Debug.Log("Creating transit-line from: " + fromGO.name + " to: " + toGO.name);
+        if (fromGO == this.gameObject)
+        {
+            GameObject transitLine = Instantiate(transitLinePrefab, this.transform.position, Quaternion.identity);
+            var lr = transitLine.GetComponent<LineRenderer>();
+            var points = new Vector3[2];
+            points[0] = Vector3.zero;
+            points[1] = toGO.transform.position - fromGO.transform.position;
+            lr.SetPositions(points);
+        }
     }
 
 
