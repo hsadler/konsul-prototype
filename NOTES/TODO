@@ -42,7 +42,7 @@ TODO
 - Bugs:
     X structure reselection not working
     X don't allow resourceIO dupes
-    - make resourceIOs work for all distances (including adjacent blocks)
+    X make resourceIOs work for all distances (including adjacent blocks)
 
 
 - Resources, items, structures:

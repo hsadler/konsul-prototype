@@ -82,13 +82,14 @@ public class FactoryStructureIOBehavior : MonoBehaviour
     {
         if (from == this.gameObject)
         {
+            float offset = 0.25f;
             Vector3 direction = (to.transform.position - from.transform.position).normalized;
-            Vector3 tlPos = this.transform.position + direction;
+            Vector3 tlPos = this.transform.position + (direction * offset);
             GameObject resourceIO = Instantiate(resourceIOPrefab, tlPos, Quaternion.identity, this.transform);
             var lr = resourceIO.GetComponent<LineRenderer>();
             var points = new Vector3[2];
             points[0] = Vector3.zero;
-            points[1] = to.transform.position - resourceIO.transform.position - direction;
+            points[1] = to.transform.position - resourceIO.transform.position - (direction * offset);
             lr.SetPositions(points);
             // check for a dupe, if exists, cancel
             string formattedCoords = this.GetFormattedLineCoordinatesFromResourceIO(resourceIO);
