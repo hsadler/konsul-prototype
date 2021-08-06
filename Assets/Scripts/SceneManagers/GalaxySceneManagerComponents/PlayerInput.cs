@@ -12,10 +12,10 @@ public class PlayerInput : MonoBehaviour
     public IDictionary<int, string> inputModeToDisplayString = new Dictionary<int, string>()
     {
         { Constants.PLAYER_INPUT_MODE_INIT, "init" },
-        { Constants.PLAYER_INPUT_MODE_PLACEMENT, "placement" },
-        { Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT, "select" },
-        { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "io" },
-        { Constants.PLAYER_INPUT_MODE_REMOVAL, "removal" },
+        { Constants.PLAYER_INPUT_MODE_PLACEMENT, "structure placement" },
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT, "structure select" },
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "transit create" },
+        { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT, "transit select" },
     };
 
     public int currentPlacementStructureType;
@@ -28,6 +28,7 @@ public class PlayerInput : MonoBehaviour
     };
 
     public GameObject currentStructureSelected;
+    public GameObject currentStructureIOSelected;
 
 
     // UNITY HOOKS
@@ -50,7 +51,8 @@ public class PlayerInput : MonoBehaviour
         {
             this.HandlePlacementMode();
             this.HandleStructureIOMode();
-            this.HandleRemovalMode();
+            this.HandleCycleIOSelection();
+            this.HandleRemoval();
             this.HandleModeRevert();
             this.HandleGameQuit();
         }
@@ -59,7 +61,6 @@ public class PlayerInput : MonoBehaviour
             this.HandlePlacement();
             this.HandleStructureSelection();
             this.HandleStructureIO();
-            this.HandleRemoval();
         }
         // camera
         this.HandleCameraMovement();
@@ -111,6 +112,31 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private void HandleCycleIOSelection()
+    {
+        // structure-select mode or structure-io-select and key press
+        if (
+            (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
+            Input.GetKeyDown(Constants.PLAYER_INPUT_CYCLE_IO_SELECT)
+        )
+        {
+            this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
+            // TODO: implement io cycle
+        }
+    }
+
+    private void HandleRemoval()
+    {
+        // structure-select mode and key press
+        if (
+            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT &&
+            Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_REMOVAL_KEY)
+        )
+        {
+            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
+        }
+    }
+
     private void HandleStructureIOMode()
     {
         // structure-select mode and key press
@@ -142,31 +168,6 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void HandleRemovalMode()
-    {
-        // removal mode key press
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_MODE_KEY))
-        {
-            this.inputMode = Constants.PLAYER_INPUT_MODE_REMOVAL;
-            this.DeselectAllStructures();
-        }
-    }
-
-    private void HandleRemoval()
-    {
-        // removal mode and left click
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_REMOVAL)
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
-            {
-                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(hit.gameObject);
-            }
-        }
-    }
-
-
     private void HandleModeRevert()
     {
         // revert key press
@@ -186,9 +187,10 @@ public class PlayerInput : MonoBehaviour
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_REMOVAL)
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                this.DeselectAllStructuresIO();
             }
         }
     }
@@ -199,6 +201,12 @@ public class PlayerInput : MonoBehaviour
     {
         this.currentStructureSelected = null;
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.Invoke();
+    }
+
+    private void DeselectAllStructuresIO()
+    {
+        this.currentStructureIOSelected = null;
+
     }
 
     private void InitCurrentPlacementStrutureType()

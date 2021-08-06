@@ -16,10 +16,11 @@ public static class Constants
     public const int PLAYER_INPUT_MODE_PLACEMENT = 2;
     public const int PLAYER_INPUT_MODE_STRUCTURE_SELECT = 3;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO = 4;
-    public const int PLAYER_INPUT_MODE_REMOVAL = 5;
+    public const int PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT = 5;
 
     public const KeyCode PLAYER_INPUT_STRUCTURE_IO_MODE_KEY = KeyCode.Space;
-    public const KeyCode PLAYER_INPUT_REMOVAL_MODE_KEY = KeyCode.D;
+    public const KeyCode PLAYER_INPUT_CYCLE_IO_SELECT = KeyCode.Tab;
+    public const KeyCode PLAYER_INPUT_STRUCTURE_REMOVAL_KEY = KeyCode.D;
     public const KeyCode PLAYER_INPUT_REVERT_MODE_KEY = KeyCode.Q;
     public const KeyCode PLAYER_INPUT_QUIT_GAME_KEY = KeyCode.Escape;
 

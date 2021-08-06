@@ -31,7 +31,7 @@ public class FactoryStructureIOBehavior : MonoBehaviour
         {
             Vector3 direction = (to.transform.position - from.transform.position).normalized;
             Vector3 tlPos = this.transform.position + direction;
-            GameObject transitLine = Instantiate(transitLinePrefab, tlPos, Quaternion.identity);
+            GameObject transitLine = Instantiate(transitLinePrefab, tlPos, Quaternion.identity, this.transform);
             var lr = transitLine.GetComponent<LineRenderer>();
             var points = new Vector3[2];
             points[0] = Vector3.zero;
