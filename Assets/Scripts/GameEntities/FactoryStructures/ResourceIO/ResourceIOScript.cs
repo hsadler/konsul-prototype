@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FactoryStructureIOScript : MonoBehaviour
+public class ResourceIOScript : MonoBehaviour
 {
 
 
-    public GameObject selectionIndicator;
+    public GameObject selectedIndicator;
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        this.selectionIndicator.SetActive(false);
+        this.selectedIndicator.SetActive(false);
     }
 
     void Update()

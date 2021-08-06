@@ -127,13 +127,19 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleRemoval()
     {
-        // structure-select mode and key press
-        if (
-            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT &&
-            Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_REMOVAL_KEY)
-        )
+        //  removal key press
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_KEY))
         {
-            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
+            // structure-select mode
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+            {
+                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
+            }
+            // structure-io-select mode
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            {
+                // TODO: implement io removal 
+            }
         }
     }
 

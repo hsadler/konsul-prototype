@@ -6,7 +6,7 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 {
 
 
-    public GameObject transitLinePrefab;
+    public GameObject resourceIOPrefab;
 
 
     // UNITY HOOKS
@@ -31,11 +31,11 @@ public class FactoryStructureIOBehavior : MonoBehaviour
         {
             Vector3 direction = (to.transform.position - from.transform.position).normalized;
             Vector3 tlPos = this.transform.position + direction;
-            GameObject transitLine = Instantiate(transitLinePrefab, tlPos, Quaternion.identity, this.transform);
-            var lr = transitLine.GetComponent<LineRenderer>();
+            GameObject resourceIO = Instantiate(resourceIOPrefab, tlPos, Quaternion.identity, this.transform);
+            var lr = resourceIO.GetComponent<LineRenderer>();
             var points = new Vector3[2];
             points[0] = Vector3.zero;
-            points[1] = to.transform.position - transitLine.transform.position - direction;
+            points[1] = to.transform.position - resourceIO.transform.position - direction;
             lr.SetPositions(points);
         }
     }
