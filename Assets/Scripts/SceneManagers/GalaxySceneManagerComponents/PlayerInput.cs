@@ -81,6 +81,7 @@ public class PlayerInput : MonoBehaviour
                 this.inputMode = Constants.PLAYER_INPUT_MODE_PLACEMENT;
                 this.currentPlacementStructureType = this.keyCodeToFactoryStructureType[numkey];
                 this.DeselectAllStructures();
+                this.DeselectAllStructuresIO();
             }
         }
     }
@@ -121,7 +122,7 @@ public class PlayerInput : MonoBehaviour
         )
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
-            // TODO: implement io cycle
+            this.currentStructureIOSelected = this.currentStructureSelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
         }
     }
 
@@ -145,12 +146,13 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleStructureIOMode()
     {
-        // structure-select mode and key press
+        // structure-select mode and mode key press
         if (
-            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT &&
+            (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
             Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY)
         )
         {
+            this.DeselectAllStructuresIO();
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
         }
     }
@@ -212,7 +214,7 @@ public class PlayerInput : MonoBehaviour
     private void DeselectAllStructuresIO()
     {
         this.currentStructureIOSelected = null;
-
+        GalaxySceneManager.instance.factoryStructureIODelesectAllEvent.Invoke();
     }
 
     private void InitCurrentPlacementStrutureType()

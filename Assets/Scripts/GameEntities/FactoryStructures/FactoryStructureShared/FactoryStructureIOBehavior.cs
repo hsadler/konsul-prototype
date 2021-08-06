@@ -8,6 +8,8 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     public GameObject resourceIOPrefab;
 
+    public List<GameObject> resourceIOs = new List<GameObject>();
+
 
     // UNITY HOOKS
 
@@ -23,6 +25,51 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     // INTERFACE METHODS
 
+    public GameObject RotateSelection()
+    {
+        // return early if empty
+        if (this.resourceIOs.Count == 0)
+        {
+            return null;
+        }
+        else
+        {
+            GameObject selectedRsIO = null;
+            int currSelectedIndex = -1;
+            // determine current selected index if there is one
+            for (int i = 0; i < this.resourceIOs.Count; i++)
+            {
+                GameObject currRsIO = this.resourceIOs[i];
+                var rsIOScript = currRsIO.GetComponent<ResourceIOScript>();
+                if (rsIOScript.isSelected)
+                {
+                    rsIOScript.Deselect();
+                    currSelectedIndex = i;
+                }
+            }
+            // select next
+            if (currSelectedIndex > -1)
+            {
+                if (currSelectedIndex == this.resourceIOs.Count - 1)
+                {
+                    selectedRsIO = this.resourceIOs[0];
+                }
+                else
+                {
+                    selectedRsIO = this.resourceIOs[currSelectedIndex + 1];
+                }
+            }
+            // none selected, select first 
+            else
+            {
+                selectedRsIO = this.resourceIOs[0];
+            }
+            // set selected with selected state
+            selectedRsIO.GetComponent<ResourceIOScript>().Select();
+            return selectedRsIO;
+        }
+    }
+
     // IMPLEMENTATION METHODS
 
     private void AddIO(GameObject from, GameObject to)
@@ -37,6 +84,7 @@ public class FactoryStructureIOBehavior : MonoBehaviour
             points[0] = Vector3.zero;
             points[1] = to.transform.position - resourceIO.transform.position - direction;
             lr.SetPositions(points);
+            this.resourceIOs.Add(resourceIO);
         }
     }
 

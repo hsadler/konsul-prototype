@@ -6,14 +6,18 @@ public class ResourceIOScript : MonoBehaviour
 {
 
 
-    public GameObject selectedIndicator;
+    public GameObject selectionIndicator;
+
+    public bool isSelected;
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        this.selectedIndicator.SetActive(false);
+        this.selectionIndicator.SetActive(false);
+        this.isSelected = false;
+        GalaxySceneManager.instance.factoryStructureIODelesectAllEvent.AddListener(Deselect);
     }
 
     void Update()
@@ -22,6 +26,18 @@ public class ResourceIOScript : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public void Select()
+    {
+        this.selectionIndicator.SetActive(true);
+        this.isSelected = true;
+    }
+
+    public void Deselect()
+    {
+        this.selectionIndicator.SetActive(false);
+        this.isSelected = false;
+    }
 
     // IMPLEMENTATION METHODS
 

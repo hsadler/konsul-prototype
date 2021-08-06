@@ -125,12 +125,13 @@ public class GalaxySceneManager : MonoBehaviour
         if (this.uiVisible)
         {
             // prepare data for display
+            string playerInputMode = this.playerInput.inputModeToDisplayString[this.playerInput.inputMode];
             string selectedForPlacement = "none";
             if (this.playerInput.currentPlacementStructureType != 0)
             {
                 selectedForPlacement = this.playerFactory.structureTypeToDisplayString[this.playerInput.currentPlacementStructureType];
             }
-            string playerInputMode = this.playerInput.inputModeToDisplayString[this.playerInput.inputMode];
+            string selectedStructure = this.playerInput.currentStructureSelected == null ? "none" : this.playerInput.currentStructureSelected.name;
             // show scene telemetry
             GUI.contentColor = Color.green;
             int fps = (int)(1.0f / Time.smoothDeltaTime);
@@ -141,7 +142,9 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nPlanets: " + this.planetCount.ToString() +
                 "\n" +
                 "\nPlayer Input Mode: " + playerInputMode +
-                "\nSelected for Placement: " + selectedForPlacement;
+                "\nSelected for Placement: " + selectedForPlacement +
+                "\n" +
+                "\nSelected Structure: " + selectedStructure;
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText

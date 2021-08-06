@@ -7,7 +7,7 @@ public class FactoryStructureBehavior : MonoBehaviour
 
 
     public GameObject rootGO;
-    public GameObject selectedIndicator;
+    public GameObject selectionIndicator;
 
     private bool isSelected = false;
 
@@ -16,7 +16,7 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     void Start()
     {
-        this.selectedIndicator.SetActive(false);
+        this.selectionIndicator.SetActive(false);
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
         GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
@@ -51,7 +51,7 @@ public class FactoryStructureBehavior : MonoBehaviour
     private void SetSelected(bool isSelected)
     {
         this.isSelected = isSelected;
-        this.selectedIndicator.SetActive(isSelected);
+        this.selectionIndicator.SetActive(isSelected);
     }
 
     private void RemoveSelf(GameObject removedGO)
