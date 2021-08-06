@@ -14,16 +14,17 @@ TODO
         X Mirror
         X Photovoltaic
         X Accumulator
-    - implement v1 player controls for factory building:
+    X implement v1 player controls for factory building:
         X input modes
         X structure placement mode
         X structure placement
         X structure selection
         X structure reselection
         X structure io edit mode
-        - transit line creation
+        X transit line creation
         X remove mode
-        - remove structure or transit line
+        X remove structure or transit line
+    - replace "remove" mode with select and delete
     - implement Harvester:
         - selection of Harvester should allow selection of output 
             to factory structures that allow inputs

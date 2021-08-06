@@ -25,15 +25,17 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     // IMPLEMENTATION METHODS
 
-    private void AddIO(GameObject fromGO, GameObject toGO)
+    private void AddIO(GameObject from, GameObject to)
     {
-        if (fromGO == this.gameObject)
+        if (from == this.gameObject)
         {
-            GameObject transitLine = Instantiate(transitLinePrefab, this.transform.position, Quaternion.identity);
+            Vector3 direction = (to.transform.position - from.transform.position).normalized;
+            Vector3 tlPos = this.transform.position + direction;
+            GameObject transitLine = Instantiate(transitLinePrefab, tlPos, Quaternion.identity);
             var lr = transitLine.GetComponent<LineRenderer>();
             var points = new Vector3[2];
             points[0] = Vector3.zero;
-            points[1] = toGO.transform.position - fromGO.transform.position;
+            points[1] = to.transform.position - transitLine.transform.position - direction;
             lr.SetPositions(points);
         }
     }
