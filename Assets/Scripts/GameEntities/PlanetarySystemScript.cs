@@ -70,7 +70,7 @@ public class PlanetarySystemScript : MonoBehaviour
         for (int i = 0; i < numPlanets; i++)
         {
             GameObject planet = Instantiate(planetPrefab, this.transform.position, Quaternion.identity, this.transform);
-            var planetScript = planet.GetComponent<PlanetScript>();
+            var planetScript = planet.GetComponentInChildren<PlanetScript>();
             int orbit = planetScript.ProcGen(this.orbitDirection, this.occupiedOrbits);
             this.occupiedOrbits.Add(orbit);
             this.planets.Add(planet);

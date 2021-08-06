@@ -7,11 +7,14 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
 
     public GameObject resourceIOPrefab;
+    public int ioLimit = 100;
 
     private List<GameObject> resourceIOs = new List<GameObject>();
     // required for preventing dupes
     private IDictionary<string, GameObject> lineCoordsToResourceIO = new Dictionary<string, GameObject>();
+    private IDictionary<int, Vector3> resourceIOIDToDirection = new Dictionary<int, Vector3>();
     private GameObject currentSelectedResourceIO;
+    private GameObject currentSendingResourceIO;
 
 
     // UNITY HOOKS
@@ -56,7 +59,9 @@ public class FactoryStructureIOBehavior : MonoBehaviour
             {
                 selectedRsIO = this.resourceIOs[0];
             }
-            // set selected with selected state
+            // unselect old
+            this.resourceIOs[currSelectedIndex].GetComponent<ResourceIOScript>().Deselect();
+            // set new as selected with selected state
             selectedRsIO.GetComponent<ResourceIOScript>().Select();
             this.currentSelectedResourceIO = selectedRsIO;
             return selectedRsIO;
@@ -76,10 +81,35 @@ public class FactoryStructureIOBehavior : MonoBehaviour
         }
     }
 
+    public bool ResourceIOsExist()
+    {
+        return this.resourceIOs.Count > 0;
+    }
+
+    public Vector3 GetNextSendDirection()
+    {
+        int oldRsIOIndex = this.GetSendingResourceIOIndex();
+        GameObject nextResourceIO;
+        if (oldRsIOIndex == -1 || oldRsIOIndex == this.resourceIOs.Count - 1)
+        {
+            nextResourceIO = this.resourceIOs[0];
+        }
+        else
+        {
+            nextResourceIO = this.resourceIOs[oldRsIOIndex + 1];
+        }
+        this.currentSendingResourceIO = nextResourceIO;
+        return this.resourceIOIDToDirection[nextResourceIO.GetInstanceID()];
+    }
+
     // IMPLEMENTATION METHODS
 
     private void AddResourceIO(GameObject from, GameObject to)
     {
+        if (this.resourceIOs.Count == this.ioLimit)
+        {
+            return;
+        }
         if (from == this.gameObject)
         {
             float offset = 0.25f;
@@ -98,9 +128,10 @@ public class FactoryStructureIOBehavior : MonoBehaviour
                 Object.Destroy(resourceIO);
                 return;
             }
-            // add to both data structures
+            // add to data structures
             this.resourceIOs.Add(resourceIO);
             this.lineCoordsToResourceIO.Add(formattedCoords, resourceIO);
+            this.resourceIOIDToDirection.Add(resourceIO.GetInstanceID(), direction);
         }
     }
 
@@ -110,15 +141,28 @@ public class FactoryStructureIOBehavior : MonoBehaviour
         // determine current selected index if there is one
         for (int i = 0; i < this.resourceIOs.Count; i++)
         {
-            GameObject currRsIO = this.resourceIOs[i];
-            var rsIOScript = currRsIO.GetComponent<ResourceIOScript>();
-            if (rsIOScript.isSelected)
+            GameObject rsIO = this.resourceIOs[i];
+            if (this.currentSelectedResourceIO == rsIO)
             {
-                rsIOScript.Deselect();
                 currSelectedIndex = i;
             }
         }
         return currSelectedIndex;
+    }
+
+    private int GetSendingResourceIOIndex()
+    {
+        int currSendingIndex = -1;
+        // determine current sending index if there is one
+        for (int i = 0; i < this.resourceIOs.Count; i++)
+        {
+            GameObject rsIO = this.resourceIOs[i];
+            if (this.currentSendingResourceIO == rsIO)
+            {
+                currSendingIndex = i;
+            }
+        }
+        return currSendingIndex;
     }
 
     private string GetFormattedLineCoordinatesFromResourceIO(GameObject resourceIO)

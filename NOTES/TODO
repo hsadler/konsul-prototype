@@ -4,29 +4,6 @@ TODO
 
 
 - Player factory building:
-    X placement of mock structure
-    X player input structure selection
-    X create factory structures:
-        X Harvester
-        X Storage
-        X Merger
-        X Splitter
-        X Mirror
-        X Photovoltaic
-        X Accumulator
-    X implement v1 player controls for factory building:
-        X input modes
-        X structure placement mode
-        X structure placement
-        X structure selection
-        X structure reselection
-        X structure io edit mode
-        X transit line creation
-        X remove mode
-        X remove structure or transit line
-    X replace "remove" mode with select and delete
-    X add cycle-through-io with tab button when structure selected
-    X removable resourceIO
     - implement Harvester:
         - selection of Harvester should allow selection of output 
             to factory structures that allow inputs
