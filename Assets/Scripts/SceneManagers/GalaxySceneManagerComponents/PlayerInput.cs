@@ -58,8 +58,8 @@ public class PlayerInput : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            this.HandlePlacement();
             this.HandleStructureSelection();
+            this.HandlePlacementOrSelection();
             this.HandleStructureIO();
         }
         // camera
@@ -86,29 +86,44 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void HandlePlacement()
+    private void HandlePlacementOrSelection()
     {
         // placement mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-            GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentPlacementStructureType, placementPosition);
+            GameObject clickedFactoryStructure = this.GetClickedFactoryStructure();
+            if (clickedFactoryStructure != null)
+            {
+                // select instead of create
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(clickedFactoryStructure);
+                this.currentStructureSelected = clickedFactoryStructure;
+            }
+            else
+            {
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+                GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentPlacementStructureType, placementPosition);
+            }
         }
     }
 
     private void HandleStructureSelection()
     {
-        // init mode or structure-select mode and left click
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_INIT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+        // init mode or structure-select or structure-io-select mode and left click
+        if (
+            this.inputMode == Constants.PLAYER_INPUT_MODE_INIT ||
+            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT ||
+            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT
+        )
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-            if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
+            this.DeselectAllStructuresIO();
+            GameObject clickedFactoryStructure = this.GetClickedFactoryStructure();
+            if (clickedFactoryStructure != null)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
-                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(hit.gameObject);
-                this.currentStructureSelected = hit.gameObject;
+                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(clickedFactoryStructure);
+                this.currentStructureSelected = clickedFactoryStructure;
             }
         }
     }
@@ -139,7 +154,8 @@ public class PlayerInput : MonoBehaviour
             // structure-io-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
-                // TODO: implement io removal 
+                this.currentStructureSelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
             }
         }
     }
@@ -162,16 +178,11 @@ public class PlayerInput : MonoBehaviour
         // structure-io mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(mousePos);
-            if (
-                hit != null &&
-                hit.gameObject.CompareTag("FactoryStructure") &&
-                hit.gameObject.GetComponent<FactoryStructureIOBehavior>() != null
-            )
+            GameObject clickedFactoryStructure = GetClickedFactoryStructure();
+            if (clickedFactoryStructure != null)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
-                GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentStructureSelected, hit.gameObject);
+                GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentStructureSelected, clickedFactoryStructure);
             }
         }
     }
@@ -204,6 +215,20 @@ public class PlayerInput : MonoBehaviour
     }
 
     // factory building controls helpers
+
+    private GameObject GetClickedFactoryStructure()
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(mousePos);
+        if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
+        {
+            return hit.gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     private void DeselectAllStructures()
     {

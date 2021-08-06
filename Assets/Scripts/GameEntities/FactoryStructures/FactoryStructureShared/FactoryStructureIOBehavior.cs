@@ -8,14 +8,17 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     public GameObject resourceIOPrefab;
 
-    public List<GameObject> resourceIOs = new List<GameObject>();
+    private List<GameObject> resourceIOs = new List<GameObject>();
+    // required for preventing dupes
+    private IDictionary<string, GameObject> lineCoordsToResourceIO = new Dictionary<string, GameObject>();
+    private GameObject currentSelectedResourceIO;
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        GalaxySceneManager.instance.factoryStructureIOPlacementEvent.AddListener(this.AddIO);
+        GalaxySceneManager.instance.factoryStructureIOPlacementEvent.AddListener(this.AddResourceIO);
     }
 
     void Update()
@@ -35,18 +38,7 @@ public class FactoryStructureIOBehavior : MonoBehaviour
         else
         {
             GameObject selectedRsIO = null;
-            int currSelectedIndex = -1;
-            // determine current selected index if there is one
-            for (int i = 0; i < this.resourceIOs.Count; i++)
-            {
-                GameObject currRsIO = this.resourceIOs[i];
-                var rsIOScript = currRsIO.GetComponent<ResourceIOScript>();
-                if (rsIOScript.isSelected)
-                {
-                    rsIOScript.Deselect();
-                    currSelectedIndex = i;
-                }
-            }
+            int currSelectedIndex = this.GetSelectedResourceIOIndex();
             // select next
             if (currSelectedIndex > -1)
             {
@@ -66,13 +58,27 @@ public class FactoryStructureIOBehavior : MonoBehaviour
             }
             // set selected with selected state
             selectedRsIO.GetComponent<ResourceIOScript>().Select();
+            this.currentSelectedResourceIO = selectedRsIO;
             return selectedRsIO;
+        }
+    }
+
+    public void RemoveCurrentSelectedResourceIO()
+    {
+        int currSelectedIndex = this.GetSelectedResourceIOIndex();
+        if (currSelectedIndex > -1)
+        {
+            GameObject currentSelectedResourceIO = this.resourceIOs[currSelectedIndex];
+            // remove from both data structures
+            this.resourceIOs.RemoveAt(currSelectedIndex);
+            this.lineCoordsToResourceIO.Remove(this.GetFormattedLineCoordinatesFromResourceIO(this.currentSelectedResourceIO));
+            Object.Destroy(currentSelectedResourceIO);
         }
     }
 
     // IMPLEMENTATION METHODS
 
-    private void AddIO(GameObject from, GameObject to)
+    private void AddResourceIO(GameObject from, GameObject to)
     {
         if (from == this.gameObject)
         {
@@ -84,8 +90,41 @@ public class FactoryStructureIOBehavior : MonoBehaviour
             points[0] = Vector3.zero;
             points[1] = to.transform.position - resourceIO.transform.position - direction;
             lr.SetPositions(points);
+            // check for a dupe, if exists, cancel
+            string formattedCoords = this.GetFormattedLineCoordinatesFromResourceIO(resourceIO);
+            if (this.lineCoordsToResourceIO.ContainsKey(formattedCoords))
+            {
+                Object.Destroy(resourceIO);
+                return;
+            }
+            // add to both data structures
             this.resourceIOs.Add(resourceIO);
+            this.lineCoordsToResourceIO.Add(formattedCoords, resourceIO);
         }
+    }
+
+    private int GetSelectedResourceIOIndex()
+    {
+        int currSelectedIndex = -1;
+        // determine current selected index if there is one
+        for (int i = 0; i < this.resourceIOs.Count; i++)
+        {
+            GameObject currRsIO = this.resourceIOs[i];
+            var rsIOScript = currRsIO.GetComponent<ResourceIOScript>();
+            if (rsIOScript.isSelected)
+            {
+                rsIOScript.Deselect();
+                currSelectedIndex = i;
+            }
+        }
+        return currSelectedIndex;
+    }
+
+    private string GetFormattedLineCoordinatesFromResourceIO(GameObject resourceIO)
+    {
+        LineRenderer lr = resourceIO.GetComponent<LineRenderer>();
+        string formattedCoords = lr.GetPosition(0).ToString() + lr.GetPosition(1).ToString();
+        return formattedCoords;
     }
 
 
