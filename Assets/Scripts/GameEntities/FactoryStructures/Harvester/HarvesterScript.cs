@@ -44,11 +44,16 @@ public class HarvesterScript : MonoBehaviour
         {
             if (this.io.ResourceIOsExist())
             {
-                Vector3 sendDirection = this.io.GetNextSendDirection();
-                GameObject rawResource = Instantiate(this.rawResourcePrefab, this.transform.position, Quaternion.identity);
+                Vector3 launchDirection = this.io.GetNextSendDirection();
+                // TODO: this is assuming a raw resource, refactor in future
+                GameObject rawResource = Instantiate(
+                    this.rawResourcePrefab,
+                    this.transform.position + launchDirection,
+                    Quaternion.identity
+                );
                 var rrScript = rawResource.GetComponent<RawResourceScript>();
                 rrScript.resourceType = this.harvestedResource;
-                rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, sendDirection);
+                rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
                 this.harvestedResource = Constants.RESOURCE_TYPE_NONE;
             }
         }

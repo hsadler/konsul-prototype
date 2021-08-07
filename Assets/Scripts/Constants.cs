@@ -50,8 +50,7 @@ public static class Constants
 
     public const int STRUCTURE_TYPE_HARVESTER = 1;
     public const int STRUCTURE_TYPE_STORAGE = 2;
-    public const int STRUCTURE_TYPE_SPLITTER = 3;
-    public const int STRUCTURE_TYPE_MERGER = 4;
+    public const int STRUCTURE_TYPE_DISTRIBUTOR = 3;
     public const int STRUCTURE_TYPE_MIRROR = 5;
     public const int STRUCTURE_TYPE_PHOTOVOLTAIC = 6;
     public const int STRUCTURE_TYPE_ACCUMULATOR = 7;

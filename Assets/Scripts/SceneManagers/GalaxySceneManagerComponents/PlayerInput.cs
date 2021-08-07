@@ -22,9 +22,8 @@ public class PlayerInput : MonoBehaviour
     private IDictionary<UnityEngine.KeyCode, int> keyCodeToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
     {
         { KeyCode.Alpha1, Constants.STRUCTURE_TYPE_HARVESTER },
-        { KeyCode.Alpha2, Constants.STRUCTURE_TYPE_STORAGE },
-        { KeyCode.Alpha3, Constants.STRUCTURE_TYPE_SPLITTER },
-        { KeyCode.Alpha4, Constants.STRUCTURE_TYPE_MERGER },
+        { KeyCode.Alpha2, Constants.STRUCTURE_TYPE_DISTRIBUTOR },
+        { KeyCode.Alpha3, Constants.STRUCTURE_TYPE_STORAGE },
     };
 
     public GameObject currentStructureSelected;

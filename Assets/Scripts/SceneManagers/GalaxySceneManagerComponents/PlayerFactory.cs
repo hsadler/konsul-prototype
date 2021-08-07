@@ -6,9 +6,8 @@ public class PlayerFactory : MonoBehaviour
 {
 
     public GameObject harvesterPrefab;
+    public GameObject distributorPrefab;
     public GameObject storagePrefab;
-    public GameObject splitterPrefab;
-    public GameObject mergerPrefab;
     public GameObject mirrorPrefab;
     public GameObject photovotaicPrefab;
     public GameObject accumulatorPrefab;
@@ -17,9 +16,8 @@ public class PlayerFactory : MonoBehaviour
     public IDictionary<int, string> structureTypeToDisplayString = new Dictionary<int, string>()
     {
         { Constants.STRUCTURE_TYPE_HARVESTER, "harvester" },
+        { Constants.STRUCTURE_TYPE_DISTRIBUTOR, "distributor" },
         { Constants.STRUCTURE_TYPE_STORAGE, "storage" },
-        { Constants.STRUCTURE_TYPE_SPLITTER, "splitter" },
-        { Constants.STRUCTURE_TYPE_MERGER, "merger" },
         { Constants.STRUCTURE_TYPE_MIRROR, "mirror" },
         { Constants.STRUCTURE_TYPE_PHOTOVOLTAIC, "photovoltaic" },
         { Constants.STRUCTURE_TYPE_ACCUMULATOR, "accumulator" },
@@ -35,9 +33,8 @@ public class PlayerFactory : MonoBehaviour
         this.structureTypeToPrefab = new Dictionary<int, GameObject>()
         {
             { Constants.STRUCTURE_TYPE_HARVESTER, this.harvesterPrefab },
+            { Constants.STRUCTURE_TYPE_DISTRIBUTOR, this.distributorPrefab },
             { Constants.STRUCTURE_TYPE_STORAGE, this.storagePrefab },
-            { Constants.STRUCTURE_TYPE_SPLITTER, this.splitterPrefab },
-            { Constants.STRUCTURE_TYPE_MERGER, this.mergerPrefab },
             { Constants.STRUCTURE_TYPE_MIRROR, this.mirrorPrefab },
             { Constants.STRUCTURE_TYPE_PHOTOVOLTAIC, this.photovotaicPrefab },
             { Constants.STRUCTURE_TYPE_ACCUMULATOR, this.accumulatorPrefab },
