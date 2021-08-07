@@ -4,16 +4,15 @@ TODO
 
 
 - Player factory building:
-    - implement Harvester:
-        - selection of Harvester should allow selection of output 
+    X don't allow double placement of structures or resource-ios
+    X implement Harvester:
+        X selection of Harvester should allow selection of output 
             to factory structures that allow inputs
-        - harvester spawns Resource and sends in direction of output
+        X harvester spawns Resource and sends in direction of output
     - implement Storage:
-        - reference to inputs
         - should store resources that collide with it by destoroying 
             resource object and storing held resource state
     - get sending items from Harvester to Storage working
-    - don't allow double placement
 
 
 - Bugs:

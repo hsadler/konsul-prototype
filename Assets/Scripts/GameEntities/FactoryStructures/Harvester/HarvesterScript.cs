@@ -7,10 +7,9 @@ public class HarvesterScript : MonoBehaviour
 
 
     public GameObject rawResourcePrefab;
+    public float rawResourceLaunchImpulse = 3f;
 
     private FactoryStructureIOBehavior io;
-
-    private int ioLimit = 3;
     private int harvestedResource = Constants.RESOURCE_TYPE_NONE;
 
 
@@ -19,7 +18,6 @@ public class HarvesterScript : MonoBehaviour
     void Start()
     {
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
-        this.io.ioLimit = this.ioLimit;
     }
 
     void Update()
@@ -48,9 +46,9 @@ public class HarvesterScript : MonoBehaviour
             {
                 Vector3 sendDirection = this.io.GetNextSendDirection();
                 GameObject rawResource = Instantiate(this.rawResourcePrefab, this.transform.position, Quaternion.identity);
-                var rrScript = rawResource.GetComponentInChildren<RawResourceScript>();
+                var rrScript = rawResource.GetComponent<RawResourceScript>();
                 rrScript.resourceType = this.harvestedResource;
-                rrScript.SetLaunchForceAndDirection(1f, sendDirection);
+                rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, sendDirection);
                 this.harvestedResource = Constants.RESOURCE_TYPE_NONE;
             }
         }

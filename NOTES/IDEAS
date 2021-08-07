@@ -51,6 +51,29 @@ Resources:
     - Organics
 
 
+Worker:
+    - worker can:
+        - carry
+        - place
+        - build
+    - player issues commands which are queued and carried out by workers
+
+
+Game progression design:
+    - game start:
+        - one worker 
+        - one storage containing a harvester
+        - a "starter" planetary system
+    - first player actions:
+        - worker retrieves the harvester from storage
+        - worker places the harvester which starts sending raw resources to the storage
+        - worker retrieves resources from storage
+        - worker uses resources to construct:
+            - additional harvesters
+            - additional storage
+            - other factory structures
+
+
 Terminal Commands Player Input:
     - cursor in middle of screen
     - cursor displays coordinates 

@@ -6,6 +6,9 @@ public class StorageScript : MonoBehaviour
 {
 
 
+    private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
+
+
     // UNITY HOOKS
 
     void Start()
@@ -16,6 +19,24 @@ public class StorageScript : MonoBehaviour
     void Update()
     {
 
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // consume resource
+        if (other.gameObject.CompareTag("Resource"))
+        {
+            int resourceType = other.gameObject.GetComponent<RawResourceScript>().resourceType;
+            if (this.resourceTypeToCount.ContainsKey(resourceType))
+            {
+                this.resourceTypeToCount[resourceType] += 1;
+            }
+            else
+            {
+                this.resourceTypeToCount.Add(resourceType, 1);
+            }
+            Object.Destroy(other.gameObject);
+        }
     }
 
     // INTERFACE METHODS

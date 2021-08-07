@@ -5,6 +5,7 @@ using UnityEngine;
 public class Functions
 {
 
+
     public Vector3 GetIntRoundedVector3(Vector3 v)
     {
         return new Vector3(
@@ -13,5 +14,6 @@ public class Functions
             Mathf.Round(v.z)
         );
     }
+
 
 }

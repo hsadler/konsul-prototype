@@ -32,8 +32,7 @@ public class RawResourceScript : MonoBehaviour
         if (!this.hasLaunched)
         {
             this.rb.AddForce(launchDirection * launchForce, ForceMode2D.Impulse);
-            // TODO NEXT: DEBUG THE INITIAL ROTATION
-            // this.transform.LookAt(launchDirection);
+            this.transform.rotation = Quaternion.LookRotation(Vector3.forward, launchDirection);
             this.hasLaunched = true;
         }
     }

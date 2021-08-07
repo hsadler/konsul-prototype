@@ -7,7 +7,7 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
 
     public GameObject resourceIOPrefab;
-    public int ioLimit = 100;
+    public int ioLimit = 1;
 
     private List<GameObject> resourceIOs = new List<GameObject>();
     // required for preventing dupes
@@ -34,38 +34,34 @@ public class FactoryStructureIOBehavior : MonoBehaviour
     public GameObject RotateSelection()
     {
         // return early if empty
-        if (this.resourceIOs.Count == 0)
+        if (this.resourceIOs.Count < 1)
         {
             return null;
         }
+        // return first if none selected
+        if (this.currentSelectedResourceIO == null)
+        {
+            this.currentSelectedResourceIO = this.resourceIOs[0];
+        }
+        // return rotated selection
         else
         {
-            GameObject selectedRsIO = null;
-            int currSelectedIndex = this.GetSelectedResourceIOIndex();
+            int oldSelectedIndex = this.GetSelectedResourceIOIndex();
             // select next
-            if (currSelectedIndex > -1)
+            if (oldSelectedIndex == this.resourceIOs.Count - 1)
             {
-                if (currSelectedIndex == this.resourceIOs.Count - 1)
-                {
-                    selectedRsIO = this.resourceIOs[0];
-                }
-                else
-                {
-                    selectedRsIO = this.resourceIOs[currSelectedIndex + 1];
-                }
+                this.currentSelectedResourceIO = this.resourceIOs[0];
             }
-            // none selected, select first 
             else
             {
-                selectedRsIO = this.resourceIOs[0];
+                this.currentSelectedResourceIO = this.resourceIOs[oldSelectedIndex + 1];
             }
             // unselect old
-            this.resourceIOs[currSelectedIndex].GetComponent<ResourceIOScript>().Deselect();
+            this.resourceIOs[oldSelectedIndex].GetComponent<ResourceIOScript>().Deselect();
             // set new as selected with selected state
-            selectedRsIO.GetComponent<ResourceIOScript>().Select();
-            this.currentSelectedResourceIO = selectedRsIO;
-            return selectedRsIO;
         }
+        this.currentSelectedResourceIO.GetComponent<ResourceIOScript>().Select();
+        return this.currentSelectedResourceIO;
     }
 
     public void RemoveCurrentSelectedResourceIO()
@@ -137,8 +133,8 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     private int GetSelectedResourceIOIndex()
     {
-        int currSelectedIndex = -1;
         // determine current selected index if there is one
+        int currSelectedIndex = -1;
         for (int i = 0; i < this.resourceIOs.Count; i++)
         {
             GameObject rsIO = this.resourceIOs[i];
@@ -152,8 +148,8 @@ public class FactoryStructureIOBehavior : MonoBehaviour
 
     private int GetSendingResourceIOIndex()
     {
-        int currSendingIndex = -1;
         // determine current sending index if there is one
+        int currSendingIndex = -1;
         for (int i = 0; i < this.resourceIOs.Count; i++)
         {
             GameObject rsIO = this.resourceIOs[i];
