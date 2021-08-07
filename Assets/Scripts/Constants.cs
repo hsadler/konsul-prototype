@@ -18,7 +18,7 @@ public static class Constants
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO = 4;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT = 5;
 
-    public const KeyCode PLAYER_INPUT_STRUCTURE_IO_MODE_KEY = KeyCode.Space;
+    public const KeyCode PLAYER_INPUT_STRUCTURE_IO_MODE_KEY = KeyCode.E;
     public const KeyCode PLAYER_INPUT_REVERT_MODE_KEY = KeyCode.Q;
     public const KeyCode PLAYER_INPUT_CYCLE_IO_SELECT = KeyCode.Tab;
     public const KeyCode PLAYER_INPUT_REMOVAL_KEY = KeyCode.D;
@@ -44,7 +44,7 @@ public static class Constants
     public const int RESOURCE_TYPE_NONE = -1;
     public const int RESOURCE_TYPE_WATER = 1;
     public const int RESOURCE_TYPE_GAS = 2;
-    public const int RESOURCE_TYPE_ROCK = 3;
+    public const int RESOURCE_TYPE_STONE = 3;
     public const int RESOURCE_TYPE_METAL = 4;
     public const int RESOURCE_TYPE_ORGANIC = 5;
 

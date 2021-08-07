@@ -3,7 +3,14 @@
 IDEAS
 
 
-Player experience POC:
+Guiding light problems for player to solve:
+    - growing factory: resource gathering, production
+    - organization: routing, sorting, distribution
+    - power management: ensuring supply is greater than demand
+    - progression: unlocking next tier of items, abilities, etc.
+
+
+Player controls POC:
     - scene start with presentation of galaxy
     - player controls:
         - move camera to view planetary systems
@@ -24,42 +31,7 @@ Player experience POC:
             - change mode to "init" by pressing "Q"
 
 
-Grid style galaxy:
-    - galaxy has a large black hole with stationary systems
-    - each sytem has a star with square orbiting planets
-    - resources of different types and ratios are present and extractable from the various galactic objects
-    - resources can be routed and processed by structures
-    - grid displays coordinates (terminal version of game)
-
-
-Tech-Tree:
-    - Gatherers
-    - Routers
-    - Load-balancers
-    - Sorters
-    - Storage
-    - Processors
-    - Power
-
-
-Resources:
-    - Light
-    - Gases
-    - Metals
-    - Rocks
-    - Water
-    - Organics
-
-
-Worker:
-    - worker can:
-        - carry
-        - place
-        - build
-    - player issues commands which are queued and carried out by workers
-
-
-Game progression design:
+Game progression:
     - game start:
         - one worker 
         - one storage containing a harvester
@@ -72,12 +44,6 @@ Game progression design:
             - additional harvesters
             - additional storage
             - other factory structures
-
-
-Terminal Commands Player Input:
-    - cursor in middle of screen
-    - cursor displays coordinates 
-    - cursor highlights current grid position
 
 
 Factory UX and rules things to think about:
@@ -94,26 +60,21 @@ Factory UX and rules things to think about:
     - Should all factory structure IO require resource type? How will the controls for this work?
 
 
-Maybes:
-    - binary star systems
-    - comets
-    - asteriod fields
-    - rogue planets
-    - nebula
-    - dark matter
-    
+Terminal Commands Player Input:
+    - cursor in middle of screen
+    - cursor displays coordinates 
+    - cursor highlights current grid position
 
 
-MECHANICS:
 
-Core Mechanics:
-    - resource gathering
-    - resource routing
-    - resource processing
+GAME ENTITIES AND SYSTEMS:
 
-
-Other Mechanics:
-    - upgrades
+Grid style galaxy:
+    - galaxy has a large black hole with stationary systems
+    - each sytem has a star with square orbiting planets
+    - resources of different types and ratios are present and extractable from the various galactic objects
+    - resources can be routed and processed by structures
+    - grid displays coordinates (terminal version of game)
 
 Stars:
     - 4 types:
@@ -124,12 +85,51 @@ Stars:
     - 4 sizes
     - type informs luminosity
     - size informs amount and length of beams
+    - power extractable via Photovoltaic
 
 Planets:
     - resource types extractable:
         - water
         - gas
-        - rock
+        - stone
         - metal
         - organic
+
+Worker:
+    - worker can:
+        - carry
+        - place
+        - build
+    - player issues commands which are queued and carried out by workers
+
+Tech-Tree:
+    - Harvester
+    - Storage
+    - Router
+    - Sorter
+    - Processor
+    - Power
+
+Maybes:
+    - binary star systems
+    - comets
+    - asteriod fields
+    - rogue planets
+    - nebula
+    - dark matter
+    
+
+MECHANICS:
+
+Core Mechanics:
+    - resource gathering
+    - resource routing
+    - resource processing
+    - factory building
+
+Other Mechanics:
+    - upgrades
+
+
+
 

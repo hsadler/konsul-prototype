@@ -23,17 +23,10 @@ public class PlanetScript : MonoBehaviour
     private Vector3[] waypointPositions;
     private int currentWaypointIndex;
 
-    // resources
-    public float pctWater;
-    public float pctGases;
-    public float pctRocks;
-    public float pctMetals;
-    public float pctOrganics;
-
     private int[] resourceTypes = new int[5] {
         Constants.RESOURCE_TYPE_WATER,
         Constants.RESOURCE_TYPE_GAS,
-        Constants.RESOURCE_TYPE_ROCK,
+        Constants.RESOURCE_TYPE_STONE,
         Constants.RESOURCE_TYPE_METAL,
         Constants.RESOURCE_TYPE_ORGANIC
     };
@@ -41,7 +34,7 @@ public class PlanetScript : MonoBehaviour
     {
         { Constants.RESOURCE_TYPE_WATER, "water" },
         { Constants.RESOURCE_TYPE_GAS, "gas" },
-        { Constants.RESOURCE_TYPE_ROCK, "rock" },
+        { Constants.RESOURCE_TYPE_STONE, "stone" },
         { Constants.RESOURCE_TYPE_METAL, "metal" },
         { Constants.RESOURCE_TYPE_ORGANIC, "organic" }
     };
@@ -49,7 +42,7 @@ public class PlanetScript : MonoBehaviour
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>() {
         { Constants.RESOURCE_TYPE_WATER, 0 },
         { Constants.RESOURCE_TYPE_GAS, 0 },
-        { Constants.RESOURCE_TYPE_ROCK, 0 },
+        { Constants.RESOURCE_TYPE_STONE, 0 },
         { Constants.RESOURCE_TYPE_METAL, 0 },
         { Constants.RESOURCE_TYPE_ORGANIC, 0 }
     };

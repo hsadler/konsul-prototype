@@ -3,29 +3,32 @@
 TODO
 
 
-- Player factory building:
-    X don't allow double placement of structures or resource-ios
-    X implement Harvester:
-        X selection of Harvester should allow selection of output 
-            to factory structures that allow inputs
-        X harvester spawns Resource and sends in direction of output
-    - implement Storage:
-        - should store resources that collide with it by destoroying 
-            resource object and storing held resource state
-    - get sending items from Harvester to Storage working
+Next:
+    X rename "rock" to "stone"
+    - implement Router
+    - color RawResources based on raw resource type
+    - information about factory structure upon selection
+    - POC Worker
+    - draft resource tree
+    - POC power gathering from stars:
+        - Photovoltaic
+        - Mirror
+        - PowerCell
+    - add music
+
+
+For consideration/prioritization:
+    - multiselect with selection box
+    - consider a freeze-time control
+    - consider different tiers of power gathering
+        (though prob not for prototype)
 
 
 - Bugs:
-    X structure reselection not working
-    X don't allow resourceIO dupes
-    X make resourceIOs work for all distances (including adjacent blocks)
+    - 
 
 
 - Resources, items, structures:
-    - TODO
-
-
-- CLI:
     - TODO
 
 
@@ -33,9 +36,12 @@ TODO
     - TODO
 
 
-Polish:
+- CLI:
+    - TODO
+
+
+Improvements and Polish:
     - polish black hole, need high-rez sprite image
     - prevent star overlap by implementing generation buffer
     - prevent planetary system overlap with black hole
-    - revisit quit-game button
     
