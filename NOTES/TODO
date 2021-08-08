@@ -7,7 +7,7 @@ Next:
     X rename "rock" to "stone"
     X implement Router
     X color RawResources based on raw resource type
-    - information about factory structure upon selection
+    - information about factory structure upon selection and toggle
     - POC Worker
     - draft resource tree
     - POC power gathering from stars:

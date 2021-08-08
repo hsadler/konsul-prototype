@@ -23,6 +23,7 @@ public class RawResourceScript : MonoBehaviour
     {
         // set capsule color based on resource type
         this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.resourceType];
+        GalaxySceneManager.instance.itemsInTransit += 1;
     }
 
     void Update()
@@ -38,6 +39,11 @@ public class RawResourceScript : MonoBehaviour
             this.transform.rotation = Quaternion.LookRotation(Vector3.forward, launchDirection);
             this.hasLaunched = true;
         }
+    }
+
+    void OnDestroy()
+    {
+        GalaxySceneManager.instance.itemsInTransit -= 1;
     }
 
     // INTERFACE METHODS

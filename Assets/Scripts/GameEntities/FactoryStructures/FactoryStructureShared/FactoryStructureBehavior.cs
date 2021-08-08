@@ -20,11 +20,17 @@ public class FactoryStructureBehavior : MonoBehaviour
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
         GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
+        GalaxySceneManager.instance.factoryStructureCount += 1;
     }
 
     void Update()
     {
 
+    }
+
+    void OnDestroy()
+    {
+        GalaxySceneManager.instance.factoryStructureCount -= 1;
     }
 
     // INTERFACE METHODS

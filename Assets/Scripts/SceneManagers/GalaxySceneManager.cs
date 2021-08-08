@@ -18,12 +18,14 @@ public class GalaxySceneManager : MonoBehaviour
 
     // UI
     public bool uiVisible = true;
-    private Rect guiSceneTelemetryRect = new Rect(10, 10, 500, 500);
+    private Rect guiSceneTelemetryRect = new Rect(10, 10, 800, 2000);
 
     // scene metrics
     public int planetarySystemCount = 0;
     public int starCount = 0;
     public int planetCount = 0;
+    public int factoryStructureCount = 0;
+    public int itemsInTransit = 0;
 
     // unity events
     public FactoryStructureSelectedEvent factoryStructureSelectedEvent = new FactoryStructureSelectedEvent();
@@ -142,6 +144,8 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nPlanetary Systems: " + this.planetarySystemCount.ToString() +
                 "\nStars: " + this.starCount.ToString() +
                 "\nPlanets: " + this.planetCount.ToString() +
+                "\nFactory Structures: " + this.factoryStructureCount.ToString() +
+                "\nItems in Transit: " + this.itemsInTransit.ToString() +
                 "\n" +
                 "\nPlayer Input Mode: " + playerInputMode +
                 "\nSelected for Placement: " + selectedForPlacement +
