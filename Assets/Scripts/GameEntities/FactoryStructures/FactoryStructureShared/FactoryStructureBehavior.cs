@@ -9,6 +9,8 @@ public class FactoryStructureBehavior : MonoBehaviour
     public GameObject rootGO;
     public GameObject selectionIndicator;
 
+    public int factoryStructureType;
+
     private bool isSelected = false;
 
 
@@ -34,6 +36,12 @@ public class FactoryStructureBehavior : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public string GetStringFormattedFactoryStructureInfo()
+    {
+        // TODO: IMPLEMENT STUBB (perhaps call a passed delegate)
+        return "none bro";
+    }
 
     // IMPLEMENTATION METHODS
 

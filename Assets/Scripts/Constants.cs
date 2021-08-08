@@ -48,12 +48,12 @@ public static class Constants
     public const int RESOURCE_TYPE_METAL = 4;
     public const int RESOURCE_TYPE_ORGANIC = 5;
 
-    public const int STRUCTURE_TYPE_HARVESTER = 1;
-    public const int STRUCTURE_TYPE_STORAGE = 2;
-    public const int STRUCTURE_TYPE_DISTRIBUTOR = 3;
-    public const int STRUCTURE_TYPE_MIRROR = 5;
-    public const int STRUCTURE_TYPE_PHOTOVOLTAIC = 6;
-    public const int STRUCTURE_TYPE_ACCUMULATOR = 7;
+    public const int FACTORY_STRUCTURE_TYPE_HARVESTER = 1;
+    public const int FACTORY_STRUCTURE_TYPE_DISTRIBUTOR = 2;
+    public const int FACTORY_STRUCTURE_TYPE_STORAGE = 3;
+    public const int FACTORY_STRUCTURE_TYPE_MIRROR = 5;
+    public const int FACTORY_STRUCTURE_TYPE_PHOTOVOLTAIC = 6;
+    public const int FACTORY_STRUCTURE_TYPE_ACCUMULATOR = 7;
 
 
 }

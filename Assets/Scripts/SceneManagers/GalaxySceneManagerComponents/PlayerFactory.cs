@@ -15,12 +15,12 @@ public class PlayerFactory : MonoBehaviour
 
     public IDictionary<int, string> structureTypeToDisplayString = new Dictionary<int, string>()
     {
-        { Constants.STRUCTURE_TYPE_HARVESTER, "harvester" },
-        { Constants.STRUCTURE_TYPE_DISTRIBUTOR, "distributor" },
-        { Constants.STRUCTURE_TYPE_STORAGE, "storage" },
-        { Constants.STRUCTURE_TYPE_MIRROR, "mirror" },
-        { Constants.STRUCTURE_TYPE_PHOTOVOLTAIC, "photovoltaic" },
-        { Constants.STRUCTURE_TYPE_ACCUMULATOR, "accumulator" },
+        { Constants.FACTORY_STRUCTURE_TYPE_HARVESTER, "harvester" },
+        { Constants.FACTORY_STRUCTURE_TYPE_DISTRIBUTOR, "distributor" },
+        { Constants.FACTORY_STRUCTURE_TYPE_STORAGE, "storage" },
+        { Constants.FACTORY_STRUCTURE_TYPE_MIRROR, "mirror" },
+        { Constants.FACTORY_STRUCTURE_TYPE_PHOTOVOLTAIC, "photovoltaic" },
+        { Constants.FACTORY_STRUCTURE_TYPE_ACCUMULATOR, "accumulator" },
     };
 
     private IDictionary<int, GameObject> structureTypeToPrefab;
@@ -32,12 +32,12 @@ public class PlayerFactory : MonoBehaviour
     {
         this.structureTypeToPrefab = new Dictionary<int, GameObject>()
         {
-            { Constants.STRUCTURE_TYPE_HARVESTER, this.harvesterPrefab },
-            { Constants.STRUCTURE_TYPE_DISTRIBUTOR, this.distributorPrefab },
-            { Constants.STRUCTURE_TYPE_STORAGE, this.storagePrefab },
-            { Constants.STRUCTURE_TYPE_MIRROR, this.mirrorPrefab },
-            { Constants.STRUCTURE_TYPE_PHOTOVOLTAIC, this.photovotaicPrefab },
-            { Constants.STRUCTURE_TYPE_ACCUMULATOR, this.accumulatorPrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_HARVESTER, this.harvesterPrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_DISTRIBUTOR, this.distributorPrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_STORAGE, this.storagePrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_MIRROR, this.mirrorPrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_PHOTOVOLTAIC, this.photovotaicPrefab },
+            { Constants.FACTORY_STRUCTURE_TYPE_ACCUMULATOR, this.accumulatorPrefab },
         };
     }
 
@@ -49,7 +49,8 @@ public class PlayerFactory : MonoBehaviour
         {
             // place factory structure prefab at mouse location
             GameObject factoryStructurePrefab = this.structureTypeToPrefab[type];
-            Instantiate(factoryStructurePrefab, placementPosition, Quaternion.identity);
+            GameObject fs = Instantiate(factoryStructurePrefab, placementPosition, Quaternion.identity);
+            fs.GetComponentInChildren<FactoryStructureBehavior>().factoryStructureType = type;
         }
         else
         {

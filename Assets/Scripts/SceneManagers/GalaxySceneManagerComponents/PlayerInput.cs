@@ -21,9 +21,9 @@ public class PlayerInput : MonoBehaviour
     public int currentPlacementStructureType;
     private IDictionary<UnityEngine.KeyCode, int> keyCodeToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
     {
-        { KeyCode.Alpha1, Constants.STRUCTURE_TYPE_HARVESTER },
-        { KeyCode.Alpha2, Constants.STRUCTURE_TYPE_DISTRIBUTOR },
-        { KeyCode.Alpha3, Constants.STRUCTURE_TYPE_STORAGE },
+        { KeyCode.Alpha1, Constants.FACTORY_STRUCTURE_TYPE_HARVESTER },
+        { KeyCode.Alpha2, Constants.FACTORY_STRUCTURE_TYPE_DISTRIBUTOR },
+        { KeyCode.Alpha3, Constants.FACTORY_STRUCTURE_TYPE_STORAGE },
     };
 
     public GameObject currentStructureSelected;

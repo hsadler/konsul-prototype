@@ -68,7 +68,7 @@ public class GalaxySceneManager : MonoBehaviour
 
     private void OnGUI()
     {
-        this.DisplaySceneTelemetry();
+        this.DisplaySceneInfo();
     }
 
     // INTERFACE METHODS
@@ -124,7 +124,7 @@ public class GalaxySceneManager : MonoBehaviour
     }
 
     // UI
-    private void DisplaySceneTelemetry()
+    private void DisplaySceneInfo()
     {
         if (this.uiVisible)
         {
@@ -135,7 +135,6 @@ public class GalaxySceneManager : MonoBehaviour
             {
                 selectedForPlacement = this.playerFactory.structureTypeToDisplayString[this.playerInput.currentPlacementStructureType];
             }
-            string selectedStructure = this.playerInput.currentStructureSelected == null ? "none" : this.playerInput.currentStructureSelected.name;
             // show scene telemetry
             GUI.contentColor = Color.green;
             int fps = (int)(1.0f / Time.smoothDeltaTime);
@@ -150,11 +149,27 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nPlayer Input Mode: " + playerInputMode +
                 "\nSelected for Placement: " + selectedForPlacement +
                 "\n" +
-                "\nSelected Structure: " + selectedStructure;
+                "\n" + this.GetSelectedStructureInfo();
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText
             );
+        }
+    }
+
+    private string GetSelectedStructureInfo()
+    {
+        if (this.playerInput.currentStructureSelected != null)
+        {
+            var fsbScript = this.playerInput.currentStructureSelected.GetComponent<FactoryStructureBehavior>();
+            Debug.Log("selected FS type: " + fsbScript.factoryStructureType.ToString());
+            string selectedStructureInfo = "Selected Structure: " + this.playerFactory.structureTypeToDisplayString[fsbScript.factoryStructureType] + "\n";
+            selectedStructureInfo += fsbScript.GetStringFormattedFactoryStructureInfo();
+            return selectedStructureInfo;
+        }
+        else
+        {
+            return "Selected Structure: none";
         }
     }
 
