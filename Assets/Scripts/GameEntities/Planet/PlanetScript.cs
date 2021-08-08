@@ -23,21 +23,6 @@ public class PlanetScript : MonoBehaviour
     private Vector3[] waypointPositions;
     private int currentWaypointIndex;
 
-    private int[] resourceTypes = new int[5] {
-        Constants.RESOURCE_TYPE_WATER,
-        Constants.RESOURCE_TYPE_GAS,
-        Constants.RESOURCE_TYPE_STONE,
-        Constants.RESOURCE_TYPE_METAL,
-        Constants.RESOURCE_TYPE_ORGANIC
-    };
-    private IDictionary<int, string> resourceTypeToName = new Dictionary<int, string>()
-    {
-        { Constants.RESOURCE_TYPE_WATER, "water" },
-        { Constants.RESOURCE_TYPE_GAS, "gas" },
-        { Constants.RESOURCE_TYPE_STONE, "stone" },
-        { Constants.RESOURCE_TYPE_METAL, "metal" },
-        { Constants.RESOURCE_TYPE_ORGANIC, "organic" }
-    };
     private List<int> resources = new List<int>();
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>() {
         { Constants.RESOURCE_TYPE_WATER, 0 },
@@ -155,7 +140,7 @@ public class PlanetScript : MonoBehaviour
     private void GenPlanetResourceComposition()
     {
         // populate resources list
-        foreach (int resource in this.resourceTypes)
+        foreach (int resource in GalaxySceneManager.instance.sharedData.rawResourceTypes)
         {
             int resourceSampleAmount = Random.Range(0, 11);
             for (int i = 0; i < resourceSampleAmount; i++)

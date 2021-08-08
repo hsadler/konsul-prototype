@@ -30,12 +30,17 @@ public class DistributorScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // resource reception
         if (other.gameObject.CompareTag("Resource"))
         {
             // add to the buffer
-            int resourceType = other.gameObject.GetComponent<RawResourceScript>().resourceType;
-            this.resourceBuffer.Enqueue(resourceType);
-            Object.Destroy(other.gameObject);
+            var rrScript = other.gameObject.GetComponent<RawResourceScript>();
+            if (rrScript.launcherGameObjectId != this.gameObject.GetInstanceID())
+            {
+                int resourceType = rrScript.resourceType;
+                this.resourceBuffer.Enqueue(resourceType);
+                Object.Destroy(other.gameObject);
+            }
         }
     }
 
@@ -51,10 +56,11 @@ public class DistributorScript : MonoBehaviour
             // TODO: this is assuming a raw resource, refactor in future
             GameObject rawResource = Instantiate(
                 this.rawResourcePrefab,
-                this.transform.position + launchDirection,
+                this.transform.position,
                 Quaternion.identity
             );
             var rrScript = rawResource.GetComponent<RawResourceScript>();
+            rrScript.launcherGameObjectId = this.gameObject.GetInstanceID();
             rrScript.resourceType = this.resourceBuffer.Dequeue();
             Debug.Log("sending resource from distributor: " + rrScript.resourceType);
             rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);

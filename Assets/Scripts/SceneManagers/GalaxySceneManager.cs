@@ -12,6 +12,7 @@ public class GalaxySceneManager : MonoBehaviour
 
     // manager components
     public Functions functions;
+    public SharedData sharedData;
     public PlayerInput playerInput;
     public PlayerFactory playerFactory;
 
@@ -49,6 +50,7 @@ public class GalaxySceneManager : MonoBehaviour
             Destroy(gameObject);
         }
         this.functions = new Functions();
+        this.sharedData = new SharedData();
     }
 
     void Start()

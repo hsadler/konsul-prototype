@@ -48,7 +48,7 @@ public class HarvesterScript : MonoBehaviour
                 // TODO: this is assuming a raw resource, refactor in future
                 GameObject rawResource = Instantiate(
                     this.rawResourcePrefab,
-                    this.transform.position + launchDirection,
+                    this.transform.position,
                     Quaternion.identity
                 );
                 var rrScript = rawResource.GetComponent<RawResourceScript>();
