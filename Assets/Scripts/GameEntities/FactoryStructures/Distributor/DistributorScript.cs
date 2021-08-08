@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour
+public class DistributorScript : MonoBehaviour, IFactoryStructure
 {
 
 
@@ -46,6 +46,33 @@ public class DistributorScript : MonoBehaviour
 
     // INTERFACE METHODS
 
+    public string GetStringFormattedFactoryStructureInfo()
+    {
+        GalaxySceneManager gsm = GalaxySceneManager.instance;
+        string formattedString = "resources in buffer: ";
+        if (this.resourceBuffer.Count < 1)
+        {
+            return formattedString + "none";
+        }
+        IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
+        foreach (int resourceType in this.resourceBuffer)
+        {
+            if (resourceTypeToCount.ContainsKey(resourceType))
+            {
+                resourceTypeToCount[resourceType] += 1;
+            }
+            else
+            {
+                resourceTypeToCount.Add(resourceType, 1);
+            }
+        }
+        foreach (KeyValuePair<int, int> item in resourceTypeToCount)
+        {
+            formattedString += ("\n  " + gsm.sharedData.rawResourceTypeToDisplayName[item.Key] + ": " + item.Value.ToString());
+        }
+        return formattedString;
+    }
+
     // IMPLEMENTATION METHODS
 
     private void DistributeResource()
@@ -62,7 +89,6 @@ public class DistributorScript : MonoBehaviour
             var rrScript = rawResource.GetComponent<RawResourceScript>();
             rrScript.launcherGameObjectId = this.gameObject.GetInstanceID();
             rrScript.resourceType = this.resourceBuffer.Dequeue();
-            Debug.Log("sending resource from distributor: " + rrScript.resourceType);
             rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
         }
     }

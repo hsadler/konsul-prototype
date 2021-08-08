@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageScript : MonoBehaviour
+public class StorageScript : MonoBehaviour, IFactoryStructure
 {
 
 
@@ -40,6 +40,17 @@ public class StorageScript : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public string GetStringFormattedFactoryStructureInfo()
+    {
+        GalaxySceneManager gsm = GalaxySceneManager.instance;
+        string formattedString = "resources in storage: ";
+        foreach (KeyValuePair<int, int> item in this.resourceTypeToCount)
+        {
+            formattedString += ("\n  " + gsm.sharedData.rawResourceTypeToDisplayName[item.Key] + ": " + item.Value.ToString());
+        }
+        return formattedString;
+    }
 
     // IMPLEMENTATION METHODS
 

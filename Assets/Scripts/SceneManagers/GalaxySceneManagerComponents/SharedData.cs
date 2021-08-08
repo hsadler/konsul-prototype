@@ -18,6 +18,7 @@ public class SharedData
 
     public IDictionary<int, string> rawResourceTypeToDisplayName = new Dictionary<int, string>()
     {
+        { Constants.RESOURCE_TYPE_NONE, "none" },
         { Constants.RESOURCE_TYPE_WATER, "water" },
         { Constants.RESOURCE_TYPE_GAS, "gas" },
         { Constants.RESOURCE_TYPE_STONE, "stone" },
@@ -29,8 +30,8 @@ public class SharedData
     {
         { Constants.RESOURCE_TYPE_WATER, Color.blue },
         { Constants.RESOURCE_TYPE_GAS, Color.yellow },
-        { Constants.RESOURCE_TYPE_STONE, Color.magenta },
-        { Constants.RESOURCE_TYPE_METAL, Color.gray },
+        { Constants.RESOURCE_TYPE_STONE, Color.gray },
+        { Constants.RESOURCE_TYPE_METAL, Color.magenta },
         { Constants.RESOURCE_TYPE_ORGANIC, Color.green }
     };
 

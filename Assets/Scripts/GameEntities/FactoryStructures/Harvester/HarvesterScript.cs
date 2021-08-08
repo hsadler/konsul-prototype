@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvesterScript : MonoBehaviour
+public class HarvesterScript : MonoBehaviour, IFactoryStructure
 {
 
 
@@ -11,6 +11,7 @@ public class HarvesterScript : MonoBehaviour
 
     private FactoryStructureIOBehavior io;
     private int harvestedResource = Constants.RESOURCE_TYPE_NONE;
+    private int lastHarvestedResource = Constants.RESOURCE_TYPE_NONE;
 
 
     // UNITY HOOKS
@@ -36,6 +37,11 @@ public class HarvesterScript : MonoBehaviour
 
     // INTERFACE METHODS
 
+    public string GetStringFormattedFactoryStructureInfo()
+    {
+        return "last harvested resource: " + GalaxySceneManager.instance.sharedData.rawResourceTypeToDisplayName[this.lastHarvestedResource];
+    }
+
     // IMPLEMENTATION METHODS
 
     private void CheckAndSendResource()
@@ -54,6 +60,7 @@ public class HarvesterScript : MonoBehaviour
                 var rrScript = rawResource.GetComponent<RawResourceScript>();
                 rrScript.resourceType = this.harvestedResource;
                 rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
+                this.lastHarvestedResource = this.harvestedResource;
                 this.harvestedResource = Constants.RESOURCE_TYPE_NONE;
             }
         }

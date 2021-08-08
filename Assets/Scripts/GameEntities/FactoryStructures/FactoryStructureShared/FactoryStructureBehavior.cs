@@ -18,11 +18,11 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     void Start()
     {
-        this.selectionIndicator.SetActive(false);
         GalaxySceneManager.instance.factoryStructureSelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryStructureDelesectAllEvent.AddListener(this.Deselect);
         GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
         GalaxySceneManager.instance.factoryStructureCount += 1;
+        this.Deselect();
     }
 
     void Update()
@@ -36,12 +36,6 @@ public class FactoryStructureBehavior : MonoBehaviour
     }
 
     // INTERFACE METHODS
-
-    public string GetStringFormattedFactoryStructureInfo()
-    {
-        // TODO: IMPLEMENT STUBB (perhaps call a passed delegate)
-        return "none bro";
-    }
 
     // IMPLEMENTATION METHODS
 

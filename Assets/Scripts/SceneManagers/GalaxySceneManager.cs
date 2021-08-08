@@ -161,10 +161,14 @@ public class GalaxySceneManager : MonoBehaviour
     {
         if (this.playerInput.currentStructureSelected != null)
         {
+            GameObject fsGO = this.playerInput.currentStructureSelected;
+            var fsScript = fsGO.GetComponent<IFactoryStructure>();
             var fsbScript = this.playerInput.currentStructureSelected.GetComponent<FactoryStructureBehavior>();
-            Debug.Log("selected FS type: " + fsbScript.factoryStructureType.ToString());
-            string selectedStructureInfo = "Selected Structure: " + this.playerFactory.structureTypeToDisplayString[fsbScript.factoryStructureType] + "\n";
-            selectedStructureInfo += fsbScript.GetStringFormattedFactoryStructureInfo();
+            string selectedStructureInfo =
+                "Selected Structure: " + this.playerFactory.structureTypeToDisplayString[fsbScript.factoryStructureType];
+            selectedStructureInfo +=
+                "\n--------------------\n" +
+                fsScript.GetStringFormattedFactoryStructureInfo();
             return selectedStructureInfo;
         }
         else
