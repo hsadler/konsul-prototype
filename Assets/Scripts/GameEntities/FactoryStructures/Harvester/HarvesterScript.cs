@@ -39,7 +39,9 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure
 
     public string GetStringFormattedFactoryStructureInfo()
     {
-        return "last harvested resource: " + GalaxySceneManager.instance.sharedData.rawResourceTypeToDisplayName[this.lastHarvestedResource];
+        return
+            "last harvested resource: " +
+            "\n  " + GalaxySceneManager.instance.sharedData.rawResourceTypeToDisplayName[this.lastHarvestedResource];
     }
 
     // IMPLEMENTATION METHODS

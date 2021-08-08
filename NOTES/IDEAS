@@ -93,7 +93,7 @@ Planets:
         - gas
         - stone
         - metal
-        - organic
+        - organics
 
 Worker:
     - worker can:
@@ -102,13 +102,81 @@ Worker:
         - build
     - player issues commands which are queued and carried out by workers
 
-Tech-Tree:
-    - Harvester
-    - Storage
-    - Router
-    - Sorter
-    - Processor
-    - Power
+Resource-Tree:
+    - see DOCS file
+
+Possible Factory Usables Junkpile:
+(* = definitely will have)
+    Production:
+        * Planet Harvester
+        * Resource Distributor (Router)
+        * Storage (can be sub-divided into specialized)
+        * Refinery (can be sub-divided into specialized)
+        * Assembly Station (space 3D printer, can be sub-divided into specialized)
+        * Biolab (Biotechnology Lab, cultivation of organics)
+        - Ship Yard (building ships location)
+        - Ship Station (docking, unloading)
+        - Teleporter (late-game resource transfer)
+        - Repair Station
+    Power:
+        * Mirror
+        * Photovoltaic (Solar Panel)
+        * Accumulator (Power Cell)
+        - Power Distributor
+        - Dyson Sphere
+    Other: 
+        - Beacon (for labeling sectors)
+    Single Uses:
+        * Probe (for discovery of new systems)
+        * System Expansion Ship
+        - Resource Bundler (for resource batch transit)
+        - Planet Scanner (upgrade to System Scanner)
+    Active Units:
+        * Worker
+        - Hauler (system-to-system resource transfer)
+        - Debris Collector (clearing/destruction)
+
+Possible Factory Products Junkpile:
+    - Gas:
+        - Nitrogen
+        - CO2:
+            - input to Biolab
+        - Oxygen:
+            - input to Biolab
+        - Hydrogen (Gas Giants):
+            - Propellant
+        - Helium (Gas Giants)
+    - Water:
+        - Hydrogen:
+            - Propellant
+        - Oxygen:
+            - input to Biolab
+        - Ice:
+        - Steam:
+    - Stone:
+        - Silicate:
+            - Glass:
+                - assembly -> Mirror
+            - Ceramics:
+                - assembly -> Furnace
+        - Quartz:
+            - assembly -> Computer Chip
+    - Metal:
+        - Iron:
+            - Steel:
+        - Copper
+        - Gold
+        - Silver
+        - Lead
+        - Aluminum
+        - Rare Metal
+    - Organics:
+        - Biomass
+            - burn -> Carbon:
+        - Cell Culture:
+            - cultivated -> Refined Cells:
+                - assembly -> Biocomputer
+
 
 Maybes:
     - binary star systems

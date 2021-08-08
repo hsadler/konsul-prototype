@@ -13,7 +13,7 @@ public class SharedData
         Constants.RESOURCE_TYPE_GAS,
         Constants.RESOURCE_TYPE_STONE,
         Constants.RESOURCE_TYPE_METAL,
-        Constants.RESOURCE_TYPE_ORGANIC
+        Constants.RESOURCE_TYPE_ORGANICS
     };
 
     public IDictionary<int, string> rawResourceTypeToDisplayName = new Dictionary<int, string>()
@@ -23,7 +23,7 @@ public class SharedData
         { Constants.RESOURCE_TYPE_GAS, "gas" },
         { Constants.RESOURCE_TYPE_STONE, "stone" },
         { Constants.RESOURCE_TYPE_METAL, "metal" },
-        { Constants.RESOURCE_TYPE_ORGANIC, "organic" }
+        { Constants.RESOURCE_TYPE_ORGANICS, "organics" }
     };
 
     public IDictionary<int, Color> rawResourceTypeToColor = new Dictionary<int, Color>()
@@ -32,7 +32,7 @@ public class SharedData
         { Constants.RESOURCE_TYPE_GAS, Color.yellow },
         { Constants.RESOURCE_TYPE_STONE, Color.gray },
         { Constants.RESOURCE_TYPE_METAL, Color.magenta },
-        { Constants.RESOURCE_TYPE_ORGANIC, Color.green }
+        { Constants.RESOURCE_TYPE_ORGANICS, Color.green }
     };
 
 

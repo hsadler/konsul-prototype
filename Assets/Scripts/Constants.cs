@@ -46,7 +46,7 @@ public static class Constants
     public const int RESOURCE_TYPE_GAS = 2;
     public const int RESOURCE_TYPE_STONE = 3;
     public const int RESOURCE_TYPE_METAL = 4;
-    public const int RESOURCE_TYPE_ORGANIC = 5;
+    public const int RESOURCE_TYPE_ORGANICS = 5;
 
     public const int FACTORY_STRUCTURE_TYPE_HARVESTER = 1;
     public const int FACTORY_STRUCTURE_TYPE_DISTRIBUTOR = 2;

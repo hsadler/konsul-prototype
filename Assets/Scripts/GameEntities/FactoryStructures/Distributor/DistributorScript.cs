@@ -52,7 +52,7 @@ public class DistributorScript : MonoBehaviour, IFactoryStructure
         string formattedString = "resources in buffer: ";
         if (this.resourceBuffer.Count < 1)
         {
-            return formattedString + "none";
+            return formattedString;
         }
         IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
         foreach (int resourceType in this.resourceBuffer)

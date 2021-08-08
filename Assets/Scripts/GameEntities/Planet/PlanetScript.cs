@@ -29,7 +29,7 @@ public class PlanetScript : MonoBehaviour
         { Constants.RESOURCE_TYPE_GAS, 0 },
         { Constants.RESOURCE_TYPE_STONE, 0 },
         { Constants.RESOURCE_TYPE_METAL, 0 },
-        { Constants.RESOURCE_TYPE_ORGANIC, 0 }
+        { Constants.RESOURCE_TYPE_ORGANICS, 0 }
     };
 
     // planet color
