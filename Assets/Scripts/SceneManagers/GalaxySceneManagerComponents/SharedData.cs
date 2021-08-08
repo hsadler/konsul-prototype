@@ -27,7 +27,11 @@ public class SharedData
 
     public IDictionary<int, Color> rawResourceTypeToColor = new Dictionary<int, Color>()
     {
-
+        { Constants.RESOURCE_TYPE_WATER, Color.blue },
+        { Constants.RESOURCE_TYPE_GAS, Color.yellow },
+        { Constants.RESOURCE_TYPE_STONE, Color.magenta },
+        { Constants.RESOURCE_TYPE_METAL, Color.gray },
+        { Constants.RESOURCE_TYPE_ORGANIC, Color.green }
     };
 
 

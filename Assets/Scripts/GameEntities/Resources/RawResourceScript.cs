@@ -7,6 +7,7 @@ public class RawResourceScript : MonoBehaviour
 
 
     public Rigidbody2D rb;
+    public SpriteRenderer sr;
 
     public int resourceType = Constants.RESOURCE_TYPE_NONE;
     public int launcherGameObjectId;
@@ -20,7 +21,8 @@ public class RawResourceScript : MonoBehaviour
 
     void Start()
     {
-        this.rb = this.gameObject.GetComponent<Rigidbody2D>();
+        // set capsule color based on resource type
+        this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.resourceType];
     }
 
     void Update()

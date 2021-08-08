@@ -6,7 +6,7 @@ TODO
 Next:
     X rename "rock" to "stone"
     X implement Router
-    - color RawResources based on raw resource type
+    X color RawResources based on raw resource type
     - information about factory structure upon selection
     - POC Worker
     - draft resource tree
