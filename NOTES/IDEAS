@@ -7,6 +7,7 @@ Guiding light problems for player to solve:
     - growing factory: resource gathering, production
     - organization: routing, sorting, distribution
     - power management: ensuring supply is greater than demand
+    - expansion: traveling to additional systems, setting up bases and supply lines
     - progression: unlocking next tier of items, abilities, etc.
 
 
@@ -31,7 +32,7 @@ Player controls POC:
             - change mode to "init" by pressing "Q"
 
 
-Game progression:
+Early game progression:
     - game start:
         - one worker 
         - one storage containing a harvester
@@ -44,6 +45,18 @@ Game progression:
             - additional harvesters
             - additional storage
             - other factory structures
+
+
+Long arc game progression:
+    early-game: 
+        - harvesting initial p-system
+        - work way through the resource tree to the System Expansion Ship
+        - expand to 2nd p-system
+    mid-game:
+        - multiple expansions and factory builds
+        - connection of p-system factories with Haulers?
+    late-game:
+        - accomplish the end-game-thing (TBD)
 
 
 Factory UX and rules things to think about:
@@ -119,8 +132,9 @@ Possible Factory Usables Junkpile:
         - Teleporter (late-game resource transfer)
         - Repair Station
     Power:
-        * Mirror
+        * Biomass Boiler 
         * Photovoltaic (Solar Panel)
+        * Mirror
         * Accumulator (Power Cell)
         - Power Distributor
         - Dyson Sphere
@@ -139,6 +153,7 @@ Possible Factory Usables Junkpile:
 Possible Factory Products Junkpile:
     - Gas:
         - Nitrogen
+            - input to Biolab
         - CO2:
             - input to Biolab
         - Oxygen:
@@ -154,28 +169,43 @@ Possible Factory Products Junkpile:
         - Ice:
         - Steam:
     - Stone:
-        - Silicate:
-            - Glass:
-                - assembly -> Mirror
-            - Ceramics:
-                - assembly -> Furnace
-        - Quartz:
-            - assembly -> Computer Chip
+        refined ->
+            Silicate
+                assembly ->
+                    Glass:
+                        assembly -> Mirror
+                    Ceramics:
+                        assembly -> Furnace
+                refined ->
+                    Silicon
+                        assembly -> CPU
+            Quartz:
+                assembly -> Computer Chip
     - Metal:
-        - Iron:
-            - Steel:
-        - Copper
-        - Gold
-        - Silver
-        - Lead
-        - Aluminum
-        - Rare Metal
+        refined ->
+            Iron
+                refined ->
+                    Steel
+            Copper
+            Gold
+            Silver
+            Lead
+                assembly -> 
+                    Radiation Shielding
+            Aluminum
+                assembly ->
+                    Electronics
+            Rare Metal
     - Organics:
-        - Biomass
-            - burn -> Carbon:
-        - Cell Culture:
-            - cultivated -> Refined Cells:
-                - assembly -> Biocomputer
+        refined -> 
+            Biomass
+                burn -> 
+                    Carbon
+            Cell Culture
+                cultivated -> 
+                    Refined Cells
+                        assembly -> 
+                            Biocomputer
 
 
 Maybes:

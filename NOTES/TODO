@@ -8,8 +8,9 @@ Next:
     X implement Router
     X color RawResources based on raw resource type
     X information about factory structure upon selection and toggle
-    - draft resource tree
+    X draft resource tree v1
     - POC Worker
+    - POC early game progression
     - POC power gathering from stars:
         - Photovoltaic
         - Mirror
