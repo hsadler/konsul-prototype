@@ -146,6 +146,7 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nFactory Structures: " + this.factoryStructureCount.ToString() +
                 "\nItems in Transit: " + this.itemsInTransit.ToString() +
                 "\n" +
+                "\nIs Admin Mode: " + this.playerInput.isAdminMode.ToString() +
                 "\nPlayer Input Mode: " + playerInputMode +
                 "\nSelected for Placement: " + selectedForPlacement +
                 "\n" +

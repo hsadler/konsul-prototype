@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour, IFactoryStructure
+public class DistributorScript : MonoBehaviour, IFactoryStructure, IFactoryDistributor
 {
 
 

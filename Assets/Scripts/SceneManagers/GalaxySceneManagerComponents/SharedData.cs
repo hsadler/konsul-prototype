@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SharedData
@@ -34,6 +35,25 @@ public class SharedData
         { Constants.RESOURCE_TYPE_METAL, Color.magenta },
         { Constants.RESOURCE_TYPE_ORGANICS, Color.green }
     };
+
+
+    // TODO: 
+    // add factory structures
+    // add factory units
+
+
+    // ALL RESOURCES
+
+    public List<int> allResourceTypes;
+
+
+    public SharedData()
+    {
+        // aggregate all resource types to a single list
+        IEnumerable<int> bucket = new List<int>();
+        bucket = bucket.Concat(this.rawResourceTypes);
+        this.allResourceTypes = new List<int>(bucket);
+    }
 
 
 }

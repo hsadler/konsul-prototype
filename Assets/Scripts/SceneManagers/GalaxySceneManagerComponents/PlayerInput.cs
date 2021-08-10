@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     private float cameraSize;
 
     public int inputMode;
+    public bool isAdminMode;
     public IDictionary<int, string> inputModeToDisplayString = new Dictionary<int, string>()
     {
         { Constants.PLAYER_INPUT_MODE_INIT, "init" },
@@ -35,6 +36,7 @@ public class PlayerInput : MonoBehaviour
     void Awake()
     {
         this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+        this.isAdminMode = false;
         this.InitCurrentPlacementStrutureType();
     }
 
@@ -48,12 +50,17 @@ public class PlayerInput : MonoBehaviour
         // factory building
         if (Input.anyKeyDown)
         {
+            this.HandleAdminModeToggle();
             this.HandlePlacementMode();
+            this.HandleRemoval();
             this.HandleStructureIOMode();
             this.HandleCycleIOSelection();
-            this.HandleRemoval();
             this.HandleModeRevert();
             this.HandleGameQuit();
+            if (this.isAdminMode)
+            {
+                this.HandleAdminPopulateSelectedStorage();
+            }
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -67,6 +74,15 @@ public class PlayerInput : MonoBehaviour
     }
 
     // IMPLEMENTATION METHODS
+
+    // admin mode
+    private void HandleAdminModeToggle()
+    {
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_MODE_TOGGLE))
+        {
+            this.isAdminMode = !this.isAdminMode;
+        }
+    }
 
     // factory building controls
 
@@ -102,7 +118,14 @@ public class PlayerInput : MonoBehaviour
             {
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-                GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentPlacementStructureType, placementPosition);
+                if (this.isAdminMode)
+                {
+                    GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentPlacementStructureType, placementPosition);
+                }
+                else
+                {
+                    // TODO: do worker scheduling
+                }
             }
         }
     }
@@ -148,7 +171,14 @@ public class PlayerInput : MonoBehaviour
             // structure-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
             {
-                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
+                if (this.isAdminMode)
+                {
+                    GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
+                }
+                else
+                {
+                    // TODO: do worker scheduling
+                }
             }
             // structure-io-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
@@ -209,6 +239,18 @@ public class PlayerInput : MonoBehaviour
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
                 this.DeselectAllStructuresIO();
+            }
+        }
+    }
+
+    private void HandleAdminPopulateSelectedStorage()
+    {
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT && Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_POPULATE_STORAGE))
+        {
+            var storageScript = this.currentStructureSelected.GetComponent<IFactoryStorage>();
+            if (storageScript != null)
+            {
+                storageScript.AdminPopulateStorage();
             }
         }
     }

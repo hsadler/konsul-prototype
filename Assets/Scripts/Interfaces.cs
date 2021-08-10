@@ -6,3 +6,16 @@ public interface IFactoryStructure
 {
     string GetStringFormattedFactoryStructureInfo();
 }
+
+public interface IFactoryHarvester
+{
+}
+
+public interface IFactoryDistributor
+{
+}
+
+public interface IFactoryStorage
+{
+    void AdminPopulateStorage();
+}

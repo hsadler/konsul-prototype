@@ -4,13 +4,20 @@ TODO
 
 
 Next:
-    X rename "rock" to "stone"
-    X implement Router
-    X color RawResources based on raw resource type
-    X information about factory structure upon selection and toggle
-    X draft resource tree v1
-    - POC Worker
-    - POC early game progression
+    - create admin mode:
+        - admin should be able to:
+            - instantly create structures and units
+            - instantly destroy structures and units
+            - populate storages with resources
+    - POC Worker:
+        - worker can:
+            - fetch
+            - place or build
+        - player issues commands which are queued and carried out by workers 
+    - POC early game progression:
+        - figure out initial setting
+        - player gets basic factory working
+        - player begins expanding production
     - POC power gathering from stars:
         - Photovoltaic
         - Mirror
@@ -28,14 +35,6 @@ For consideration/prioritization:
 
 - Bugs:
     - 
-
-
-- Resources, items, structures:
-    - TODO
-
-
-- Tech Tree:
-    - TODO
 
 
 - CLI:

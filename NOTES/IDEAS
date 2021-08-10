@@ -110,9 +110,8 @@ Planets:
 
 Worker:
     - worker can:
-        - carry
-        - place
-        - build
+        - fetch
+        - place or build
     - player issues commands which are queued and carried out by workers
 
 Resource-Tree:

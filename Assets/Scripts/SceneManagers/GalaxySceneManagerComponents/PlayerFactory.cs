@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerFactory : MonoBehaviour
 {
 
+    // structures
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
     public GameObject mirrorPrefab;
     public GameObject photovotaicPrefab;
     public GameObject accumulatorPrefab;
+
+    // units
+    public GameObject workerPrefab;
+
+    private Queue<WorkerTask> workerTaskQueue = new Queue<WorkerTask>();
 
 
     public IDictionary<int, string> structureTypeToDisplayString = new Dictionary<int, string>()

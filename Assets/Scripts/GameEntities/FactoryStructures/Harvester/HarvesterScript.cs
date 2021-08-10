@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvesterScript : MonoBehaviour, IFactoryStructure
+public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvester
 {
 
 

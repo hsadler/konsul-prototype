@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageScript : MonoBehaviour, IFactoryStructure
+public class StorageScript : MonoBehaviour, IFactoryStructure, IFactoryStorage
 {
 
 
@@ -27,14 +27,7 @@ public class StorageScript : MonoBehaviour, IFactoryStructure
         if (other.gameObject.CompareTag("Resource"))
         {
             int resourceType = other.gameObject.GetComponent<RawResourceScript>().resourceType;
-            if (this.resourceTypeToCount.ContainsKey(resourceType))
-            {
-                this.resourceTypeToCount[resourceType] += 1;
-            }
-            else
-            {
-                this.resourceTypeToCount.Add(resourceType, 1);
-            }
+            this.StoreResource(resourceType);
             Object.Destroy(other.gameObject);
         }
     }
@@ -52,7 +45,27 @@ public class StorageScript : MonoBehaviour, IFactoryStructure
         return formattedString;
     }
 
+    public void AdminPopulateStorage()
+    {
+        foreach (int resourceType in GalaxySceneManager.instance.sharedData.allResourceTypes)
+        {
+            this.StoreResource(resourceType, 1000);
+        }
+    }
+
     // IMPLEMENTATION METHODS
+
+    private void StoreResource(int resourceType, int amount = 1)
+    {
+        if (this.resourceTypeToCount.ContainsKey(resourceType))
+        {
+            this.resourceTypeToCount[resourceType] += amount;
+        }
+        else
+        {
+            this.resourceTypeToCount.Add(resourceType, amount);
+        }
+    }
 
 
 }
