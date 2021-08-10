@@ -133,7 +133,7 @@ public class GalaxySceneManager : MonoBehaviour
             string selectedForPlacement = "none";
             if (this.playerInput.currentPlacementStructureType != 0)
             {
-                selectedForPlacement = this.playerFactory.structureTypeToDisplayString[this.playerInput.currentPlacementStructureType];
+                selectedForPlacement = this.sharedData.factoryEntityTypeToDisplayString[this.playerInput.currentPlacementStructureType];
             }
             // show scene telemetry
             GUI.contentColor = Color.green;
@@ -166,7 +166,7 @@ public class GalaxySceneManager : MonoBehaviour
             var fsScript = fsGO.GetComponent<IFactoryStructure>();
             var fsbScript = this.playerInput.currentStructureSelected.GetComponent<FactoryStructureBehavior>();
             string selectedStructureInfo =
-                "Selected Structure: " + this.playerFactory.structureTypeToDisplayString[fsbScript.factoryStructureType];
+                "Selected Structure: " + this.sharedData.factoryEntityTypeToDisplayString[fsbScript.factoryStructureType];
             selectedStructureInfo +=
                 "\n--------------------\n" +
                 fsScript.GetStringFormattedFactoryStructureInfo();

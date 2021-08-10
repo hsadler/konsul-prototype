@@ -9,7 +9,7 @@ public class RawResourceScript : MonoBehaviour
     public Rigidbody2D rb;
     public SpriteRenderer sr;
 
-    public int resourceType = Constants.RESOURCE_TYPE_NONE;
+    public int resourceType = Constants.ENTITY_TYPE_NONE;
     public int launcherGameObjectId;
 
     private float launchForce = 0.0f;

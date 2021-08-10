@@ -68,7 +68,7 @@ public class DistributorScript : MonoBehaviour, IFactoryStructure, IFactoryDistr
         }
         foreach (KeyValuePair<int, int> item in resourceTypeToCount)
         {
-            formattedString += ("\n  " + gsm.sharedData.rawResourceTypeToDisplayName[item.Key] + ": " + item.Value.ToString());
+            formattedString += ("\n  " + gsm.sharedData.factoryEntityTypeToDisplayString[item.Key] + ": " + item.Value.ToString());
         }
         return formattedString;
     }

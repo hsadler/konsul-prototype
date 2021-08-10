@@ -10,8 +10,8 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
     public float rawResourceLaunchImpulse = 3f;
 
     private FactoryStructureIOBehavior io;
-    private int harvestedResource = Constants.RESOURCE_TYPE_NONE;
-    private int lastHarvestedResource = Constants.RESOURCE_TYPE_NONE;
+    private int harvestedResource = Constants.ENTITY_TYPE_NONE;
+    private int lastHarvestedResource = Constants.ENTITY_TYPE_NONE;
 
 
     // UNITY HOOKS
@@ -28,7 +28,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (this.harvestedResource == Constants.RESOURCE_TYPE_NONE && other.gameObject.CompareTag("Planet"))
+        if (this.harvestedResource == Constants.ENTITY_TYPE_NONE && other.gameObject.CompareTag("Planet"))
         {
             PlanetScript pScript = other.gameObject.GetComponentInParent<PlanetScript>();
             this.harvestedResource = pScript.ExtractResource();
@@ -41,14 +41,14 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
     {
         return
             "last harvested resource: " +
-            "\n  " + GalaxySceneManager.instance.sharedData.rawResourceTypeToDisplayName[this.lastHarvestedResource];
+            "\n  " + GalaxySceneManager.instance.sharedData.factoryEntityTypeToDisplayString[this.lastHarvestedResource];
     }
 
     // IMPLEMENTATION METHODS
 
     private void CheckAndSendResource()
     {
-        if (this.harvestedResource != Constants.RESOURCE_TYPE_NONE)
+        if (this.harvestedResource != Constants.ENTITY_TYPE_NONE)
         {
             if (this.io.ResourceIOsExist())
             {
@@ -63,7 +63,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
                 rrScript.resourceType = this.harvestedResource;
                 rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
                 this.lastHarvestedResource = this.harvestedResource;
-                this.harvestedResource = Constants.RESOURCE_TYPE_NONE;
+                this.harvestedResource = Constants.ENTITY_TYPE_NONE;
             }
         }
     }

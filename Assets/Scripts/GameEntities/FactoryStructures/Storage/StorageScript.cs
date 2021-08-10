@@ -40,14 +40,14 @@ public class StorageScript : MonoBehaviour, IFactoryStructure, IFactoryStorage
         string formattedString = "resources in storage: ";
         foreach (KeyValuePair<int, int> item in this.resourceTypeToCount)
         {
-            formattedString += ("\n  " + gsm.sharedData.rawResourceTypeToDisplayName[item.Key] + ": " + item.Value.ToString());
+            formattedString += ("\n  " + gsm.sharedData.factoryEntityTypeToDisplayString[item.Key] + ": " + item.Value.ToString());
         }
         return formattedString;
     }
 
     public void AdminPopulateStorage()
     {
-        foreach (int resourceType in GalaxySceneManager.instance.sharedData.allResourceTypes)
+        foreach (int resourceType in GalaxySceneManager.instance.sharedData.allFactoryEntityTypes)
         {
             this.StoreResource(resourceType, 1000);
         }

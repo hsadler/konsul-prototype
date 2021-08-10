@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerFactory : MonoBehaviour
 {
 
+
     // structures
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
@@ -12,24 +13,15 @@ public class PlayerFactory : MonoBehaviour
     public GameObject mirrorPrefab;
     public GameObject photovotaicPrefab;
     public GameObject accumulatorPrefab;
+    private IDictionary<int, GameObject> structureTypeToPrefab;
 
     // units
     public GameObject workerPrefab;
+    public GameObject probePrefab;
+    public GameObject systemExpansionShipPrefab;
 
+    // worker task queue
     private Queue<WorkerTask> workerTaskQueue = new Queue<WorkerTask>();
-
-
-    public IDictionary<int, string> structureTypeToDisplayString = new Dictionary<int, string>()
-    {
-        { Constants.FACTORY_STRUCTURE_TYPE_HARVESTER, "harvester" },
-        { Constants.FACTORY_STRUCTURE_TYPE_DISTRIBUTOR, "distributor" },
-        { Constants.FACTORY_STRUCTURE_TYPE_STORAGE, "storage" },
-        { Constants.FACTORY_STRUCTURE_TYPE_MIRROR, "mirror" },
-        { Constants.FACTORY_STRUCTURE_TYPE_PHOTOVOLTAIC, "photovoltaic" },
-        { Constants.FACTORY_STRUCTURE_TYPE_ACCUMULATOR, "accumulator" },
-    };
-
-    private IDictionary<int, GameObject> structureTypeToPrefab;
 
 
     // UNITY HOOKS
