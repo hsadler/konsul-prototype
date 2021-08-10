@@ -7,8 +7,6 @@ public class SharedData
 {
 
 
-    // RESOURCES
-
     // raw resources
     public List<int> rawResourceTypes = new List<int>()
     {
@@ -51,9 +49,7 @@ public class SharedData
         Constants.FACTORY_UNIT_TYPE_SYSTEM_EXPANSION_SHIP,
     };
 
-
-    // ALL FACOTRY ENTITIES
-
+    // all factory entities
     public List<int> allFactoryEntityTypes;
     public IDictionary<int, string> factoryEntityTypeToDisplayString = new Dictionary<int, string>()
     {

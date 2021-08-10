@@ -32,6 +32,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
         {
             PlanetScript pScript = other.gameObject.GetComponentInParent<PlanetScript>();
             this.harvestedResource = pScript.ExtractResource();
+            this.lastHarvestedResource = this.harvestedResource;
         }
     }
 
@@ -62,7 +63,6 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
                 var rrScript = rawResource.GetComponent<RawResourceScript>();
                 rrScript.resourceType = this.harvestedResource;
                 rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
-                this.lastHarvestedResource = this.harvestedResource;
                 this.harvestedResource = Constants.ENTITY_TYPE_NONE;
             }
         }
