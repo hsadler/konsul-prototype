@@ -5,11 +5,11 @@ using UnityEngine;
 public class WorkerTaskQueue : MonoBehaviour
 {
 
-    // TODO: implement
-
 
     private List<GameObject> workers = new List<GameObject>();
-    private Queue<WorkerTask> taskQueue = new Queue<WorkerTask>();
+    private IDictionary<int, GameObject> availableWorkers = new Dictionary<int, GameObject>();
+
+    private LinkedList<WorkerTask> tasks = new LinkedList<WorkerTask>();
 
 
     // UNITY HOOKS
@@ -21,18 +21,78 @@ public class WorkerTaskQueue : MonoBehaviour
 
     void Update()
     {
-
+        this.AssignTasksToWorkers();
     }
 
     // INTERFACE METHODS
 
+    // worker management
+    public void AddNewWorker(GameObject worker)
+    {
+        this.workers.Add(worker);
+        this.SetWorkerAsAvailable(worker);
+    }
+    public void RemoveWorker(GameObject worker)
+    {
+        int workerId = worker.GetInstanceID();
+        if (this.availableWorkers.ContainsKey(workerId))
+        {
+            this.availableWorkers.Remove(worker.GetInstanceID());
+        }
+        for (int i = 0; i < this.workers.Count; i++)
+        {
+            GameObject w = this.workers[i];
+            if (w.GetInstanceID() == workerId)
+            {
+                this.workers.RemoveAt(i);
+            }
+        }
+    }
+    public void SetWorkerAsBusy(GameObject worker)
+    {
+        int workerId = worker.GetInstanceID();
+        if (this.availableWorkers.ContainsKey(workerId))
+        {
+            this.availableWorkers.Remove(worker.GetInstanceID());
+        }
+        else
+        {
+            Debug.LogWarning("unable to set worker as busy since already unavailable by id: " + workerId.ToString());
+        }
+    }
+    public void SetWorkerAsAvailable(GameObject worker)
+    {
+        int workerId = worker.GetInstanceID();
+        if (this.availableWorkers.ContainsKey(workerId))
+        {
+            Debug.LogWarning("unable to set already available worker by id: " + workerId.ToString());
+        }
+        else
+        {
+            this.availableWorkers.Add(worker.GetInstanceID(), worker);
+        }
+    }
+
+    // worker task management
     public void AddWorkerTask(WorkerTask task)
     {
-        // STUB
-        Debug.Log("adding worker task of task-id: " + task.taskId);
+        this.tasks.AddLast(task);
+    }
+    public void AddPriorityWorkerTask(WorkerTask task)
+    {
+        this.tasks.AddFirst(task);
+    }
+    public void CancelWorkerTask(WorkerTask task)
+    {
+        this.tasks.Remove(task);
     }
 
     // IMPLEMENTATION METHODS
+
+    private void AssignTasksToWorkers()
+    {
+        // TODO: implement STUB
+    }
 
 
 }

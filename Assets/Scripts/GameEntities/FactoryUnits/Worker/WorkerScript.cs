@@ -39,14 +39,14 @@ public class WorkerScript : MonoBehaviour
 
     private void FetchAndBuildFactoryStructure(int structureType, Vector3 position)
     {
-        // STUB
+        // TODO: implement STUB
         Debug.Log("Worker is carrying out order to fetch structure type: " + structureType.ToString() +
             " and build at position: " + position.ToString());
     }
 
     private void RemoveAndStoreFactoryStructure(Vector3 position)
     {
-        // STUB
+        // TODO: implement STUB
         Debug.Log("Worker is carrying out order to remove structure at position: " + position.ToString());
     }
 
