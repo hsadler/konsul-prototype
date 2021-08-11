@@ -27,36 +27,32 @@ public class PlayerFactory : MonoBehaviour
     {
         this.entityTypeToPrefab = new Dictionary<int, GameObject>()
         {
+            // structures
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER, this.harvesterPrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR, this.distributorPrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE, this.storagePrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_MIRROR, this.mirrorPrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_PHOTOVOLTAIC, this.photovotaicPrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_ACCUMULATOR, this.accumulatorPrefab },
+            // units
+            { Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, this.workerPrefab },
         };
     }
 
     // INTERFACE METHODS
 
-    public void PlaceFactoryStructure(int factoryEntityType, Vector3 placementPosition)
+    public void PlaceFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
         if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
         {
-            // place factory structure prefab at mouse location
-            GameObject factoryStructurePrefab = this.entityTypeToPrefab[factoryEntityType];
-            GameObject fs = Instantiate(factoryStructurePrefab, placementPosition, Quaternion.identity);
+            GameObject factoryEntityPrefab = this.entityTypeToPrefab[factoryEntityType];
+            Instantiate(factoryEntityPrefab, placementPosition, Quaternion.identity);
         }
         else
         {
-            Debug.LogWarning("Factory Structure type not found: " + factoryEntityType.ToString());
+            Debug.LogWarning("Factory Entity type not found: " + factoryEntityType.ToString());
         }
     }
-
-    public void PlaceFactoryUnit(int factoryEntityType, Vector3 placementPosition)
-    {
-        // TODO: implement STUB
-    }
-
 
 
 }

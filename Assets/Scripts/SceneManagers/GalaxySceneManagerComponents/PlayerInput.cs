@@ -60,6 +60,7 @@ public class PlayerInput : MonoBehaviour
             if (this.isAdminMode)
             {
                 this.HandleAdminPopulateSelectedStorage();
+                this.HandleAdminSpawnWorker();
             }
         }
         if (Input.GetMouseButtonDown(0))
@@ -120,7 +121,7 @@ public class PlayerInput : MonoBehaviour
                 Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
                 if (this.isAdminMode)
                 {
-                    GalaxySceneManager.instance.playerFactory.PlaceFactoryStructure(this.currentPlacementStructureType, placementPosition);
+                    GalaxySceneManager.instance.playerFactory.PlaceFactoryEntity(this.currentPlacementStructureType, placementPosition);
                 }
                 else
                 {
@@ -260,6 +261,16 @@ public class PlayerInput : MonoBehaviour
             {
                 storageScript.AdminPopulateStorage();
             }
+        }
+    }
+
+    private void HandleAdminSpawnWorker()
+    {
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_CREATE_WORKER))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
+            GalaxySceneManager.instance.playerFactory.PlaceFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
         }
     }
 

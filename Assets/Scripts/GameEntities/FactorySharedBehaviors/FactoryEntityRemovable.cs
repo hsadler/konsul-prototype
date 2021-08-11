@@ -26,6 +26,7 @@ public class FactoryEntityRemovable : MonoBehaviour
 
     private void RemoveSelf(GameObject removedGO)
     {
+        Debug.Log("attemting to remove gameobject: " + removedGO.name);
         if (removedGO == this.gameObject)
         {
             Object.Destroy(this.rootGO);

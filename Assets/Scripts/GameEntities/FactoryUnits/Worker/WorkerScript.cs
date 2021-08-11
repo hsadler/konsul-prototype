@@ -15,10 +15,16 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity
 
     void Start()
     {
+        GalaxySceneManager.instance.workerTaskQueue.AddNewWorker(this.gameObject);
     }
 
     void Update()
     {
+    }
+
+    void OnDestroy()
+    {
+        GalaxySceneManager.instance.workerTaskQueue.RemoveWorker(this.gameObject);
     }
 
 
@@ -31,6 +37,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity
 
     public void DoTask(WorkerTask task)
     {
+        GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsBusy(this.gameObject);
         this.currentTask = task;
         if (task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
         {

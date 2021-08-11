@@ -94,6 +94,7 @@ public class WorkerTaskQueue : MonoBehaviour
         if (this.tasks.Count > 0 && this.workerIdToAvailableWorker.Values.Count > 0)
         {
             // try to match a worker for each task
+            var tasksToRemove = new List<WorkerTask>();
             foreach (WorkerTask task in this.tasks)
             {
                 if (this.workerIdToAvailableWorker.Values.Count > 0)
@@ -114,7 +115,7 @@ public class WorkerTaskQueue : MonoBehaviour
                     if (matchedWorker != null)
                     {
                         matchedWorker.GetComponent<WorkerScript>().DoTask(task);
-                        this.tasks.Remove(task);
+                        tasksToRemove.Add(task);
                     }
                 }
                 // no more available workers
@@ -122,6 +123,10 @@ public class WorkerTaskQueue : MonoBehaviour
                 {
                     return;
                 }
+            }
+            foreach (WorkerTask task in tasksToRemove)
+            {
+                this.tasks.Remove(task);
             }
         }
     }
