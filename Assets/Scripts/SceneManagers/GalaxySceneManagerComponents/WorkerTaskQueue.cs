@@ -7,7 +7,7 @@ public class WorkerTaskQueue : MonoBehaviour
 
 
     private List<GameObject> workers = new List<GameObject>();
-    private IDictionary<int, GameObject> availableWorkers = new Dictionary<int, GameObject>();
+    private IDictionary<int, GameObject> workerIdToAvailableWorker = new Dictionary<int, GameObject>();
 
     private LinkedList<WorkerTask> tasks = new LinkedList<WorkerTask>();
 
@@ -35,9 +35,9 @@ public class WorkerTaskQueue : MonoBehaviour
     public void RemoveWorker(GameObject worker)
     {
         int workerId = worker.GetInstanceID();
-        if (this.availableWorkers.ContainsKey(workerId))
+        if (this.workerIdToAvailableWorker.ContainsKey(workerId))
         {
-            this.availableWorkers.Remove(worker.GetInstanceID());
+            this.workerIdToAvailableWorker.Remove(worker.GetInstanceID());
         }
         for (int i = 0; i < this.workers.Count; i++)
         {
@@ -51,9 +51,9 @@ public class WorkerTaskQueue : MonoBehaviour
     public void SetWorkerAsBusy(GameObject worker)
     {
         int workerId = worker.GetInstanceID();
-        if (this.availableWorkers.ContainsKey(workerId))
+        if (this.workerIdToAvailableWorker.ContainsKey(workerId))
         {
-            this.availableWorkers.Remove(worker.GetInstanceID());
+            this.workerIdToAvailableWorker.Remove(worker.GetInstanceID());
         }
         else
         {
@@ -63,13 +63,13 @@ public class WorkerTaskQueue : MonoBehaviour
     public void SetWorkerAsAvailable(GameObject worker)
     {
         int workerId = worker.GetInstanceID();
-        if (this.availableWorkers.ContainsKey(workerId))
+        if (this.workerIdToAvailableWorker.ContainsKey(workerId))
         {
             Debug.LogWarning("unable to set already available worker by id: " + workerId.ToString());
         }
         else
         {
-            this.availableWorkers.Add(worker.GetInstanceID(), worker);
+            this.workerIdToAvailableWorker.Add(worker.GetInstanceID(), worker);
         }
     }
 
@@ -91,7 +91,39 @@ public class WorkerTaskQueue : MonoBehaviour
 
     private void AssignTasksToWorkers()
     {
-        // TODO: implement STUB
+        if (this.tasks.Count > 0 && this.workerIdToAvailableWorker.Values.Count > 0)
+        {
+            // try to match a worker for each task
+            foreach (WorkerTask task in this.tasks)
+            {
+                if (this.workerIdToAvailableWorker.Values.Count > 0)
+                {
+                    // match a worker by shortest distance to task
+                    float shortestDistance = Mathf.Infinity;
+                    GameObject matchedWorker = null;
+                    foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
+                    {
+                        float distance = Vector3.Distance(worker.transform.position, task.position);
+                        if (distance < shortestDistance)
+                        {
+                            shortestDistance = distance;
+                            matchedWorker = worker;
+                        }
+                    }
+                    // assign task to worker and remove from the queue
+                    if (matchedWorker != null)
+                    {
+                        matchedWorker.GetComponent<WorkerScript>().DoTask(task);
+                        this.tasks.Remove(task);
+                    }
+                }
+                // no more available workers
+                else
+                {
+                    return;
+                }
+            }
+        }
     }
 
 
