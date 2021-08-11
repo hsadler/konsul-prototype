@@ -14,7 +14,7 @@ public class PlayerInput : MonoBehaviour
     {
         { Constants.PLAYER_INPUT_MODE_INIT, "init" },
         { Constants.PLAYER_INPUT_MODE_PLACEMENT, "structure placement" },
-        { Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT, "structure select" },
+        { Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT, "entity select" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "transit create" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT, "transit select" },
     };
@@ -22,12 +22,12 @@ public class PlayerInput : MonoBehaviour
     public int currentPlacementStructureType;
     private IDictionary<UnityEngine.KeyCode, int> keyCodeToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
     {
-        { KeyCode.Alpha1, Constants.FACTORY_STRUCTURE_TYPE_HARVESTER },
-        { KeyCode.Alpha2, Constants.FACTORY_STRUCTURE_TYPE_DISTRIBUTOR },
-        { KeyCode.Alpha3, Constants.FACTORY_STRUCTURE_TYPE_STORAGE },
+        { KeyCode.Alpha1, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER },
+        { KeyCode.Alpha2, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR },
+        { KeyCode.Alpha3, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE },
     };
 
-    public GameObject currentStructureSelected;
+    public GameObject currentEntitySelected;
     public GameObject currentStructureIOSelected;
 
 
@@ -37,7 +37,7 @@ public class PlayerInput : MonoBehaviour
     {
         this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
         this.isAdminMode = false;
-        this.InitCurrentPlacementStrutureType();
+        this.InitCurrentPlacementStructureType();
     }
 
     void Start()
@@ -51,7 +51,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.anyKeyDown)
         {
             this.HandleAdminModeToggle();
-            this.HandlePlacementMode();
+            this.HandleEntityPlacementMode();
             this.HandleRemoval();
             this.HandleStructureIOMode();
             this.HandleCycleIOSelection();
@@ -64,8 +64,8 @@ public class PlayerInput : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            this.HandleStructureSelection();
-            this.HandlePlacementOrSelection();
+            this.HandleEntitySelection();
+            this.HandleEntityPlacementOrSelection();
             this.HandleStructureIO();
         }
         // camera
@@ -86,7 +86,7 @@ public class PlayerInput : MonoBehaviour
 
     // factory building controls
 
-    private void HandlePlacementMode()
+    private void HandleEntityPlacementMode()
     {
         // any of the number keys containing a factory structure are pressed
         foreach (var numkey in this.keyCodeToFactoryStructureType.Keys)
@@ -95,24 +95,24 @@ public class PlayerInput : MonoBehaviour
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_PLACEMENT;
                 this.currentPlacementStructureType = this.keyCodeToFactoryStructureType[numkey];
-                this.DeselectAllStructures();
+                this.DeselectAllFactoryEntities();
                 this.DeselectAllStructuresIO();
             }
         }
     }
 
-    private void HandlePlacementOrSelection()
+    private void HandleEntityPlacementOrSelection()
     {
         // placement mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
         {
-            GameObject clickedFactoryStructure = this.GetClickedFactoryStructure();
-            if (clickedFactoryStructure != null)
+            GameObject clickedFactoryEntity = this.GetClickedFactoryEntity();
+            if (clickedFactoryEntity != null)
             {
                 // select instead of create
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
-                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(clickedFactoryStructure);
-                this.currentStructureSelected = clickedFactoryStructure;
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(clickedFactoryEntity);
+                this.currentEntitySelected = clickedFactoryEntity;
             }
             else
             {
@@ -131,36 +131,36 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void HandleStructureSelection()
+    private void HandleEntitySelection()
     {
-        // init mode or structure-select or structure-io-select mode and left click
+        // init mode or entity-select or structure-io-select mode and left click
         if (
             this.inputMode == Constants.PLAYER_INPUT_MODE_INIT ||
-            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT ||
+            this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT ||
             this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT
         )
         {
             this.DeselectAllStructuresIO();
-            GameObject clickedFactoryStructure = this.GetClickedFactoryStructure();
-            if (clickedFactoryStructure != null)
+            GameObject clickedFactoryEntity = this.GetClickedFactoryEntity();
+            if (clickedFactoryEntity != null)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
-                GalaxySceneManager.instance.factoryStructureSelectedEvent.Invoke(clickedFactoryStructure);
-                this.currentStructureSelected = clickedFactoryStructure;
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(clickedFactoryEntity);
+                this.currentEntitySelected = clickedFactoryEntity;
             }
         }
     }
 
     private void HandleCycleIOSelection()
     {
-        // structure-select mode or structure-io-select and key press
+        // entity-select mode or structure-io-select and key press
         if (
-            (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
+            (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
             Input.GetKeyDown(Constants.PLAYER_INPUT_CYCLE_IO_SELECT)
         )
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
-            this.currentStructureIOSelected = this.currentStructureSelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
+            this.currentStructureIOSelected = this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
         }
     }
 
@@ -169,33 +169,36 @@ public class PlayerInput : MonoBehaviour
         //  removal key press
         if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_KEY))
         {
-            // structure-select mode
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+            // entity-select mode
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
             {
-                if (this.isAdminMode)
+                if (this.currentEntitySelected.GetComponent<FactoryStructureBehavior>() != null)
                 {
-                    GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentStructureSelected);
-                }
-                else
-                {
-                    var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentStructureSelected.transform.position);
-                    GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                    if (this.isAdminMode)
+                    {
+                        GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentEntitySelected);
+                    }
+                    else
+                    {
+                        var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected.transform.position);
+                        GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                    }
                 }
             }
             // structure-io-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
-                this.currentStructureSelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
             }
         }
     }
 
     private void HandleStructureIOMode()
     {
-        // structure-select mode and mode key press
+        // entity-select mode and mode key press
         if (
-            (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
+            (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
             Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY)
         )
         {
@@ -209,11 +212,14 @@ public class PlayerInput : MonoBehaviour
         // structure-io mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
         {
-            GameObject clickedFactoryStructure = GetClickedFactoryStructure();
-            if (clickedFactoryStructure != null)
+            GameObject clickedFactoryEntity = GetClickedFactoryEntity();
+            if (clickedFactoryEntity != null)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
-                GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentStructureSelected, clickedFactoryStructure);
+                if (this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>() != null)
+                {
+                    GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentEntitySelected, clickedFactoryEntity);
+                    this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                }
             }
         }
     }
@@ -226,20 +232,20 @@ public class PlayerInput : MonoBehaviour
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
-                this.InitCurrentPlacementStrutureType();
+                this.InitCurrentPlacementStructureType();
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT)
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
-                this.DeselectAllStructures();
+                this.DeselectAllFactoryEntities();
             }
             else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
             }
             else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT;
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
                 this.DeselectAllStructuresIO();
             }
         }
@@ -247,9 +253,9 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleAdminPopulateSelectedStorage()
     {
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_SELECT && Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_POPULATE_STORAGE))
+        if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT && Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_POPULATE_STORAGE))
         {
-            var storageScript = this.currentStructureSelected.GetComponent<IFactoryStorage>();
+            var storageScript = this.currentEntitySelected.GetComponent<IFactoryStorage>();
             if (storageScript != null)
             {
                 storageScript.AdminPopulateStorage();
@@ -259,11 +265,11 @@ public class PlayerInput : MonoBehaviour
 
     // factory building controls helpers
 
-    private GameObject GetClickedFactoryStructure()
+    private GameObject GetClickedFactoryEntity()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D hit = Physics2D.OverlapPoint(mousePos);
-        if (hit != null && hit.gameObject.CompareTag("FactoryStructure"))
+        if (hit != null && hit.gameObject.CompareTag("FactoryEntity"))
         {
             return hit.gameObject;
         }
@@ -273,10 +279,10 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void DeselectAllStructures()
+    private void DeselectAllFactoryEntities()
     {
-        this.currentStructureSelected = null;
-        GalaxySceneManager.instance.factoryStructureDelesectAllEvent.Invoke();
+        this.currentEntitySelected = null;
+        GalaxySceneManager.instance.factoryEntityDelesectAllEvent.Invoke();
     }
 
     private void DeselectAllStructuresIO()
@@ -285,7 +291,7 @@ public class PlayerInput : MonoBehaviour
         GalaxySceneManager.instance.factoryStructureIODelesectAllEvent.Invoke();
     }
 
-    private void InitCurrentPlacementStrutureType()
+    private void InitCurrentPlacementStructureType()
     {
         // zero means nothing is selected for placement
         this.currentPlacementStructureType = 0;

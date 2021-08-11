@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkerScript : MonoBehaviour
+public class WorkerScript : MonoBehaviour, IFactoryEntity
 {
 
+
+    public int FactoryEntityType { get; } = Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER;
 
     private WorkerTask currentTask;
 
@@ -21,6 +23,11 @@ public class WorkerScript : MonoBehaviour
 
 
     // INTERFACE METHODS
+
+    public string GetStringFormattedFactoryEntityInfo()
+    {
+        return "I'm the worker info string";
+    }
 
     public void DoTask(WorkerTask task)
     {

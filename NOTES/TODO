@@ -3,40 +3,44 @@
 TODO
 
 
-Next:
-    X create admin mode:
-        X admin should be able to:
-            X instantly create structures and units
-            X instantly destroy structures and units
-            X populate storages with resources
-    - POC Worker:
-        - worker can:
-            - fetch
-            - place or build
-        - player issues commands which are queued and carried out by workers
-        - worker task queue system behavior:
-            - Player issues build or remove commands which causes Tasks to be created and added to the 
-                WorkerTaskQueue system.
-            - Tasks are pulled off the queue and matched with the closest Worker to the Task location.
-            - Enforce Worker -> Task location max distance.
-            - Once a Task is assigned to a Worker, the task becomes unavailable to other workers and 
-                put in an "in-progress" status.
-            - Worker attempts to carry out task.
-            - If completed, the tasks is reported as completed to the WorkerTaskQueue system and destroyed.
-            - If worker is interrupted and task is not able to be completed, the task is reported as incomplete 
-                and put back in the queue as top priority.
-            - If worker finds that tasks is unable to be completed, the task is reported as cancelled and is destroyed.
-            - If the task is cancelled by an outside source, such as player input or an environment event, the
-                task is reported as cancelled, and the worker is unassigned from the task.
-    - POC early game progression:
-        - figure out initial setting
-        - player gets basic factory working
-        - player begins expanding production
-    - POC power gathering from stars:
-        - Photovoltaic
-        - Mirror
-        - PowerCell
-    - add music
+X create admin mode:
+    X admin should be able to:
+        X instantly create structures and units
+        X instantly destroy structures and units
+        X populate storages with resources
+X refactor player input manager to handle:
+    - unit selection
+    - admin creation of units
+    - are there any other player inputs that need to be accounted for with the addition of workers?
+- refactor factory-entity behavior scripts to be more specific and smaller responsibility-scoped
+- POC Worker:
+    - worker can:
+        - fetch
+        - place or build
+    - player issues commands which are queued and carried out by workers
+    - worker task queue system behavior:
+        - Player issues build or remove commands which causes Tasks to be created and added to the 
+            WorkerTaskQueue system.
+        - Tasks are pulled off the queue and matched with the closest Worker to the Task location.
+        - Enforce Worker -> Task location max distance.
+        - Once a Task is assigned to a Worker, the task becomes unavailable to other workers and 
+            put in an "in-progress" status.
+        - Worker attempts to carry out task.
+        - If completed, the tasks is reported as completed to the WorkerTaskQueue system and destroyed.
+        - If worker is interrupted and task is not able to be completed, the task is reported as incomplete 
+            and put back in the queue as top priority.
+        - If worker finds that tasks is unable to be completed, the task is reported as cancelled and is destroyed.
+        - If the task is cancelled by an outside source, such as player input or an environment event, the
+            task is reported as cancelled, and the worker is unassigned from the task.
+- POC early game progression:
+    - figure out initial setting
+    - player gets basic factory working
+    - player begins expanding production
+- POC power gathering from stars:
+    - Photovoltaic
+    - Mirror
+    - PowerCell
+- add music
 
 
 For consideration/prioritization:

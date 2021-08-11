@@ -27,12 +27,13 @@ public class GalaxySceneManager : MonoBehaviour
     public int planetarySystemCount = 0;
     public int starCount = 0;
     public int planetCount = 0;
+    public int factoryEntityCount = 0;
     public int factoryStructureCount = 0;
-    public int itemsInTransit = 0;
+    public int factoryResourceItemsInTransit = 0;
 
     // unity events
-    public FactoryStructureSelectedEvent factoryStructureSelectedEvent = new FactoryStructureSelectedEvent();
-    public FactoryStructureDelesectAllEvent factoryStructureDelesectAllEvent = new FactoryStructureDelesectAllEvent();
+    public FactoryEntitySelectedEvent factoryEntitySelectedEvent = new FactoryEntitySelectedEvent();
+    public FactoryEntityDelesectAllEvent factoryEntityDelesectAllEvent = new FactoryEntityDelesectAllEvent();
     public FactoryStructureIODelesectAllEvent factoryStructureIODelesectAllEvent = new FactoryStructureIODelesectAllEvent();
     public FactoryStructureRemovalEvent factoryStructureRemovalEvent = new FactoryStructureRemovalEvent();
     public FactoryStructureIOPlacementEvent factoryStructureIOPlacementEvent = new FactoryStructureIOPlacementEvent();
@@ -147,13 +148,13 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nStars: " + this.starCount.ToString() +
                 "\nPlanets: " + this.planetCount.ToString() +
                 "\nFactory Structures: " + this.factoryStructureCount.ToString() +
-                "\nItems in Transit: " + this.itemsInTransit.ToString() +
+                "\nItems in Transit: " + this.factoryResourceItemsInTransit.ToString() +
                 "\n" +
                 "\nIs Admin Mode: " + this.playerInput.isAdminMode.ToString() +
                 "\nPlayer Input Mode: " + playerInputMode +
                 "\nSelected for Placement: " + selectedForPlacement +
                 "\n" +
-                "\n" + this.GetSelectedStructureInfo();
+                "\n" + this.GetSelectedEntityInfo();
             GUI.Label(
                 this.guiSceneTelemetryRect,
                 displayText
@@ -161,23 +162,22 @@ public class GalaxySceneManager : MonoBehaviour
         }
     }
 
-    private string GetSelectedStructureInfo()
+    private string GetSelectedEntityInfo()
     {
-        if (this.playerInput.currentStructureSelected != null)
+        if (this.playerInput.currentEntitySelected != null)
         {
-            GameObject fsGO = this.playerInput.currentStructureSelected;
-            var fsScript = fsGO.GetComponent<IFactoryStructure>();
-            var fsbScript = this.playerInput.currentStructureSelected.GetComponent<FactoryStructureBehavior>();
-            string selectedStructureInfo =
-                "Selected Structure: " + this.sharedData.factoryEntityTypeToDisplayString[fsbScript.factoryStructureType];
-            selectedStructureInfo +=
+            GameObject feGO = this.playerInput.currentEntitySelected;
+            var feScript = feGO.GetComponent<IFactoryEntity>();
+            string selectedInfo =
+                "Selected Entity: " + this.sharedData.factoryEntityTypeToDisplayString[feScript.FactoryEntityType];
+            selectedInfo +=
                 "\n--------------------\n" +
-                fsScript.GetStringFormattedFactoryStructureInfo();
-            return selectedStructureInfo;
+                feScript.GetStringFormattedFactoryEntityInfo();
+            return selectedInfo;
         }
         else
         {
-            return "Selected Structure: none";
+            return "Selected Entity: none";
         }
     }
 

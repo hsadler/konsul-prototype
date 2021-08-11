@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FactoryStructureBehavior : MonoBehaviour
+public class FactoryEntitySelectable : MonoBehaviour
 {
 
 
-    public GameObject rootGO;
     public GameObject selectionIndicator;
 
     private bool isSelected = false;
@@ -18,19 +17,12 @@ public class FactoryStructureBehavior : MonoBehaviour
     {
         GalaxySceneManager.instance.factoryEntitySelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryEntityDelesectAllEvent.AddListener(this.Deselect);
-        GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
-        GalaxySceneManager.instance.factoryStructureCount += 1;
         this.Deselect();
     }
 
     void Update()
     {
 
-    }
-
-    void OnDestroy()
-    {
-        GalaxySceneManager.instance.factoryStructureCount -= 1;
     }
 
     // INTERFACE METHODS
@@ -58,14 +50,6 @@ public class FactoryStructureBehavior : MonoBehaviour
     {
         this.isSelected = isSelected;
         this.selectionIndicator.SetActive(isSelected);
-    }
-
-    private void RemoveSelf(GameObject removedGO)
-    {
-        if (removedGO == this.gameObject)
-        {
-            Object.Destroy(this.rootGO);
-        }
     }
 
 

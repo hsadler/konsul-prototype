@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFactoryStructure
+public interface IFactoryEntity
 {
-    string GetStringFormattedFactoryStructureInfo();
+    int FactoryEntityType { get; }
+    string GetStringFormattedFactoryEntityInfo();
 }
 
 public interface IFactoryHarvester

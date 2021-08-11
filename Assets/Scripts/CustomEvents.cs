@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class FactoryStructureSelectedEvent : UnityEvent<GameObject> { }
+public class FactoryEntitySelectedEvent : UnityEvent<GameObject> { }
 
-public class FactoryStructureDelesectAllEvent : UnityEvent { }
+public class FactoryEntityDelesectAllEvent : UnityEvent { }
 
 public class FactoryStructureIODelesectAllEvent : UnityEvent { }
 

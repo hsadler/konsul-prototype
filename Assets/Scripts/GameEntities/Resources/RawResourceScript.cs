@@ -23,7 +23,7 @@ public class RawResourceScript : MonoBehaviour
     {
         // set capsule color based on resource type
         this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.resourceType];
-        GalaxySceneManager.instance.itemsInTransit += 1;
+        GalaxySceneManager.instance.factoryResourceItemsInTransit += 1;
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class RawResourceScript : MonoBehaviour
 
     void OnDestroy()
     {
-        GalaxySceneManager.instance.itemsInTransit -= 1;
+        GalaxySceneManager.instance.factoryResourceItemsInTransit -= 1;
     }
 
     // INTERFACE METHODS

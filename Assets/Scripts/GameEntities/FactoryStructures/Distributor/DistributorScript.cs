@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour, IFactoryStructure, IFactoryDistributor
+public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryDistributor
 {
 
+
+    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
 
     public GameObject rawResourcePrefab;
     public float distributionPerSecond = 1f;
@@ -46,7 +48,7 @@ public class DistributorScript : MonoBehaviour, IFactoryStructure, IFactoryDistr
 
     // INTERFACE METHODS
 
-    public string GetStringFormattedFactoryStructureInfo()
+    public string GetStringFormattedFactoryEntityInfo()
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
         string formattedString = "resources in buffer: ";

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageScript : MonoBehaviour, IFactoryStructure, IFactoryStorage
+public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStorage
 {
 
+
+    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
 
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
 
@@ -34,7 +36,7 @@ public class StorageScript : MonoBehaviour, IFactoryStructure, IFactoryStorage
 
     // INTERFACE METHODS
 
-    public string GetStringFormattedFactoryStructureInfo()
+    public string GetStringFormattedFactoryEntityInfo()
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
         string formattedString = "resources in storage: ";

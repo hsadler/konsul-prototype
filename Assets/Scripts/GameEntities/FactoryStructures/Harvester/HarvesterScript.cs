@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvester
+public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryHarvester
 {
 
+
+    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
 
     public GameObject rawResourcePrefab;
     public float rawResourceLaunchImpulse = 3f;
@@ -38,7 +40,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
 
     // INTERFACE METHODS
 
-    public string GetStringFormattedFactoryStructureInfo()
+    public string GetStringFormattedFactoryEntityInfo()
     {
         return
             "last harvested resource: " +
@@ -54,7 +56,6 @@ public class HarvesterScript : MonoBehaviour, IFactoryStructure, IFactoryHarvest
             if (this.io.ResourceIOsExist())
             {
                 Vector3 launchDirection = this.io.GetNextSendDirection();
-                // TODO: this is assuming a raw resource, refactor in future
                 GameObject rawResource = Instantiate(
                     this.rawResourcePrefab,
                     this.transform.position,

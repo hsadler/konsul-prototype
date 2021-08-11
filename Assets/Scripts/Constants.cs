@@ -11,7 +11,7 @@ public static class Constants
     // player input modes
     public const int PLAYER_INPUT_MODE_INIT = 1;
     public const int PLAYER_INPUT_MODE_PLACEMENT = 2;
-    public const int PLAYER_INPUT_MODE_STRUCTURE_SELECT = 3;
+    public const int PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT = 3;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO = 4;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT = 5;
 
@@ -22,6 +22,7 @@ public static class Constants
     public const KeyCode PLAYER_INPUT_REMOVAL_KEY = KeyCode.D;
     public const KeyCode PLAYER_INPUT_QUIT_GAME_KEY = KeyCode.Escape;
     public const KeyCode PLAYER_INPUT_ADMIN_MODE_TOGGLE = KeyCode.A;
+    public const KeyCode PLAYER_INPUT_ADMIN_CREATE_WORKER = KeyCode.W;
     public const KeyCode PLAYER_INPUT_ADMIN_POPULATE_STORAGE = KeyCode.P;
 
 
@@ -57,27 +58,27 @@ public static class Constants
 
     public const int ENTITY_TYPE_NONE = -1;
     // resource types
-    public const int RESOURCE_TYPE_WATER = 101;
-    public const int RESOURCE_TYPE_GAS = 102;
-    public const int RESOURCE_TYPE_STONE = 103;
-    public const int RESOURCE_TYPE_METAL = 104;
-    public const int RESOURCE_TYPE_ORGANICS = 105;
+    public const int RESOURCE_ENTITY_TYPE_WATER = 101;
+    public const int RESOURCE_ENTITY_TYPE_GAS = 102;
+    public const int RESOURCE_ENTITY_TYPE_STONE = 103;
+    public const int RESOURCE_ENTITY_TYPE_METAL = 104;
+    public const int RESOURCE_ENTITY_TYPE_ORGANICS = 105;
 
     // factory structures types
-    public const int FACTORY_STRUCTURE_TYPE_HARVESTER = 201;
-    public const int FACTORY_STRUCTURE_TYPE_DISTRIBUTOR = 202;
-    public const int FACTORY_STRUCTURE_TYPE_STORAGE = 203;
-    public const int FACTORY_STRUCTURE_TYPE_MIRROR = 205;
-    public const int FACTORY_STRUCTURE_TYPE_PHOTOVOLTAIC = 206;
-    public const int FACTORY_STRUCTURE_TYPE_ACCUMULATOR = 207;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER = 201;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR = 202;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE = 203;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_MIRROR = 205;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_PHOTOVOLTAIC = 206;
+    public const int FACTORY_STRUCTURE_ENTITY_TYPE_ACCUMULATOR = 207;
 
     // factory unit types
-    public const int FACTORY_UNIT_TYPE_WORKER = 301;
-    public const int FACTORY_UNIT_TYPE_PROBE = 302;
-    public const int FACTORY_UNIT_TYPE_SYSTEM_EXPANSION_SHIP = 303;
+    public const int FACTORY_UNIT_ENTITY_TYPE_WORKER = 301;
+    public const int FACTORY_UNIT_ENTITY_TYPE_PROBE = 302;
+    public const int FACTORY_UNIT_ENTITY_TYPE_SYSTEM_EXPANSION_SHIP = 303;
 
 
-    // WORKER STUFF
+    // WORKERS/TASKS
 
     public const int WORKER_TASK_TYPE_BUILD = 1;
     public const int WORKER_TASK_TYPE_REMOVE = 2;

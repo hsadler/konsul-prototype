@@ -25,11 +25,11 @@ public class PlanetScript : MonoBehaviour
 
     private List<int> resources = new List<int>();
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>() {
-        { Constants.RESOURCE_TYPE_WATER, 0 },
-        { Constants.RESOURCE_TYPE_GAS, 0 },
-        { Constants.RESOURCE_TYPE_STONE, 0 },
-        { Constants.RESOURCE_TYPE_METAL, 0 },
-        { Constants.RESOURCE_TYPE_ORGANICS, 0 }
+        { Constants.RESOURCE_ENTITY_TYPE_WATER, 0 },
+        { Constants.RESOURCE_ENTITY_TYPE_GAS, 0 },
+        { Constants.RESOURCE_ENTITY_TYPE_STONE, 0 },
+        { Constants.RESOURCE_ENTITY_TYPE_METAL, 0 },
+        { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, 0 }
     };
 
     // planet color
