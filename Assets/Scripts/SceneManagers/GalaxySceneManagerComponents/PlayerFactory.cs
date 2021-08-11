@@ -6,7 +6,7 @@ public class PlayerFactory : MonoBehaviour
 {
 
 
-    // structures
+    // structure prefabs
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
@@ -15,13 +15,10 @@ public class PlayerFactory : MonoBehaviour
     public GameObject accumulatorPrefab;
     private IDictionary<int, GameObject> structureTypeToPrefab;
 
-    // units
+    // unit prefabs
     public GameObject workerPrefab;
     public GameObject probePrefab;
     public GameObject systemExpansionShipPrefab;
-
-    // worker task queue
-    private Queue<WorkerTask> workerTaskQueue = new Queue<WorkerTask>();
 
 
     // UNITY HOOKS
@@ -54,12 +51,6 @@ public class PlayerFactory : MonoBehaviour
         {
             Debug.LogWarning("Factory Structure type not found: " + type.ToString());
         }
-    }
-
-    public void AddWorkerTask(WorkerTask task)
-    {
-        // STUB
-        Debug.Log("adding worker task of task-id: " + task.taskId);
     }
 
 

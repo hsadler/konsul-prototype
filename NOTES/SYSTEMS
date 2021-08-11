@@ -27,6 +27,24 @@ Planetary Systems:
         - provides and interface for resource transfer
 
 
+Worker Task Queue:
+    - tasks are assigned to workers via a queue system
+    - system behavior:
+        - Player issues build or remove commands which causes Tasks to be created and added to the 
+            WorkerTaskQueue system.
+        - Tasks are pulled off the queue and matched with the closest Worker to the Task location.
+        - Enforce Worker -> Task location max distance.
+        - Once a Task is assigned to a Worker, the task becomes unavailable to other workers and 
+            put in an "in-progress" status.
+        - Worker attempts to carry out task.
+        - If completed, the tasks is reported as completed to the WorkerTaskQueue system and destroyed.
+        - If worker is interrupted and task is not able to be completed, the task is reported as incomplete 
+            and put back in the queue as top priority.
+        - If worker finds that tasks is unable to be completed, the task is reported as cancelled and is destroyed.
+        - If the task is cancelled by an outside source, such as player input or an environment event, the
+            task is reported as cancelled, and the worker is unassigned from the task.
+
+
 Other likely systems:
     - more galactic object types
     - player code input to create, destroy, manipulate structures

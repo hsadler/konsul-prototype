@@ -13,8 +13,11 @@ public class GalaxySceneManager : MonoBehaviour
     // manager components
     public Functions functions;
     public SharedData sharedData;
+
+    // MonoBehaviour manager components
     public PlayerInput playerInput;
     public PlayerFactory playerFactory;
+    public WorkerTaskQueue workerTaskQueue;
 
     // UI
     public bool uiVisible = true;

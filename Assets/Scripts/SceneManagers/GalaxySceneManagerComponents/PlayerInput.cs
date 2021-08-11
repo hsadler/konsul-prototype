@@ -125,7 +125,7 @@ public class PlayerInput : MonoBehaviour
                 else
                 {
                     var task = new WorkerTask(Constants.WORKER_TASK_TYPE_BUILD, placementPosition, this.currentPlacementStructureType);
-                    GalaxySceneManager.instance.playerFactory.AddWorkerTask(task);
+                    GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                 }
             }
         }
@@ -179,7 +179,7 @@ public class PlayerInput : MonoBehaviour
                 else
                 {
                     var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentStructureSelected.transform.position);
-                    GalaxySceneManager.instance.playerFactory.AddWorkerTask(task);
+                    GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                 }
             }
             // structure-io-select mode
