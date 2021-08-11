@@ -6,26 +6,15 @@ public class FactoryStructureBehavior : MonoBehaviour
 {
 
 
-    public GameObject rootGO;
-    public GameObject selectionIndicator;
-
-    private bool isSelected = false;
-
-
     // UNITY HOOKS
 
     void Start()
     {
-        GalaxySceneManager.instance.factoryEntitySelectedEvent.AddListener(this.CheckSetSelected);
-        GalaxySceneManager.instance.factoryEntityDelesectAllEvent.AddListener(this.Deselect);
-        GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
         GalaxySceneManager.instance.factoryStructureCount += 1;
-        this.Deselect();
     }
 
     void Update()
     {
-
     }
 
     void OnDestroy()
@@ -36,37 +25,6 @@ public class FactoryStructureBehavior : MonoBehaviour
     // INTERFACE METHODS
 
     // IMPLEMENTATION METHODS
-
-    private void CheckSetSelected(GameObject selectedGO)
-    {
-        if (selectedGO == this.gameObject)
-        {
-            this.SetSelected(true);
-        }
-        else
-        {
-            this.SetSelected(false);
-        }
-    }
-
-    private void Deselect()
-    {
-        this.SetSelected(false);
-    }
-
-    private void SetSelected(bool isSelected)
-    {
-        this.isSelected = isSelected;
-        this.selectionIndicator.SetActive(isSelected);
-    }
-
-    private void RemoveSelf(GameObject removedGO)
-    {
-        if (removedGO == this.gameObject)
-        {
-            Object.Destroy(this.rootGO);
-        }
-    }
 
 
 }
