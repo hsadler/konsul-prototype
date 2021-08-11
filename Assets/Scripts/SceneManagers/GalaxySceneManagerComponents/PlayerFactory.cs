@@ -56,5 +56,11 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
+    public void AddWorkerTask(WorkerTask task)
+    {
+        // STUB
+        Debug.Log("adding worker task of task-id: " + task.taskId);
+    }
+
 
 }

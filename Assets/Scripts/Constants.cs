@@ -77,4 +77,10 @@ public static class Constants
     public const int FACTORY_UNIT_TYPE_SYSTEM_EXPANSION_SHIP = 303;
 
 
+    // WORKER STUFF
+
+    public const int WORKER_TASK_TYPE_BUILD = 1;
+    public const int WORKER_TASK_TYPE_REMOVE = 2;
+
+
 }

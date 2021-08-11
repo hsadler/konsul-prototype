@@ -6,6 +6,9 @@ public class WorkerScript : MonoBehaviour
 {
 
 
+    private WorkerTask currentTask;
+
+
     // UNITY HOOKS
 
     void Start()
@@ -16,20 +19,36 @@ public class WorkerScript : MonoBehaviour
     {
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-    }
 
     // INTERFACE METHODS
 
-    public void FetchAndPlaceFactoryStructure(int structureType, Vector3 position)
+    public void DoTask(WorkerTask task)
     {
-        // STUB
-        Debug.Log("Worker is carrying out order to fetch structure type: " + structureType.ToString() +
-            " and place at position: " + position.ToString());
+        this.currentTask = task;
+        if (task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
+        {
+            this.FetchAndBuildFactoryStructure(task.structureType, task.position);
+        }
+        else if (task.taskType == Constants.WORKER_TASK_TYPE_REMOVE)
+        {
+            this.RemoveAndStoreFactoryStructure(task.position);
+        }
     }
 
     // IMPLEMENTATION METHODS
+
+    private void FetchAndBuildFactoryStructure(int structureType, Vector3 position)
+    {
+        // STUB
+        Debug.Log("Worker is carrying out order to fetch structure type: " + structureType.ToString() +
+            " and build at position: " + position.ToString());
+    }
+
+    private void RemoveAndStoreFactoryStructure(Vector3 position)
+    {
+        // STUB
+        Debug.Log("Worker is carrying out order to remove structure at position: " + position.ToString());
+    }
 
 
 }
