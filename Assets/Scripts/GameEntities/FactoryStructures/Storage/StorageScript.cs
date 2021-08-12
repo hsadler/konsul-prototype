@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStorage
+public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryStorage
 {
 
 
     public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
+    public bool IsStructureActive { get; set; } = true;
 
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
 

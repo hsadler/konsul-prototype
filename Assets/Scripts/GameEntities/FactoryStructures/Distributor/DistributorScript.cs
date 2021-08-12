@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryDistributor
+public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryDistributor
 {
 
 
     public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
+    public bool IsStructureActive { get; set; } = true;
 
     public GameObject rawResourcePrefab;
     public float distributionPerSecond = 1f;

@@ -8,7 +8,6 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
     public bool IsStructureActive { get; set; } = true;
-    public bool IsStructurePlaced { get; set; } = true;
 
     public GameObject rawResourcePrefab;
     public float rawResourceLaunchImpulse = 3f;
