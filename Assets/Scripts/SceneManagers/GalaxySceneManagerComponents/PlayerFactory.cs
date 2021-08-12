@@ -41,16 +41,63 @@ public class PlayerFactory : MonoBehaviour
 
     // INTERFACE METHODS
 
+    public GameObject CreateCursorFactoryStructure(int factoryEntityType)
+    {
+        GameObject fsPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
+        if (fsPrefab != null)
+        {
+            var go = Instantiate(fsPrefab, Vector3.zero, Quaternion.identity);
+            var fsb = go.GetComponent<FactoryStructureBehavior>();
+            fsb.SetIsStructureActive(false);
+            fsb.GivePrePlacementAppearance();
+            return go;
+        }
+        return null;
+    }
+
+    public GameObject PlaceInProgressInProgressFactoryStructure(int factoryEntityType, Vector3 placementPosition)
+    {
+        GameObject factoryStructureInProgressPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
+        if (factoryStructureInProgressPrefab != null)
+        {
+            var go = Instantiate(factoryStructureInProgressPrefab, placementPosition, Quaternion.identity);
+            var fsb = go.GetComponent<FactoryStructureBehavior>();
+            fsb.SetIsStructureActive(false);
+            fsb.GiveGhostAppearance();
+            return go;
+        }
+        else
+        {
+            Debug.LogWarning("Factory Entity type not found for in-progress placement: " + factoryEntityType.ToString());
+            return null;
+        }
+    }
+
     public void PlaceFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
-        if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
+        GameObject factoryEntityPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
+        if (factoryEntityPrefab != null)
         {
-            GameObject factoryEntityPrefab = this.entityTypeToPrefab[factoryEntityType];
             Instantiate(factoryEntityPrefab, placementPosition, Quaternion.identity);
         }
         else
         {
-            Debug.LogWarning("Factory Entity type not found: " + factoryEntityType.ToString());
+            Debug.LogWarning("Factory Entity type not found for placement: " + factoryEntityType.ToString());
+        }
+    }
+
+    // IMPLEMENTATION METHODS
+
+    private GameObject GetFactoryEntityPrefabByType(int factoryEntityType)
+    {
+        if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
+        {
+            return this.entityTypeToPrefab[factoryEntityType];
+        }
+        else
+        {
+            Debug.LogWarning("unable to fetch factory entity prefab by type: " + factoryEntityType.ToString());
+            return null;
         }
     }
 

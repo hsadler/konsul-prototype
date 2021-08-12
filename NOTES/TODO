@@ -4,25 +4,10 @@ TODO
 
 
 - POC Worker:
-    - worker can:
-        - fetch
-        - place or build
-    - player issues commands which are queued and carried out by workers
-    - worker task queue system behavior:
-        - Player issues build or remove commands which causes Tasks to be created and added to the 
-            WorkerTaskQueue system.
-        - Tasks are pulled off the queue and matched with the closest Worker to the Task location.
-        - Enforce Worker -> Task location max distance.
-        - Once a Task is assigned to a Worker, the task becomes unavailable to other workers and 
-            put in an "in-progress" status.
-        - Worker attempts to carry out task.
-        - If completed, the tasks is reported as completed to the WorkerTaskQueue system and destroyed.
-        - If worker is interrupted and task is not able to be completed, the task is reported as incomplete 
-            and put back in the queue as top priority.
-        - If worker finds that tasks is unable to be completed, the task is reported as cancelled and is destroyed.
-        - If the task is cancelled by an outside source, such as player input or an environment event, the
-            task is reported as cancelled, and the worker is unassigned from the task.
     - what's left:
+        X add placement of placeholder factory-structure:
+            X cursor-for-placement structure (when structure has been selected for placement and player is moving cursor to choose placement)
+            X in-progress structure (the placeholder "ghost" structure prior to placement or build by worker)
         - bugfix why worker is not removable
         - implement worker carrying out task
 - POC early game progression:

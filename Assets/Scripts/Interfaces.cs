@@ -8,6 +8,13 @@ public interface IFactoryEntity
     string GetStringFormattedFactoryEntityInfo();
 }
 
+public interface IFactoryStructure
+{
+    bool IsStructureActive { get; set; }
+    // TODO: maybe remove since unused
+    bool IsStructurePlaced { get; set; }
+}
+
 public interface IFactoryHarvester
 {
 }

@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryHarvester
+public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryHarvester
 {
 
 
     public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
+    public bool IsStructureActive { get; set; } = true;
+    public bool IsStructurePlaced { get; set; } = true;
 
     public GameObject rawResourcePrefab;
     public float rawResourceLaunchImpulse = 3f;
@@ -25,16 +27,22 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryHarvester
 
     void Update()
     {
-        this.CheckAndSendResource();
+        if (this.IsStructureActive)
+        {
+            this.CheckAndSendResource();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (this.harvestedResource == Constants.ENTITY_TYPE_NONE && other.gameObject.CompareTag("Planet"))
+        if (this.IsStructureActive)
         {
-            PlanetScript pScript = other.gameObject.GetComponentInParent<PlanetScript>();
-            this.harvestedResource = pScript.ExtractResource();
-            this.lastHarvestedResource = this.harvestedResource;
+            if (this.harvestedResource == Constants.ENTITY_TYPE_NONE && other.gameObject.CompareTag("Planet"))
+            {
+                PlanetScript pScript = other.gameObject.GetComponentInParent<PlanetScript>();
+                this.harvestedResource = pScript.ExtractResource();
+                this.lastHarvestedResource = this.harvestedResource;
+            }
         }
     }
 
