@@ -5,9 +5,12 @@ using UnityEngine;
 public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryStorage
 {
 
+    // TODO: assumes consumption of raw resources, needs future refactor
+
+
 
     public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
-    public bool IsStructureActive { get; set; } = true;
+    public bool IsStructureActive { get; set; } = false;
 
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
 
@@ -36,6 +39,17 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     }
 
     // INTERFACE METHODS
+
+    public bool QueryIsResourceInStorage(int factoryEntityType)
+    {
+        return this.resourceTypeToCount.ContainsKey(factoryEntityType) && this.resourceTypeToCount[factoryEntityType] > 0;
+    }
+
+    public int RetrieveResource(int factoryEntityType)
+    {
+        // TODO: implement stub
+        return 1;
+    }
 
     public string GetStringFormattedFactoryEntityInfo()
     {

@@ -20,6 +20,8 @@ public class PlayerFactory : MonoBehaviour
     public GameObject probePrefab;
     public GameObject systemExpansionShipPrefab;
 
+    private IDictionary<int, List<GameObject>> entityTypeToEntityList = new Dictionary<int, List<GameObject>>();
+
 
     // UNITY HOOKS
 
@@ -48,7 +50,6 @@ public class PlayerFactory : MonoBehaviour
         {
             var go = Instantiate(fsPrefab, Vector3.zero, Quaternion.identity);
             var fsb = go.GetComponent<FactoryStructureBehavior>();
-            fsb.SetIsStructureActive(false);
             fsb.GivePrePlacementAppearance();
             return go;
         }
@@ -62,7 +63,6 @@ public class PlayerFactory : MonoBehaviour
         {
             var go = Instantiate(factoryStructureInProgressPrefab, placementPosition, Quaternion.identity);
             var fsb = go.GetComponent<FactoryStructureBehavior>();
-            fsb.SetIsStructureActive(false);
             fsb.GiveGhostAppearance();
             return go;
         }
@@ -73,16 +73,47 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
-    public void PlaceFactoryEntity(int factoryEntityType, Vector3 placementPosition)
+    public void AdminPlaceFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryEntityPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
         if (factoryEntityPrefab != null)
         {
-            Instantiate(factoryEntityPrefab, placementPosition, Quaternion.identity);
+            var go = Instantiate(factoryEntityPrefab, placementPosition, Quaternion.identity);
+            // immediately activate structures
+            var fsb = go.GetComponent<FactoryStructureBehavior>();
+            if (fsb != null)
+            {
+                fsb.ActivateStructure();
+            }
         }
         else
         {
             Debug.LogWarning("Factory Entity type not found for placement: " + factoryEntityType.ToString());
+        }
+    }
+
+    public void AddFactoryEntity(GameObject factoryEntityGO)
+    {
+        var fe = factoryEntityGO.GetComponent<IFactoryEntity>();
+        if (this.entityTypeToEntityList.ContainsKey(fe.FactoryEntityType))
+        {
+            this.entityTypeToEntityList[fe.FactoryEntityType].Add(factoryEntityGO);
+        }
+        else
+        {
+            this.entityTypeToEntityList.Add(fe.FactoryEntityType, new List<GameObject>() { factoryEntityGO });
+        }
+    }
+
+    public List<GameObject> GetFactoryEntityListByType(int factoryEntityType)
+    {
+        if (this.entityTypeToEntityList.ContainsKey(factoryEntityType))
+        {
+            return this.entityTypeToEntityList[factoryEntityType];
+        }
+        else
+        {
+            return new List<GameObject>();
         }
     }
 

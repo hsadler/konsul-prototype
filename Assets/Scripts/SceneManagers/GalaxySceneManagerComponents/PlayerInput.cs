@@ -145,7 +145,7 @@ public class PlayerInput : MonoBehaviour
                 Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
                 if (this.isAdminMode)
                 {
-                    GalaxySceneManager.instance.playerFactory.PlaceFactoryEntity(this.currentPlacementStructureType, placementPosition);
+                    GalaxySceneManager.instance.playerFactory.AdminPlaceFactoryEntity(this.currentPlacementStructureType, placementPosition);
                 }
                 else
                 {
@@ -297,7 +297,7 @@ public class PlayerInput : MonoBehaviour
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-            GalaxySceneManager.instance.playerFactory.PlaceFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
+            GalaxySceneManager.instance.playerFactory.AdminPlaceFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
         }
     }
 
@@ -370,7 +370,7 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        float zoomMultiplier = 25f;
+        float zoomMultiplier = 15f;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             zoomMultiplier = 150f;

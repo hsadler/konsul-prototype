@@ -39,9 +39,10 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void SetIsStructureActive(bool isActive)
+    public void ActivateStructure()
     {
-        this.fs.IsStructureActive = isActive;
+        this.fs.IsStructureActive = true;
+        GalaxySceneManager.instance.playerFactory.AddFactoryEntity(this.gameObject);
     }
 
     public void GiveActiveAppearance()
