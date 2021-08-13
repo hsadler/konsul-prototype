@@ -114,6 +114,7 @@ public class PlayerInput : MonoBehaviour
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
         {
             GameObject hoveredFactoryEntity = this.GetHoveredFactoryEntity();
+            // not hovering, have a cursor object
             if (hoveredFactoryEntity == null && this.cursorFactoryStructureGO != null)
             {
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -121,7 +122,7 @@ public class PlayerInput : MonoBehaviour
                 this.cursorFactoryStructureGO.SetActive(true);
                 this.cursorFactoryStructureGO.transform.position = selectPlacementPosition;
             }
-            else
+            else if (this.cursorFactoryStructureGO != null)
             {
                 this.cursorFactoryStructureGO.SetActive(false);
             }

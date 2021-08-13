@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerFactory : MonoBehaviour
 {
 
+    // resource prefabs
+    public GameObject rawResourcePrefab;
 
     // structure prefabs
     public GameObject harvesterPrefab;
@@ -29,6 +31,12 @@ public class PlayerFactory : MonoBehaviour
     {
         this.entityTypeToPrefab = new Dictionary<int, GameObject>()
         {
+            // resources
+            { Constants.RESOURCE_ENTITY_TYPE_WATER, this.rawResourcePrefab },
+            { Constants.RESOURCE_ENTITY_TYPE_GAS, this.rawResourcePrefab },
+            { Constants.RESOURCE_ENTITY_TYPE_STONE, this.rawResourcePrefab },
+            { Constants.RESOURCE_ENTITY_TYPE_METAL, this.rawResourcePrefab },
+            { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, this.rawResourcePrefab },
             // structures
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER, this.harvesterPrefab },
             { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR, this.distributorPrefab },
@@ -92,6 +100,7 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
+    // TODO: consider what happens when factory-entities get destroyed
     public void AddFactoryEntity(GameObject factoryEntityGO)
     {
         var fe = factoryEntityGO.GetComponent<IFactoryEntity>();
@@ -117,9 +126,7 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
-    // IMPLEMENTATION METHODS
-
-    private GameObject GetFactoryEntityPrefabByType(int factoryEntityType)
+    public GameObject GetFactoryEntityPrefabByType(int factoryEntityType)
     {
         if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
         {
@@ -131,6 +138,8 @@ public class PlayerFactory : MonoBehaviour
             return null;
         }
     }
+
+    // IMPLEMENTATION METHODS
 
 
 }

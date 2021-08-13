@@ -29,7 +29,7 @@ public class GalaxySceneManager : MonoBehaviour
     public int planetCount = 0;
     public int factoryEntityCount = 0;
     public int factoryStructureCount = 0;
-    public int factoryResourceItemsInTransit = 0;
+    public int factoryEntityItemsInTransit = 0;
 
     // unity events
     public FactoryEntitySelectedEvent factoryEntitySelectedEvent = new FactoryEntitySelectedEvent();
@@ -148,7 +148,7 @@ public class GalaxySceneManager : MonoBehaviour
                 "\nStars: " + this.starCount.ToString() +
                 "\nPlanets: " + this.planetCount.ToString() +
                 "\nFactory Structures: " + this.factoryStructureCount.ToString() +
-                "\nItems in Transit: " + this.factoryResourceItemsInTransit.ToString() +
+                "\nItems in Transit: " + this.factoryEntityItemsInTransit.ToString() +
                 "\n" +
                 "\nIs Admin Mode: " + this.playerInput.isAdminMode.ToString() +
                 "\nPlayer Input Mode: " + playerInputMode +

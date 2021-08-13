@@ -57,6 +57,7 @@ public static class Constants
     // FACTORY ENTITY TYPES (values must be unique across groups)
 
     public const int ENTITY_TYPE_NONE = -1;
+
     // resource types
     public const int RESOURCE_ENTITY_TYPE_WATER = 101;
     public const int RESOURCE_ENTITY_TYPE_GAS = 102;

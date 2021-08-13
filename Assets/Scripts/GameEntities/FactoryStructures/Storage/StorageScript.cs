@@ -5,14 +5,13 @@ using UnityEngine;
 public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryStorage
 {
 
-    // TODO: assumes consumption of raw resources, needs future refactor
 
+    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
+    public int LauncherGameObjectId { get; set; }
 
-
-    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
     public bool IsStructureActive { get; set; } = false;
 
-    private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
+    private IDictionary<int, int> entityTypeToCount = new Dictionary<int, int>();
 
 
     // UNITY HOOKS
@@ -29,23 +28,36 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // consume resource
-        if (other.gameObject.CompareTag("Resource"))
+        // consume factory-entity
+        if (this.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
         {
-            int resourceType = other.gameObject.GetComponent<RawResourceScript>().resourceType;
-            this.StoreResource(resourceType);
+            // don't consume inactive structures
+            var fs = other.gameObject.GetComponent<IFactoryStructure>();
+            if (fs != null && !fs.IsStructureActive)
+            {
+                return;
+            }
+            var fe = other.gameObject.GetComponent<IFactoryEntity>();
+            this.StoreFactoryEntity(fe.FactoryEntityType);
             Object.Destroy(other.gameObject);
         }
     }
 
     // INTERFACE METHODS
 
-    public bool QueryIsResourceInStorage(int factoryEntityType)
+    // TODO: maybe combine the query and reserve steps
+    public bool QueryIsEntityInStorage(int feType)
     {
-        return this.resourceTypeToCount.ContainsKey(factoryEntityType) && this.resourceTypeToCount[factoryEntityType] > 0;
+        return this.entityTypeToCount.ContainsKey(feType) && this.entityTypeToCount[feType] > 0;
     }
 
-    public int RetrieveResource(int factoryEntityType)
+    public bool ReserveEntityForRetrieval(int feType, GameObject worker)
+    {
+        // TODO: implement stub
+        return true;
+    }
+
+    public int RetrieveEntity(int feType, GameObject worker)
     {
         // TODO: implement stub
         return 1;
@@ -54,8 +66,8 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     public string GetStringFormattedFactoryEntityInfo()
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
-        string formattedString = "resources in storage: ";
-        foreach (KeyValuePair<int, int> item in this.resourceTypeToCount)
+        string formattedString = "items in storage: ";
+        foreach (KeyValuePair<int, int> item in this.entityTypeToCount)
         {
             formattedString += ("\n  " + gsm.sharedData.factoryEntityTypeToDisplayString[item.Key] + ": " + item.Value.ToString());
         }
@@ -64,23 +76,23 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     public void AdminPopulateStorage()
     {
-        foreach (int resourceType in GalaxySceneManager.instance.sharedData.allFactoryEntityTypes)
+        foreach (int eType in GalaxySceneManager.instance.sharedData.allFactoryEntityTypes)
         {
-            this.StoreResource(resourceType, 1000);
+            this.StoreFactoryEntity(eType, 1000);
         }
     }
 
     // IMPLEMENTATION METHODS
 
-    private void StoreResource(int resourceType, int amount = 1)
+    private void StoreFactoryEntity(int feType, int amount = 1)
     {
-        if (this.resourceTypeToCount.ContainsKey(resourceType))
+        if (this.entityTypeToCount.ContainsKey(feType))
         {
-            this.resourceTypeToCount[resourceType] += amount;
+            this.entityTypeToCount[feType] += amount;
         }
         else
         {
-            this.resourceTypeToCount.Add(resourceType, amount);
+            this.entityTypeToCount.Add(feType, amount);
         }
     }
 

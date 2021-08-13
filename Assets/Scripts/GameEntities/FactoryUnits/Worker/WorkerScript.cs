@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkerScript : MonoBehaviour, IFactoryEntity
+public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactoryWorker
 {
 
 
-    public int FactoryEntityType { get; } = Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER;
+    public int FactoryEntityType { get; set; } = Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER;
+    public int LauncherGameObjectId { get; set; }
+
 
     private WorkerTask currentTask;
 

@@ -6,16 +6,16 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 {
 
 
-    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
+    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
+    public int LauncherGameObjectId { get; set; }
+
     public bool IsStructureActive { get; set; } = false;
 
-    public GameObject rawResourcePrefab;
     public float distributionPerSecond = 1f;
-    public float rawResourceLaunchImpulse = 3f;
-
+    public float launchImpulse = 3f;
 
     private FactoryStructureIOBehavior io;
-    private Queue<int> resourceBuffer = new Queue<int>();
+    private Queue<int> feBuffer = new Queue<int>();
 
 
     // UNITY HOOKS
@@ -23,7 +23,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
     void Start()
     {
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
-        InvokeRepeating("DistributeResource", 0f, this.distributionPerSecond);
+        InvokeRepeating("DistributeItems", 0f, this.distributionPerSecond);
     }
 
     void Update()
@@ -33,15 +33,21 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // resource reception
-        if (other.gameObject.CompareTag("Resource"))
+        // TODO: consider moving can-consume behavior to it's own script
+        // factory-entity consumption
+        if (this.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
         {
-            // add to the buffer
-            var rrScript = other.gameObject.GetComponent<RawResourceScript>();
-            if (rrScript.launcherGameObjectId != this.gameObject.GetInstanceID())
+            // don't consume inactive structures
+            var fs = other.gameObject.GetComponent<IFactoryStructure>();
+            if (fs != null && !fs.IsStructureActive)
             {
-                int resourceType = rrScript.resourceType;
-                this.resourceBuffer.Enqueue(resourceType);
+                return;
+            }
+            // add to the buffer
+            var fe = other.gameObject.GetComponent<IFactoryEntity>();
+            if (fe.LauncherGameObjectId != this.gameObject.GetInstanceID())
+            {
+                this.feBuffer.Enqueue(fe.FactoryEntityType);
                 Object.Destroy(other.gameObject);
             }
         }
@@ -52,24 +58,24 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
     public string GetStringFormattedFactoryEntityInfo()
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
-        string formattedString = "resources in buffer: ";
-        if (this.resourceBuffer.Count < 1)
+        string formattedString = "items in buffer: ";
+        if (this.feBuffer.Count < 1)
         {
             return formattedString;
         }
-        IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>();
-        foreach (int resourceType in this.resourceBuffer)
+        IDictionary<int, int> feTypeToCount = new Dictionary<int, int>();
+        foreach (int feType in this.feBuffer)
         {
-            if (resourceTypeToCount.ContainsKey(resourceType))
+            if (feTypeToCount.ContainsKey(feType))
             {
-                resourceTypeToCount[resourceType] += 1;
+                feTypeToCount[feType] += 1;
             }
             else
             {
-                resourceTypeToCount.Add(resourceType, 1);
+                feTypeToCount.Add(feType, 1);
             }
         }
-        foreach (KeyValuePair<int, int> item in resourceTypeToCount)
+        foreach (KeyValuePair<int, int> item in feTypeToCount)
         {
             formattedString += ("\n  " + gsm.sharedData.factoryEntityTypeToDisplayString[item.Key] + ": " + item.Value.ToString());
         }
@@ -78,21 +84,22 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     // IMPLEMENTATION METHODS
 
-    private void DistributeResource()
+    private void DistributeItems()
     {
-        if (this.resourceBuffer.Count > 0 && this.io.ResourceIOsExist())
+        if (this.IsStructureActive && this.feBuffer.Count > 0 && this.io.ResourceIOsExist())
         {
+            int feType = this.feBuffer.Dequeue();
             Vector3 launchDirection = this.io.GetNextSendDirection();
-            // TODO: this is assuming a raw resource, refactor in future
-            GameObject rawResource = Instantiate(
-                this.rawResourcePrefab,
+            GameObject fePrefab = GalaxySceneManager.instance.playerFactory.GetFactoryEntityPrefabByType(feType);
+            GameObject go = Instantiate(
+                fePrefab,
                 this.transform.position,
                 Quaternion.identity
             );
-            var rrScript = rawResource.GetComponent<RawResourceScript>();
-            rrScript.launcherGameObjectId = this.gameObject.GetInstanceID();
-            rrScript.resourceType = this.resourceBuffer.Dequeue();
-            rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
+            var fe = go.GetComponent<IFactoryEntity>();
+            fe.LauncherGameObjectId = this.gameObject.GetInstanceID();
+            fe.FactoryEntityType = feType;
+            go.GetComponent<FactoryEntityLaunchable>().SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
         }
     }
 

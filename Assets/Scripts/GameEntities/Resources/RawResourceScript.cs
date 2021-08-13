@@ -2,28 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RawResourceScript : MonoBehaviour
+public class RawResourceScript : MonoBehaviour, IFactoryEntity, IFactoryResource
 {
 
 
-    public Rigidbody2D rb;
     public SpriteRenderer sr;
 
-    public int resourceType = Constants.ENTITY_TYPE_NONE;
-    public int launcherGameObjectId;
-
-    private float launchForce = 0.0f;
-    private Vector3 launchDirection;
-    private bool hasLaunched = false;
+    public int FactoryEntityType { get; set; } = Constants.ENTITY_TYPE_NONE;
+    public int LauncherGameObjectId { get; set; }
 
 
     // UNITY HOOKS
 
     void Start()
     {
-        // set capsule color based on resource type
-        this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.resourceType];
-        GalaxySceneManager.instance.factoryResourceItemsInTransit += 1;
+        this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.FactoryEntityType];
     }
 
     void Update()
@@ -31,27 +24,12 @@ public class RawResourceScript : MonoBehaviour
 
     }
 
-    void FixedUpdate()
-    {
-        if (!this.hasLaunched)
-        {
-            this.rb.AddForce(launchDirection * launchForce, ForceMode2D.Impulse);
-            this.transform.rotation = Quaternion.LookRotation(Vector3.forward, launchDirection);
-            this.hasLaunched = true;
-        }
-    }
-
-    void OnDestroy()
-    {
-        GalaxySceneManager.instance.factoryResourceItemsInTransit -= 1;
-    }
-
     // INTERFACE METHODS
 
-    public void SetLaunchForceAndDirection(float force, Vector3 direction)
+    public string GetStringFormattedFactoryEntityInfo()
     {
-        this.launchForce = force;
-        this.launchDirection = direction;
+        return "raw resource type: " +
+            "\n  " + GalaxySceneManager.instance.sharedData.factoryEntityTypeToDisplayString[this.FactoryEntityType];
     }
 
     // IMPLEMENTATION METHODS

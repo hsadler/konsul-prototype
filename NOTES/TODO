@@ -2,22 +2,42 @@
 
 TODO
 
+X pull-out launchable behavior to its own script
+
+X solidify "factory entity" naming and use as an umbrella type:
+    - factory-entities will include: raw-resources, intermediate-resources, factory-structures, and factory-units
+    - raw-resources and intermediate-resources can probable be treated exactly the same and unified
+
+- move can-consume behavior to it's own script
 
 - POC Worker:
     - what's left:
         X add placement of placeholder factory-structure:
             X cursor-for-placement structure (when structure has been selected for placement and player is moving cursor to choose placement)
             X in-progress structure (the placeholder "ghost" structure prior to placement or build by worker)
-        - bugfix why worker is not removable
-        - implement worker carrying out task
+        X factory-structure ghosts should be immediately removable
+        - factory-entity tracking:
+            - add to player-factory manager
+            - implement removal
+        - worker ability to lookup storages and query for existance of items
+        - worker ability to fetch storage items
+        - implement worker carrying out tasks:
+            - fetch and build
+            - remove and store
+
+
+- I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
+
 - POC early game progression:
     - figure out initial setting
     - player gets basic factory working
     - player begins expanding production
+
 - POC power gathering from stars:
     - Photovoltaic
     - Mirror
     - PowerCell
+
 - add music
 
 
@@ -30,7 +50,9 @@ For consideration/prioritization:
 
 
 - Bugs:
-    - 
+    - adjacent storages and distributors are consuming each other, modify colliders to be slightly smaller
+    - factory-structures without resource-io behavior should not be able to go into transit-mode
+    - bugfix why worker is not removable
 
 
 - CLI:

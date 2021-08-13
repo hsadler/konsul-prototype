@@ -6,11 +6,13 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 {
 
 
-    public int FactoryEntityType { get; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
+    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
+    public int LauncherGameObjectId { get; set; }
+
     public bool IsStructureActive { get; set; } = false;
 
     public GameObject rawResourcePrefab;
-    public float rawResourceLaunchImpulse = 3f;
+    public float rawResourceLaunchImpulse = 1f;
 
     private FactoryStructureIOBehavior io;
     private int harvestedResource = Constants.ENTITY_TYPE_NONE;
@@ -63,14 +65,13 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
             if (this.io.ResourceIOsExist())
             {
                 Vector3 launchDirection = this.io.GetNextSendDirection();
-                GameObject rawResource = Instantiate(
+                GameObject go = Instantiate(
                     this.rawResourcePrefab,
                     this.transform.position,
                     Quaternion.identity
                 );
-                var rrScript = rawResource.GetComponent<RawResourceScript>();
-                rrScript.resourceType = this.harvestedResource;
-                rrScript.SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
+                go.GetComponent<RawResourceScript>().FactoryEntityType = this.harvestedResource;
+                go.GetComponent<FactoryEntityLaunchable>().SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
                 this.harvestedResource = Constants.ENTITY_TYPE_NONE;
             }
         }
