@@ -11,10 +11,17 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     public bool IsStructureActive { get; set; } = false;
 
+    private FactoryEntityReceiver receiver;
+
     private IDictionary<int, int> entityTypeToCount = new Dictionary<int, int>();
 
 
     // UNITY HOOKS
+
+    void Awake()
+    {
+        this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
+    }
 
     void Start()
     {
@@ -23,24 +30,7 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     void Update()
     {
-
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // consume factory-entity
-        if (this.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
-        {
-            // don't consume inactive structures
-            var fs = other.gameObject.GetComponent<IFactoryStructure>();
-            if (fs != null && !fs.IsStructureActive)
-            {
-                return;
-            }
-            var fe = other.gameObject.GetComponent<IFactoryEntity>();
-            this.StoreFactoryEntity(fe.FactoryEntityType);
-            Object.Destroy(other.gameObject);
-        }
+        this.LoadFromReceiverBuffer();
     }
 
     // INTERFACE METHODS
@@ -83,6 +73,14 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     }
 
     // IMPLEMENTATION METHODS
+
+    private void LoadFromReceiverBuffer()
+    {
+        while (this.receiver.feBuffer.Count > 0)
+        {
+            this.StoreFactoryEntity(this.receiver.feBuffer.Dequeue());
+        }
+    }
 
     private void StoreFactoryEntity(int feType, int amount = 1)
     {

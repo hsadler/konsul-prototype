@@ -6,9 +6,6 @@ public class FactoryEntityRemovable : MonoBehaviour
 {
 
 
-    public GameObject rootGO;
-
-
     // UNITY HOOKS
 
     void Start()
@@ -29,8 +26,9 @@ public class FactoryEntityRemovable : MonoBehaviour
         Debug.Log("attemting to remove gameobject: " + removedGO.name);
         if (removedGO == this.gameObject)
         {
-            Object.Destroy(this.rootGO);
+            Object.Destroy(this.gameObject);
         }
     }
+
 
 }

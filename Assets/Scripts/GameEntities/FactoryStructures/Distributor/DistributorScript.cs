@@ -15,14 +15,19 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
     public float launchImpulse = 3f;
 
     private FactoryStructureIOBehavior io;
-    private Queue<int> feBuffer = new Queue<int>();
+    private FactoryEntityReceiver receiver;
 
 
     // UNITY HOOKS
 
-    void Start()
+    void Awake()
     {
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
+        this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
+    }
+
+    void Start()
+    {
         InvokeRepeating("DistributeItems", 0f, this.distributionPerSecond);
     }
 
@@ -31,40 +36,18 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // TODO: consider moving can-consume behavior to it's own script
-        // factory-entity consumption
-        if (this.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
-        {
-            // don't consume inactive structures
-            var fs = other.gameObject.GetComponent<IFactoryStructure>();
-            if (fs != null && !fs.IsStructureActive)
-            {
-                return;
-            }
-            // add to the buffer
-            var fe = other.gameObject.GetComponent<IFactoryEntity>();
-            if (fe.LauncherGameObjectId != this.gameObject.GetInstanceID())
-            {
-                this.feBuffer.Enqueue(fe.FactoryEntityType);
-                Object.Destroy(other.gameObject);
-            }
-        }
-    }
-
     // INTERFACE METHODS
 
     public string GetStringFormattedFactoryEntityInfo()
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
         string formattedString = "items in buffer: ";
-        if (this.feBuffer.Count < 1)
+        if (this.receiver.feBuffer.Count < 1)
         {
             return formattedString;
         }
         IDictionary<int, int> feTypeToCount = new Dictionary<int, int>();
-        foreach (int feType in this.feBuffer)
+        foreach (int feType in this.receiver.feBuffer)
         {
             if (feTypeToCount.ContainsKey(feType))
             {
@@ -86,9 +69,9 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     private void DistributeItems()
     {
-        if (this.IsStructureActive && this.feBuffer.Count > 0 && this.io.ResourceIOsExist())
+        if (this.IsStructureActive && this.receiver.feBuffer.Count > 0 && this.io.ResourceIOsExist())
         {
-            int feType = this.feBuffer.Dequeue();
+            int feType = this.receiver.feBuffer.Dequeue();
             Vector3 launchDirection = this.io.GetNextSendDirection();
             GameObject fePrefab = GalaxySceneManager.instance.playerFactory.GetFactoryEntityPrefabByType(feType);
             GameObject go = Instantiate(
