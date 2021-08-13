@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerFactory : MonoBehaviour
@@ -22,7 +23,7 @@ public class PlayerFactory : MonoBehaviour
     public GameObject probePrefab;
     public GameObject systemExpansionShipPrefab;
 
-    private IDictionary<int, List<GameObject>> entityTypeToEntityList = new Dictionary<int, List<GameObject>>();
+    private IDictionary<int, LinkedList<GameObject>> entityTypeToEntities = new Dictionary<int, LinkedList<GameObject>>();
 
 
     // UNITY HOOKS
@@ -51,6 +52,7 @@ public class PlayerFactory : MonoBehaviour
 
     // INTERFACE METHODS
 
+    // factory-entity creation API
     public GameObject CreateCursorFactoryStructure(int factoryEntityType)
     {
         GameObject fsPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
@@ -64,7 +66,7 @@ public class PlayerFactory : MonoBehaviour
         return null;
     }
 
-    public GameObject PlaceInProgressInProgressFactoryStructure(int factoryEntityType, Vector3 placementPosition)
+    public GameObject CreateInProgressInProgressFactoryStructure(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryStructureInProgressPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
         if (factoryStructureInProgressPrefab != null)
@@ -81,7 +83,7 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
-    public void AdminPlaceFactoryEntity(int factoryEntityType, Vector3 placementPosition)
+    public void AdminCreateFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryEntityPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
         if (factoryEntityPrefab != null)
@@ -100,32 +102,50 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
-    // TODO: consider what happens when factory-entities get destroyed
-    public void AddFactoryEntity(GameObject factoryEntityGO)
+    // registry API
+    public void AddFactoryEntityToRegistry(GameObject feGO)
     {
-        var fe = factoryEntityGO.GetComponent<IFactoryEntity>();
-        if (this.entityTypeToEntityList.ContainsKey(fe.FactoryEntityType))
+        Debug.Log("adding FE to registry: " + feGO.name);
+        var fe = feGO.GetComponent<IFactoryEntity>();
+        if (this.entityTypeToEntities.ContainsKey(fe.FactoryEntityType))
         {
-            this.entityTypeToEntityList[fe.FactoryEntityType].Add(factoryEntityGO);
+            this.entityTypeToEntities[fe.FactoryEntityType].AddFirst(feGO);
         }
         else
         {
-            this.entityTypeToEntityList.Add(fe.FactoryEntityType, new List<GameObject>() { factoryEntityGO });
+            var linkedList = new LinkedList<GameObject>();
+            linkedList.AddFirst(feGO);
+            this.entityTypeToEntities.Add(fe.FactoryEntityType, linkedList);
         }
+        Debug.Log(this.entityTypeToEntities.ToString());
+    }
+
+    public void RemoveFactoryEntityFromRegistry(GameObject feGO)
+    {
+        Debug.Log("attempting to remove FE from registry: " + feGO.name);
+        var fe = feGO.GetComponent<IFactoryEntity>();
+        LinkedList<GameObject> feLinkedList = this.GetFactoryEntityLinkedListByType(fe.FactoryEntityType);
+        GameObject toRemove = null;
+        foreach (GameObject currFeGO in feLinkedList)
+        {
+            if (currFeGO == feGO)
+            {
+                toRemove = currFeGO;
+            }
+        }
+        if (toRemove != null)
+        {
+            feLinkedList.Remove(toRemove);
+        }
+        Debug.Log(this.entityTypeToEntities.ToString());
     }
 
     public List<GameObject> GetFactoryEntityListByType(int factoryEntityType)
     {
-        if (this.entityTypeToEntityList.ContainsKey(factoryEntityType))
-        {
-            return this.entityTypeToEntityList[factoryEntityType];
-        }
-        else
-        {
-            return new List<GameObject>();
-        }
+        return this.GetFactoryEntityLinkedListByType(factoryEntityType).ToList<GameObject>();
     }
 
+    // prefab API
     public GameObject GetFactoryEntityPrefabByType(int factoryEntityType)
     {
         if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
@@ -140,6 +160,18 @@ public class PlayerFactory : MonoBehaviour
     }
 
     // IMPLEMENTATION METHODS
+
+    public LinkedList<GameObject> GetFactoryEntityLinkedListByType(int factoryEntityType)
+    {
+        if (this.entityTypeToEntities.ContainsKey(factoryEntityType))
+        {
+            return this.entityTypeToEntities[factoryEntityType];
+        }
+        else
+        {
+            return new LinkedList<GameObject>();
+        }
+    }
 
 
 }

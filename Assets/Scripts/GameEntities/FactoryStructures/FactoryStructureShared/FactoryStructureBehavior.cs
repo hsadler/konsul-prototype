@@ -25,7 +25,6 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     void Start()
     {
-        GalaxySceneManager.instance.factoryStructureCount += 1;
     }
 
     void Update()
@@ -35,6 +34,7 @@ public class FactoryStructureBehavior : MonoBehaviour
     void OnDestroy()
     {
         GalaxySceneManager.instance.factoryStructureCount -= 1;
+        GalaxySceneManager.instance.playerFactory.RemoveFactoryEntityFromRegistry(this.gameObject);
     }
 
     // INTERFACE METHODS
@@ -42,7 +42,8 @@ public class FactoryStructureBehavior : MonoBehaviour
     public void ActivateStructure()
     {
         this.fs.IsStructureActive = true;
-        GalaxySceneManager.instance.playerFactory.AddFactoryEntity(this.gameObject);
+        GalaxySceneManager.instance.factoryStructureCount += 1;
+        GalaxySceneManager.instance.playerFactory.AddFactoryEntityToRegistry(this.gameObject);
     }
 
     public void GiveActiveAppearance()

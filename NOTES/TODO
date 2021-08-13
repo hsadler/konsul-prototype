@@ -2,11 +2,12 @@
 
 TODO
 
+
 X move can-consume behavior to it's own script
 
 - POC Worker:
     - factory-entity tracking:
-        - add to player-factory manager
+        X add to player-factory manager
         - implement removal
     - worker ability to lookup storages and query for existance of items
     - worker ability to fetch storage items
