@@ -40,6 +40,7 @@ For consideration/prioritization:
 
 - Bugs:
     X adjacent storages and distributors are consuming each other, modify colliders to be slightly smaller
+    - some selection vs. place bugs
     - factory-structures without resource-io behavior should not be able to go into transit-mode
     - bugfix why worker is not removable
 

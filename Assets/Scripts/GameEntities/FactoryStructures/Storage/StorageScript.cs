@@ -51,7 +51,7 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     public int Retrieve(int feType, GameObject worker)
     {
         // TODO: implement stub
-        return 1;
+        return feType;
     }
 
     public string GetStringFormattedFactoryEntityInfo()

@@ -208,8 +208,16 @@ public class PlayerInput : MonoBehaviour
                     }
                     else
                     {
-                        var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
-                        GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                        IFactoryStructure fs = this.currentEntitySelected.GetComponent<IFactoryStructure>();
+                        if (fs != null && !fs.IsStructureActive)
+                        {
+                            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentEntitySelected);
+                        }
+                        else
+                        {
+                            var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
+                            GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                        }
                     }
                 }
             }

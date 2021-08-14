@@ -76,6 +76,7 @@ public class WorkerTaskQueue : MonoBehaviour
     // worker task management
     public void AddWorkerTask(WorkerTask task)
     {
+        // Debug.Log("adding worker task to queue with id: " + task.taskId.ToString());
         this.tasks.AddLast(task);
     }
     public void AddPriorityWorkerTask(WorkerTask task)
@@ -114,6 +115,7 @@ public class WorkerTaskQueue : MonoBehaviour
                     // assign task to worker and remove from the queue
                     if (matchedWorker != null)
                     {
+                        // Debug.Log("matching worker id: " + matchedWorker.GetInstanceID().ToString() + " to task id: " + task.taskId.ToString());
                         matchedWorker.GetComponent<WorkerScript>().DoTask(task);
                         tasksToRemove.Add(task);
                     }
@@ -121,11 +123,12 @@ public class WorkerTaskQueue : MonoBehaviour
                 // no more available workers
                 else
                 {
-                    return;
+                    break;
                 }
             }
             foreach (WorkerTask task in tasksToRemove)
             {
+                // Debug.Log("removing worker task from queue with id: " + task.taskId.ToString());
                 this.tasks.Remove(task);
             }
         }

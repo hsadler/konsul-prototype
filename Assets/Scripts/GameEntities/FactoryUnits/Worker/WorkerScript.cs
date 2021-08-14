@@ -26,9 +26,13 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     // UNITY HOOKS
 
-    void Start()
+    void Awake()
     {
         GalaxySceneManager.instance.workerTaskQueue.AddNewWorker(this.gameObject);
+    }
+
+    void Start()
+    {
     }
 
     void Update()
@@ -36,6 +40,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         if (this.task == null)
         {
             return;
+        }
+        // in-progress structure has been removed, task can be cancelled via worker initialization
+        else if (this.task.structure == null)
+        {
+            this.InitWorker();
         }
         if (this.task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
         {
@@ -62,6 +71,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     public void DoTask(WorkerTask task)
     {
+        // Debug.Log("worker assigned task with id: " + task.taskId.ToString());
         GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsBusy(this.gameObject);
         this.task = task;
     }
@@ -74,6 +84,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         this.task = null;
         this.selectedFetchStorage = null;
         this.selectedDeliveryStorage = null;
+        GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsAvailable(this.gameObject);
     }
 
     // fetch and build
@@ -82,6 +93,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     {
         if (this.workerMode == Constants.WORKER_MODE_INIT)
         {
+            // Debug.Log("setting worker mode to fetch");
             this.workerMode = Constants.WORKER_MODE_FETCH;
         }
         else if (this.workerMode == Constants.WORKER_MODE_FETCH)
@@ -103,6 +115,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // close enough to storage for retrieval of item
         else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
         {
+            // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
             // retrieve and bump worker mode
             int retrieved = this.selectedFetchStorage.GetComponent<StorageScript>().Retrieve(this.task.structureFeType, this.gameObject);
             this.AddFactoryEntityToInventory(retrieved);
@@ -127,12 +140,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // close enough to location to build
         if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
         {
+            // Debug.Log("placing structure of type: " + this.task.structureFeType.ToString());
             // remove structure from inventory
             this.RemoveFactoryEntityFromInventory(this.task.structureFeType);
             // activate the in-progress game object
             this.task.structure.GetComponent<FactoryStructureBehavior>().ActivateStructure();
-            // set worker as available
-            GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsAvailable(this.gameObject);
             // init worker
             this.InitWorker();
         }
@@ -152,6 +164,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void SelectStorageForFetch()
     {
+        // Debug.Log("selecting storage for fetch");
         List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE);
         float shortestDistance = Mathf.Infinity;
         GameObject closestStorage = null;
