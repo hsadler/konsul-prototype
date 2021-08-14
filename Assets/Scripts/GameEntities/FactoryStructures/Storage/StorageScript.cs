@@ -36,6 +36,12 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     // INTERFACE METHODS
 
+    public bool Store(int feType)
+    {
+        this.StoreFactoryEntity(feType);
+        return true;
+    }
+
     // TODO: maybe combine the query and reserve steps
     public bool Contains(int feType)
     {

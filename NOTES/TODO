@@ -3,19 +3,17 @@
 TODO
 
 
-X move can-consume behavior to it's own script
-
-- POC Worker:
+X POC Worker:
     X factory-entity tracking:
         X add to player-factory manager
         X implement removal
     X worker ability to lookup storages and query for existance of items
     X worker ability to fetch storage items
-    - implement worker carrying out tasks:
-        X fetch and build (buggy)
-        - remove and store
+    X implement worker carrying out tasks:
+        X fetch and build
+        X remove and store
 
-- I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
+- test and polish workers
 
 - POC early game progression:
     - figure out initial setting
@@ -31,6 +29,7 @@ X move can-consume behavior to it's own script
 
 
 For consideration/prioritization:
+    - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - define output types for resource-IO
     - multiselect with selection box
     - consider a freeze-time control
@@ -39,9 +38,7 @@ For consideration/prioritization:
 
 
 - Bugs:
-    X adjacent storages and distributors are consuming each other, modify colliders to be slightly smaller
-    - worker shouldn't fetch items if already in inventory
-    - some selection vs. place bugs
+    - some selection vs. placement bugs
     - factory-structures without resource-io behavior should not be able to go into transit-mode
     - bugfix why worker is not removable
 
@@ -51,6 +48,8 @@ For consideration/prioritization:
 
 
 Improvements and Polish:
+    - worker shouldn't fetch items if already in inventory
+    - workers shouldn't deliver to storages marked for removal
     - polish black hole, need high-rez sprite image
     - prevent star overlap by implementing generation buffer
     - prevent planetary system overlap with black hole

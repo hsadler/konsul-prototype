@@ -41,11 +41,6 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             return;
         }
-        // in-progress structure has been removed, task can be cancelled via worker initialization
-        else if (this.task.structure == null)
-        {
-            this.InitWorker();
-        }
         if (this.task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
         {
             this.FetchAndBuildFactoryStructure();
@@ -91,6 +86,12 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchAndBuildFactoryStructure()
     {
+        // in-progress structure has been removed, task can be cancelled via worker initialization
+        if (this.task.structure == null)
+        {
+            this.InitWorker();
+            return;
+        }
         if (this.workerMode == Constants.WORKER_MODE_INIT)
         {
             // Debug.Log("setting worker mode to fetch");
@@ -124,14 +125,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to storage
         else
         {
-            // face storage
-            this.transform.rotation = Quaternion.LookRotation(Vector3.forward, this.selectedFetchStorage.transform.position - this.transform.position);
-            // move
-            this.transform.position = Vector3.MoveTowards(
-                this.transform.position,
-                this.selectedFetchStorage.transform.position,
-                this.moveSpeed * Time.deltaTime
-            );
+            this.HandleMoveTowardsPosition(this.selectedDeliveryStorage.transform.position);
         }
     }
 
@@ -151,14 +145,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to build location
         else
         {
-            // face location
-            this.transform.rotation = Quaternion.LookRotation(Vector3.forward, this.task.structure.transform.position - this.transform.position);
-            // move
-            this.transform.position = Vector3.MoveTowards(
-                this.transform.position,
-                this.task.structure.transform.position,
-                this.moveSpeed * Time.deltaTime
-            );
+            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
         }
     }
 
@@ -195,23 +182,87 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void RemoveAndStoreFactoryStructure()
     {
-        // TODO: implement STUB
-        // Debug.Log("Worker is carrying out order to remove structure at position: " + this.currentTask.position.ToString());
+        if (this.workerMode == Constants.WORKER_MODE_INIT)
+        {
+            // Debug.Log("setting worker mode to remove");
+            this.workerMode = Constants.WORKER_MODE_REMOVE;
+        }
+        else if (this.workerMode == Constants.WORKER_MODE_REMOVE)
+        {
+            this.RemoveFactoryStructure();
+        }
+        else if (this.workerMode == Constants.WORKER_MODE_STORE)
+        {
+            this.DeliverAndStoreFactoryStructure();
+        }
     }
 
     private void RemoveFactoryStructure()
     {
-
+        // close enough to location to remove
+        if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
+        {
+            // Debug.Log("removing structure of type: " + this.task.structureFeType.ToString());
+            // remove the structure
+            Object.Destroy(this.task.structure);
+            // add structure to inventory
+            this.AddFactoryEntityToInventory(this.task.structureFeType);
+            // bump mode
+            this.workerMode = Constants.WORKER_MODE_STORE;
+        }
+        // move closer to build location
+        else
+        {
+            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+        }
     }
 
     private void DeliverAndStoreFactoryStructure()
     {
-
+        if (this.selectedDeliveryStorage == null)
+        {
+            this.SelectStorageForDelivery();
+        }
+        // close enough to deliver to storage
+        else if (Vector3.Distance(this.transform.position, this.selectedDeliveryStorage.transform.position) < this.interactionDistance)
+        {
+            // remove structure from inventory and deposite to storage
+            this.selectedDeliveryStorage.GetComponent<StorageScript>().Store(
+                this.RemoveFactoryEntityFromInventory(this.task.structureFeType)
+            );
+            // init worker
+            this.InitWorker();
+        }
+        // do move
+        else
+        {
+            this.HandleMoveTowardsPosition(this.selectedDeliveryStorage.transform.position);
+        }
     }
 
     private void SelectStorageForDelivery()
     {
-
+        // Debug.Log("selecting storage for delivery");
+        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE);
+        float shortestDistance = Mathf.Infinity;
+        GameObject closestStorage = null;
+        foreach (GameObject storage in storages)
+        {
+            float d = Vector3.Distance(this.transform.position, storage.transform.position);
+            if (d < shortestDistance)
+            {
+                shortestDistance = d;
+                closestStorage = storage;
+            }
+        }
+        if (closestStorage != null)
+        {
+            this.selectedDeliveryStorage = closestStorage;
+        }
+        else
+        {
+            // TODO: maybe declare task as unable to complete and free worker
+        }
     }
 
     // inventory
@@ -244,6 +295,20 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private bool InventoryContainsFactoryEntity(int feType)
     {
         return this.inventory.ContainsKey(feType) && this.inventory[feType] > 0;
+    }
+
+    // helpers
+
+    private void HandleMoveTowardsPosition(Vector3 targetPosition)
+    {
+        // face position
+        this.transform.rotation = Quaternion.LookRotation(Vector3.forward, targetPosition - this.transform.position);
+        // move
+        this.transform.position = Vector3.MoveTowards(
+            this.transform.position,
+            targetPosition,
+            this.moveSpeed * Time.deltaTime
+        );
     }
 
 
