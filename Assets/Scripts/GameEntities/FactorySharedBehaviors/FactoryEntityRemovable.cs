@@ -6,10 +6,14 @@ public class FactoryEntityRemovable : MonoBehaviour
 {
 
 
+    public GameObject toRemoveIndicator;
+
+
     // UNITY HOOKS
 
     void Start()
     {
+        this.toRemoveIndicator.SetActive(false);
         GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
     }
 
@@ -18,6 +22,11 @@ public class FactoryEntityRemovable : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public void MarkForRemoval()
+    {
+        this.toRemoveIndicator.SetActive(true);
+    }
 
     // IMPLEMENTATION METHODS
 

@@ -198,7 +198,8 @@ public class PlayerInput : MonoBehaviour
             // entity-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
             {
-                if (this.currentEntitySelected.GetComponent<FactoryStructureBehavior>() != null)
+                var feRemovable = this.currentEntitySelected.GetComponent<FactoryEntityRemovable>();
+                if (feRemovable != null)
                 {
                     if (this.isAdminMode)
                     {
@@ -209,12 +210,15 @@ public class PlayerInput : MonoBehaviour
                     else
                     {
                         IFactoryStructure fs = this.currentEntitySelected.GetComponent<IFactoryStructure>();
+                        // remove immediately if not an active structure
                         if (fs != null && !fs.IsStructureActive)
                         {
                             GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentEntitySelected);
                         }
+                        // mark structure as to-remove and create worker task
                         else
                         {
+                            feRemovable.MarkForRemoval();
                             var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
                             GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                         }
@@ -222,7 +226,7 @@ public class PlayerInput : MonoBehaviour
                 }
             }
             // structure-io-select mode
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
                 this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
                 this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
