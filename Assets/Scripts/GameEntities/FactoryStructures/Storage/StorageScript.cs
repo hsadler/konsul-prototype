@@ -8,6 +8,7 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
     public int LauncherGameObjectId { get; set; }
+    public bool InTransit { get; set; } = false;
 
     public bool IsStructureActive { get; set; } = false;
 
@@ -36,18 +37,18 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     // INTERFACE METHODS
 
     // TODO: maybe combine the query and reserve steps
-    public bool QueryIsEntityInStorage(int feType)
+    public bool Contains(int feType)
     {
         return this.entityTypeToCount.ContainsKey(feType) && this.entityTypeToCount[feType] > 0;
     }
 
-    public bool ReserveEntityForRetrieval(int feType, GameObject worker)
+    public bool ReserveForRetrieval(int feType, GameObject worker)
     {
         // TODO: implement stub
         return true;
     }
 
-    public int RetrieveEntity(int feType, GameObject worker)
+    public int Retrieve(int feType, GameObject worker)
     {
         // TODO: implement stub
         return 1;

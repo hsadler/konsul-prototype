@@ -32,19 +32,26 @@ public class FactoryEntityReceiver : MonoBehaviour
         // factory-entity consumption
         if (this.selfFactoryStructure.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
         {
-            // don't consume inactive structures
+            // don't consume inactive structures (bugfix for placement-cursor object)
             var fs = other.gameObject.GetComponent<IFactoryStructure>();
             if (fs != null && !fs.IsStructureActive)
             {
                 return;
             }
-            // add to the buffer
+            // don't consume factory entities not in transit
             var fe = other.gameObject.GetComponent<IFactoryEntity>();
-            if (fe.LauncherGameObjectId != this.gameObject.GetInstanceID())
+            if (fe != null && !fe.InTransit)
             {
-                this.feBuffer.Enqueue(fe.FactoryEntityType);
-                Object.Destroy(other.gameObject);
+                return;
             }
+            // don't consume if self is the launcher
+            if (fe.LauncherGameObjectId == this.gameObject.GetInstanceID())
+            {
+                return;
+            }
+            // add to the buffer
+            this.feBuffer.Enqueue(fe.FactoryEntityType);
+            Object.Destroy(other.gameObject);
         }
     }
 

@@ -83,7 +83,7 @@ public class PlayerFactory : MonoBehaviour
         }
     }
 
-    public void AdminCreateFactoryEntity(int factoryEntityType, Vector3 placementPosition)
+    public GameObject CreateFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryEntityPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
         if (factoryEntityPrefab != null)
@@ -95,17 +95,19 @@ public class PlayerFactory : MonoBehaviour
             {
                 fsb.ActivateStructure();
             }
+            return go;
         }
         else
         {
             Debug.LogWarning("Factory Entity type not found for placement: " + factoryEntityType.ToString());
+            return null;
         }
     }
 
     // registry API
     public void AddFactoryEntityToRegistry(GameObject feGO)
     {
-        Debug.Log("adding FE to registry: " + feGO.name);
+        // Debug.Log("adding FE to registry: " + feGO.name);
         var fe = feGO.GetComponent<IFactoryEntity>();
         if (this.entityTypeToEntities.ContainsKey(fe.FactoryEntityType))
         {
@@ -117,12 +119,12 @@ public class PlayerFactory : MonoBehaviour
             linkedList.AddFirst(feGO);
             this.entityTypeToEntities.Add(fe.FactoryEntityType, linkedList);
         }
-        Debug.Log(this.entityTypeToEntities.ToString());
+        // Debug.Log(this.entityTypeToEntities.ToString());
     }
 
     public void RemoveFactoryEntityFromRegistry(GameObject feGO)
     {
-        Debug.Log("attempting to remove FE from registry: " + feGO.name);
+        // Debug.Log("attempting to remove FE from registry: " + feGO.name);
         var fe = feGO.GetComponent<IFactoryEntity>();
         LinkedList<GameObject> feLinkedList = this.GetFactoryEntityLinkedListByType(fe.FactoryEntityType);
         GameObject toRemove = null;
@@ -137,7 +139,7 @@ public class PlayerFactory : MonoBehaviour
         {
             feLinkedList.Remove(toRemove);
         }
-        Debug.Log(this.entityTypeToEntities.ToString());
+        // Debug.Log(this.entityTypeToEntities.ToString());
     }
 
     public List<GameObject> GetFactoryEntityListByType(int factoryEntityType)

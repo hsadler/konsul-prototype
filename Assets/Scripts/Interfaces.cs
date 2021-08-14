@@ -7,6 +7,7 @@ public interface IFactoryEntity
     int FactoryEntityType { get; set; }
     // TODO: consider moving LauncherGameObjectId to the lauchable script since it's responsible for it
     int LauncherGameObjectId { get; set; }
+    bool InTransit { get; set; }
     string GetStringFormattedFactoryEntityInfo();
 }
 

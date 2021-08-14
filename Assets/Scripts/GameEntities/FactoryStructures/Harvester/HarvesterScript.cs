@@ -8,11 +8,12 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
     public int LauncherGameObjectId { get; set; }
+    public bool InTransit { get; set; } = false;
 
     public bool IsStructureActive { get; set; } = false;
 
     public GameObject rawResourcePrefab;
-    public float rawResourceLaunchImpulse = 1f;
+    public float launchImpulse = 1f;
 
     private FactoryStructureIOBehavior io;
     private int harvestedResource = Constants.ENTITY_TYPE_NONE;
@@ -71,7 +72,9 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
                     Quaternion.identity
                 );
                 go.GetComponent<RawResourceScript>().FactoryEntityType = this.harvestedResource;
-                go.GetComponent<FactoryEntityLaunchable>().SetLaunchForceAndDirection(this.rawResourceLaunchImpulse, launchDirection);
+                var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
+                feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
+                feLaunchable.Launch();
                 this.harvestedResource = Constants.ENTITY_TYPE_NONE;
             }
         }

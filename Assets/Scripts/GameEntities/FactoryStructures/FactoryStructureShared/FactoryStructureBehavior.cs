@@ -42,6 +42,7 @@ public class FactoryStructureBehavior : MonoBehaviour
     public void ActivateStructure()
     {
         this.fs.IsStructureActive = true;
+        this.GiveActiveAppearance();
         GalaxySceneManager.instance.factoryStructureCount += 1;
         GalaxySceneManager.instance.playerFactory.AddFactoryEntityToRegistry(this.gameObject);
     }

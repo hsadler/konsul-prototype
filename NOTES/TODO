@@ -6,13 +6,13 @@ TODO
 X move can-consume behavior to it's own script
 
 - POC Worker:
-    - factory-entity tracking:
+    X factory-entity tracking:
         X add to player-factory manager
-        - implement removal
-    - worker ability to lookup storages and query for existance of items
-    - worker ability to fetch storage items
+        X implement removal
+    X worker ability to lookup storages and query for existance of items
+    X worker ability to fetch storage items
     - implement worker carrying out tasks:
-        - fetch and build
+        X fetch and build (buggy)
         - remove and store
 
 - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
@@ -39,7 +39,7 @@ For consideration/prioritization:
 
 
 - Bugs:
-    - adjacent storages and distributors are consuming each other, modify colliders to be slightly smaller
+    X adjacent storages and distributors are consuming each other, modify colliders to be slightly smaller
     - factory-structures without resource-io behavior should not be able to go into transit-mode
     - bugfix why worker is not removable
 

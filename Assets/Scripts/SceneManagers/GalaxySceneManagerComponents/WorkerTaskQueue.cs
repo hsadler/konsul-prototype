@@ -104,7 +104,7 @@ public class WorkerTaskQueue : MonoBehaviour
                     GameObject matchedWorker = null;
                     foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
                     {
-                        float distance = Vector3.Distance(worker.transform.position, task.position);
+                        float distance = Vector3.Distance(worker.transform.position, task.structure.transform.position);
                         if (distance < shortestDistance)
                         {
                             shortestDistance = distance;

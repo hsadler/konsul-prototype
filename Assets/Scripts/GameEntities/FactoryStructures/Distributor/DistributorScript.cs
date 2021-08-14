@@ -8,6 +8,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
     public int LauncherGameObjectId { get; set; }
+    public bool InTransit { get; set; } = false;
 
     public bool IsStructureActive { get; set; } = false;
 
@@ -82,7 +83,9 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
             var fe = go.GetComponent<IFactoryEntity>();
             fe.LauncherGameObjectId = this.gameObject.GetInstanceID();
             fe.FactoryEntityType = feType;
-            go.GetComponent<FactoryEntityLaunchable>().SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
+            var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
+            feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
+            feLaunchable.Launch();
         }
     }
 

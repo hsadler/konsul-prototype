@@ -7,12 +7,19 @@ public class FactoryEntityLaunchable : MonoBehaviour
 
     public Rigidbody2D rb;
 
+    private IFactoryEntity fe;
+
     private float launchForce = 0.0f;
     private Vector3 launchDirection;
-    private bool hasLaunched = false;
+    private bool doLaunch = false;
 
 
     // UNITY HOOKS
+
+    void Awake()
+    {
+        this.fe = this.GetComponent<IFactoryEntity>();
+    }
 
     void Start()
     {
@@ -26,11 +33,12 @@ public class FactoryEntityLaunchable : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!this.hasLaunched)
+        if (this.doLaunch)
         {
+            fe.InTransit = true;
             this.rb.AddForce(launchDirection * launchForce, ForceMode2D.Impulse);
             this.transform.rotation = Quaternion.LookRotation(Vector3.forward, launchDirection);
-            this.hasLaunched = true;
+            this.doLaunch = false;
         }
     }
 
@@ -40,6 +48,11 @@ public class FactoryEntityLaunchable : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public void Launch()
+    {
+        this.doLaunch = true;
+    }
 
     public void SetLaunchForceAndDirection(float force, Vector3 direction)
     {

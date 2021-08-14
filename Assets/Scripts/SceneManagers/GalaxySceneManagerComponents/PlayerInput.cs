@@ -146,14 +146,14 @@ public class PlayerInput : MonoBehaviour
                 Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
                 if (this.isAdminMode)
                 {
-                    GalaxySceneManager.instance.playerFactory.AdminCreateFactoryEntity(this.currentPlacementStructureType, placementPosition);
+                    GalaxySceneManager.instance.playerFactory.CreateFactoryEntity(this.currentPlacementStructureType, placementPosition);
                 }
                 else
                 {
                     // place in-progress structure
-                    GalaxySceneManager.instance.playerFactory.CreateInProgressInProgressFactoryStructure(this.currentPlacementStructureType, placementPosition);
+                    var go = GalaxySceneManager.instance.playerFactory.CreateInProgressInProgressFactoryStructure(this.currentPlacementStructureType, placementPosition);
                     // queue task for worker to build
-                    var task = new WorkerTask(Constants.WORKER_TASK_TYPE_BUILD, placementPosition, this.currentPlacementStructureType);
+                    var task = new WorkerTask(Constants.WORKER_TASK_TYPE_BUILD, go);
                     GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                 }
             }
@@ -208,7 +208,7 @@ public class PlayerInput : MonoBehaviour
                     }
                     else
                     {
-                        var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected.transform.position);
+                        var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
                         GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                     }
                 }
@@ -298,7 +298,7 @@ public class PlayerInput : MonoBehaviour
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-            GalaxySceneManager.instance.playerFactory.AdminCreateFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
+            GalaxySceneManager.instance.playerFactory.CreateFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
         }
     }
 

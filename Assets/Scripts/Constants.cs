@@ -83,7 +83,15 @@ public static class Constants
 
     public const int WORKER_TASK_TYPE_BUILD = 1;
     public const int WORKER_TASK_TYPE_REMOVE = 2;
+
+    public const int WORKER_MODE_INIT = 0;
+    public const int WORKER_MODE_FETCH = 1;
+    public const int WORKER_MODE_BUILD = 2;
+    public const int WORKER_MODE_REMOVE = 3;
+    public const int WORKER_MODE_STORE = 4;
+
     public const float MAX_WORKER_TO_WORKER_TASK_DISTANCE = 100f;
+    public const float MAX_WORKER_TO_STORAGE_DISTANCE = 100f;
 
 
 }

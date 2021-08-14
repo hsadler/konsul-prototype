@@ -9,16 +9,16 @@ public class WorkerTask
 
     public Guid taskId;
     public int taskType;
-    public Vector3 position;
-    public int structureType;
+    public GameObject structure;
+    public int structureFeType;
 
 
-    public WorkerTask(int taskType, Vector3 position, int structureType = Constants.ENTITY_TYPE_NONE)
+    public WorkerTask(int taskType, GameObject structure)
     {
         this.taskId = Guid.NewGuid();
         this.taskType = taskType;
-        this.position = position;
-        this.structureType = structureType;
+        this.structure = structure;
+        this.structureFeType = structure.GetComponent<IFactoryEntity>().FactoryEntityType;
     }
 
 
