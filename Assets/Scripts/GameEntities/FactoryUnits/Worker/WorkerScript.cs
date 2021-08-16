@@ -114,7 +114,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.SelectStorageForFetch();
         }
         // close enough to storage for retrieval of item
-        else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
+        if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
         {
             // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
             // retrieve and bump worker mode
@@ -122,10 +122,10 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.AddFactoryEntityToInventory(retrieved);
             this.workerMode = Constants.WORKER_MODE_BUILD;
         }
-        // move closer to storage
+        // move closer to fetch storage
         else
         {
-            this.HandleMoveTowardsPosition(this.selectedDeliveryStorage.transform.position);
+            this.HandleMoveTowardsPosition(this.selectedFetchStorage.transform.position);
         }
     }
 
