@@ -117,8 +117,9 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
         {
             // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
+            // TODO: account for retrieved to be NONE feType
             // retrieve and bump worker mode
-            int retrieved = this.selectedFetchStorage.GetComponent<StorageScript>().Retrieve(this.task.structureFeType, this.gameObject);
+            int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.structureFeType);
             this.AddFactoryEntityToInventory(retrieved);
             this.workerMode = Constants.WORKER_MODE_BUILD;
         }
@@ -161,7 +162,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             float d = Vector3.Distance(this.transform.position, storage.transform.position);
             if (d < shortestDistance)
             {
-                if (storage.GetComponent<StorageScript>().Contains(this.task.structureFeType))
+                if (storage.GetComponent<FactoryEntityInventory>().Contains(this.task.structureFeType))
                 {
                     shortestDistance = d;
                     closestStorage = storage;
@@ -227,7 +228,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         else if (Vector3.Distance(this.transform.position, this.selectedDeliveryStorage.transform.position) < this.interactionDistance)
         {
             // remove structure from inventory and deposite to storage
-            this.selectedDeliveryStorage.GetComponent<StorageScript>().Store(
+            this.selectedDeliveryStorage.GetComponent<FactoryEntityInventory>().Store(
                 this.RemoveFactoryEntityFromInventory(this.task.structureFeType)
             );
             // init worker

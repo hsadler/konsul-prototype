@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FactoryEntityReceiver : MonoBehaviour
 {
 
 
+    // TODO: may not be any reason to use a queue here..
     public Queue<int> feBuffer = new Queue<int>();
 
     private IFactoryStructure selfFactoryStructure;
+
+    private bool canReceive = true;
 
 
     // UNITY HOOKS
@@ -27,10 +31,10 @@ public class FactoryEntityReceiver : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         // factory-entity consumption
-        if (this.selfFactoryStructure.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
+        if (this.canReceive && this.selfFactoryStructure.IsStructureActive && other.gameObject.CompareTag("FactoryEntity"))
         {
             // don't consume inactive structures (bugfix for placement-cursor object)
             var fs = other.gameObject.GetComponent<IFactoryStructure>();
@@ -56,6 +60,18 @@ public class FactoryEntityReceiver : MonoBehaviour
     }
 
     // INTERFACE METHODS
+
+    public void SetCanReceive(bool status)
+    {
+        this.canReceive = status;
+    }
+
+    public List<int> GetBuffer()
+    {
+        List<int> items = this.feBuffer.ToList<int>();
+        this.feBuffer = new Queue<int>();
+        return items;
+    }
 
     // IMPLEMENTATION METHODS
 

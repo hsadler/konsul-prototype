@@ -32,7 +32,6 @@ public interface IFactoryDistributor
 
 public interface IFactoryStorage
 {
-    void AdminPopulateStorage();
 }
 
 // factory-unit group and interfaces

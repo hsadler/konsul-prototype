@@ -296,10 +296,10 @@ public class PlayerInput : MonoBehaviour
     {
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT && Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_POPULATE_STORAGE))
         {
-            var storageScript = this.currentEntitySelected.GetComponent<IFactoryStorage>();
-            if (storageScript != null)
+            var inventory = this.currentEntitySelected.GetComponent<FactoryEntityInventory>();
+            if (inventory != null)
             {
-                storageScript.AdminPopulateStorage();
+                inventory.AdminPopulate();
             }
         }
     }
@@ -319,15 +319,18 @@ public class PlayerInput : MonoBehaviour
     private GameObject GetHoveredFactoryEntity()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hit = Physics2D.OverlapPoint(mousePos);
-        if (hit != null && hit.gameObject.CompareTag("FactoryEntity"))
+        Collider2D[] hits = Physics2D.OverlapPointAll(mousePos);
+        foreach (Collider2D hit in hits)
         {
-            // don't return hover of cursor factory structure
-            if (hit.gameObject == this.cursorFactoryStructureGO)
+            if (hit != null && hit.gameObject.CompareTag("FactoryEntity"))
             {
-                return null;
+                // don't return hover of cursor factory structure
+                if (hit.gameObject == this.cursorFactoryStructureGO)
+                {
+                    return null;
+                }
+                return hit.gameObject;
             }
-            return hit.gameObject;
         }
         return null;
     }

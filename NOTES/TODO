@@ -13,7 +13,18 @@ X POC Worker:
         X fetch and build
         X remove and store
 
-- test and polish workers
+- implement inventory FE behavior script
+
+- test and polish workers:
+    - worker shouldn't fetch items if already in inventory
+    - workers shouldn't deliver to storages marked for removal
+    - worker should build structures from materials, not just placement
+    - worker actions should take time:
+        - rotating
+        - retrieving
+        - depositing
+        - placing
+        - building
 
 - POC early game progression:
     - figure out initial setting
@@ -21,7 +32,6 @@ X POC Worker:
     - player begins expanding production
     - player harnesses the power of the sun
     
-
 - POC power gathering from stars:
     - Photovoltaic
     - Mirror
@@ -31,6 +41,8 @@ X POC Worker:
 
 
 For consideration/prioritization:
+    - storage capacity per storage and per worker
+    - system for the cost of each factory entity
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - define output types for resource-IO
     - multiselect with selection box
@@ -50,9 +62,7 @@ For consideration/prioritization:
 
 
 Improvements and Polish:
-    - worker shouldn't fetch items if already in inventory
-    - workers shouldn't deliver to storages marked for removal
     - polish black hole, need high-rez sprite image
-    - prevent star overlap by implementing generation buffer
+    - prevent star overlap by implementing p-system buffer during generation
     - prevent planetary system overlap with black hole
     
