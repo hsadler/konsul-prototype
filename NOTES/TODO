@@ -13,7 +13,8 @@ X POC Worker:
         X fetch and build
         X remove and store
 
-- implement inventory FE behavior script
+X implement inventory FE behavior script
+X implement buffer-queue FE behavior script for Distributor
 
 - test and polish workers:
     - worker shouldn't fetch items if already in inventory
@@ -53,6 +54,7 @@ For consideration/prioritization:
 
 - Bugs:
     - some selection vs. placement bugs
+    - game object destroyed but still trying to be accessed in WorkerTaskQueue
     - factory-structures without resource-io behavior should not be able to go into transit-mode
     - bugfix why worker is not removable
 
