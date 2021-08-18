@@ -2,19 +2,9 @@
 
 TODO
 
+- multiselect with selection box
 
-X POC Worker:
-    X factory-entity tracking:
-        X add to player-factory manager
-        X implement removal
-    X worker ability to lookup storages and query for existance of items
-    X worker ability to fetch storage items
-    X implement worker carrying out tasks:
-        X fetch and build
-        X remove and store
-
-X implement inventory FE behavior script
-X implement buffer-queue FE behavior script for Distributor
+- system for the cost of each factory entity
 
 - test and polish workers:
     - worker shouldn't fetch items if already in inventory
@@ -42,11 +32,9 @@ X implement buffer-queue FE behavior script for Distributor
 
 
 For consideration/prioritization:
-    - storage capacity per storage and per worker
-    - system for the cost of each factory entity
+    X storage capacity per storage and per worker
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - define output types for resource-IO
-    - multiselect with selection box
     - consider a freeze-time control
     - consider different tiers of power gathering
         (though prob not for prototype)
