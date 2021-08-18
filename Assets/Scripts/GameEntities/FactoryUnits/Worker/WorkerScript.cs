@@ -13,7 +13,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     public float moveSpeed = 1f;
     public float interactionDistance = 1f;
 
-    private IDictionary<int, int> inventory = new Dictionary<int, int>();
+    private FactoryEntityInventory inventory;
+    // private IDictionary<int, int> inventory = new Dictionary<int, int>();
     private WorkerTask task;
     private int workerMode = Constants.WORKER_MODE_INIT;
 
@@ -29,6 +30,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     void Awake()
     {
         GalaxySceneManager.instance.workerTaskQueue.AddNewWorker(this.gameObject);
+        this.inventory = this.GetComponent<FactoryEntityInventory>();
     }
 
     void Start()
@@ -61,7 +63,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     public string GetStringFormattedFactoryEntityInfo()
     {
-        return "worker mode: doing stuff";
+        return this.inventory.GetStatus();
     }
 
     public void DoTask(WorkerTask task)
@@ -120,7 +122,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // TODO: account for retrieved to be NONE feType
             // retrieve and bump worker mode
             int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.structureFeType);
-            this.AddFactoryEntityToInventory(retrieved);
+            this.inventory.Store(retrieved);
             this.workerMode = Constants.WORKER_MODE_BUILD;
         }
         // move closer to fetch storage
@@ -137,7 +139,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             // Debug.Log("placing structure of type: " + this.task.structureFeType.ToString());
             // remove structure from inventory
-            this.RemoveFactoryEntityFromInventory(this.task.structureFeType);
+            this.inventory.Retrieve(this.task.structureFeType);
             // activate the in-progress game object
             this.task.structure.GetComponent<FactoryStructureBehavior>().ActivateStructure();
             // init worker
@@ -207,7 +209,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // remove the structure
             Object.Destroy(this.task.structure);
             // add structure to inventory
-            this.AddFactoryEntityToInventory(this.task.structureFeType);
+            this.inventory.Store(this.task.structureFeType);
             // bump mode
             this.workerMode = Constants.WORKER_MODE_STORE;
         }
@@ -229,7 +231,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             // remove structure from inventory and deposite to storage
             this.selectedDeliveryStorage.GetComponent<FactoryEntityInventory>().Store(
-                this.RemoveFactoryEntityFromInventory(this.task.structureFeType)
+                this.inventory.Retrieve(this.task.structureFeType)
             );
             // init worker
             this.InitWorker();
@@ -264,38 +266,6 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             // TODO: maybe declare task as unable to complete and free worker
         }
-    }
-
-    // inventory
-
-    private void AddFactoryEntityToInventory(int feType)
-    {
-        if (this.inventory.ContainsKey(feType))
-        {
-            this.inventory[feType] += 1;
-        }
-        else
-        {
-            this.inventory.Add(feType, 1);
-        }
-    }
-
-    private int RemoveFactoryEntityFromInventory(int feType)
-    {
-        if (this.InventoryContainsFactoryEntity(feType))
-        {
-            this.inventory[feType] -= 1;
-            return feType;
-        }
-        else
-        {
-            return Constants.ENTITY_TYPE_NONE;
-        }
-    }
-
-    private bool InventoryContainsFactoryEntity(int feType)
-    {
-        return this.inventory.ContainsKey(feType) && this.inventory[feType] > 0;
     }
 
     // helpers
