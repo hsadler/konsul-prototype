@@ -27,7 +27,6 @@ PLAYER CONTROLS
         - Tab-keypress: cycles through existing IOs on the selected structure and highlights them
         - D-keypress: delete a highlighted IO
         - Q-keypress: revert to "entity select" mode
-    - Left-click entity: selects another entity
     - Q-keypress: revert to "init" mode
 
 - Left-click box-drag: change to "entity multiselect" mode if multiple entities are within box

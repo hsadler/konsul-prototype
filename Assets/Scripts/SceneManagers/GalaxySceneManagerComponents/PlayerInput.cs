@@ -64,9 +64,12 @@ public class PlayerInput : MonoBehaviour
                 this.HandleAdminSpawnWorker();
             }
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
         {
             this.HandleEntitySelection();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
             this.HandleEntityPlacementOrSelection();
             this.HandleStructureIOCreation();
         }
@@ -132,7 +135,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleEntityPlacementOrSelection()
     {
         // placement mode and left click
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
+        if (Input.GetMouseButtonUp(0) && this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
         {
             GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
             if (clickedFactoryEntity != null)
@@ -169,10 +172,28 @@ public class PlayerInput : MonoBehaviour
             this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT
         )
         {
-            GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
-            if (clickedFactoryEntity != null)
+            // initial mouse button press
+            if (Input.GetMouseButtonDown(0))
             {
-                this.SelectEntity(clickedFactoryEntity);
+                // TODO: start multiselect box
+                Debug.Log("initial mouse button press");
+            }
+            // mouse button up
+            else if (Input.GetMouseButtonUp(0))
+            {
+                // TODO: end multiselect box
+                Debug.Log("mouse button up");
+                GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
+                if (clickedFactoryEntity != null)
+                {
+                    this.SelectEntity(clickedFactoryEntity);
+                }
+            }
+            // mouse button held down
+            else if (Input.GetMouseButton(0))
+            {
+                // TODO: update shape of multiselect box
+                Debug.Log("mouse button held down");
             }
         }
     }
@@ -250,7 +271,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleStructureIOCreation()
     {
         // structure-io mode and left click
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+        if (Input.GetMouseButtonUp(0) && this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
         {
             GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
             if (clickedFactoryEntity != null)
