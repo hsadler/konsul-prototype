@@ -11,27 +11,6 @@ Guiding light problems for player to solve:
     - progression: unlocking next tier of items, abilities, etc.
 
 
-Player controls POC:
-    - scene start with presentation of galaxy
-    - player controls:
-        - move camera to view planetary systems
-        - zoom camera
-        - change mode to "placement" by pressing alphaNum key:
-            * this mode should display a "ghost" form of the structure under the cursor 
-            - click on galaxy grid to place
-            - change placement selection by pressing different alphaNum key
-            - change mode to "init" by pressing "Q"
-        - change mode to "structure select" by clicking structure:
-            * this mode should display information about the selected structure
-            - select a different structure by clicking another
-                (prototype will limit structure selection to one at a time)
-            - change mode to "structure io" by pressing "spacebar": 
-                - create output->input relationship by clicking another structure
-                    (once this is completed, mode reverts to "structure select")
-                - cancel io by pressing "Q" to go back to "structure select" mode
-            - change mode to "init" by pressing "Q"
-
-
 Early game progression:
     - game start:
         - one worker 

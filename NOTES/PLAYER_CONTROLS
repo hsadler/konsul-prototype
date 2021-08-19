@@ -1,0 +1,40 @@
+
+
+PLAYER CONTROLS
+
+
+- Begins in "init" mode
+
+- Right-click drag: move camera
+
+- Mouse Wheel: zoom camera
+
+- AlphaNum-keypress: change to "placement" mode
+    * displays a "ghost" form of the structure under the cursor 
+    - Left-click location: place a blueprint of the structure and schedule for building
+    - AlphaNum-keypress: change current placement-selection
+    - Q-keypress: change mode to "init"
+
+- Left-click entity: change to "entity select" mode
+    * displays information about the selected structure
+    - D-keypress:
+        - if entity is blueprint, delete immediately
+        - if entity is structure, schedule for removal
+    - E-keypress: change to "structure io" mode 
+        - Left-click another structure: creates IO (upon completion, mode reverts to "entity select")
+        - Q-keypress: revert to "entity select" mode
+    - Tab-keypress: change to "structure io select" mode
+        - Tab-keypress: cycles through existing IOs on the selected structure and highlights them
+        - D-keypress: delete a highlighted IO
+        - Q-keypress: revert to "entity select" mode
+    - Left-click entity: selects another entity
+    - Q-keypress: revert to "init" mode
+
+- Left-click box-drag: change to "entity multiselect" mode if multiple entities are within box
+    - D-keypress:
+        - blueprints are immediately removed
+        - structures are scheduled for removal
+    - E-keypress: changes to "structure io multiselect" mode
+        - Left-click another structure: creates IOs for each of the selected structures (upon completion, mode reverts to "entity multiselect")
+        - Q-keypress: revert to "entity multiselect" mode
+    - Q-keypress: revert to "init" mode

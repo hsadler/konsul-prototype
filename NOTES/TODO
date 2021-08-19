@@ -32,7 +32,6 @@ TODO
 
 
 For consideration/prioritization:
-    X storage capacity per storage and per worker
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - define output types for resource-IO
     - consider a freeze-time control

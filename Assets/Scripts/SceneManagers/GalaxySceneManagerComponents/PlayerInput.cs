@@ -68,7 +68,7 @@ public class PlayerInput : MonoBehaviour
         {
             this.HandleEntitySelection();
             this.HandleEntityPlacementOrSelection();
-            this.HandleStructureIO();
+            this.HandleStructureIOCreation();
         }
         this.HandleEntityPlacementCursor();
         // camera
@@ -247,7 +247,7 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void HandleStructureIO()
+    private void HandleStructureIOCreation()
     {
         // structure-io mode and left click
         if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
