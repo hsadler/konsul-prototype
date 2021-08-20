@@ -31,6 +31,10 @@ public class PlayerInput : MonoBehaviour
     public GameObject currentStructureIOSelected;
     public GameObject cursorFactoryStructureGO;
 
+    // multiselect
+    public GameObject selectionBox;
+    public Vector3 initialMultiselectMousePosition;
+
 
     // UNITY HOOKS
 
@@ -175,14 +179,18 @@ public class PlayerInput : MonoBehaviour
             // initial mouse button press
             if (Input.GetMouseButtonDown(0))
             {
-                // TODO: start multiselect box
-                Debug.Log("initial mouse button press");
+                this.selectionBox.SetActive(true);
+                this.selectionBox.transform.localScale = Vector3.zero;
+                this.initialMultiselectMousePosition = Input.mousePosition;
             }
             // mouse button up
             else if (Input.GetMouseButtonUp(0))
             {
                 // TODO: end multiselect box
-                Debug.Log("mouse button up");
+                if (Input.mousePosition != this.initialMultiselectMousePosition)
+                {
+                }
+
                 GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
                 if (clickedFactoryEntity != null)
                 {
@@ -192,8 +200,14 @@ public class PlayerInput : MonoBehaviour
             // mouse button held down
             else if (Input.GetMouseButton(0))
             {
-                // TODO: update shape of multiselect box
-                Debug.Log("mouse button held down");
+                Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                float width = Mathf.Abs(mPos1.x - mPos2.x);
+                float height = Mathf.Abs(mPos1.y - mPos2.y);
+                Vector3 midpoint = (mPos1 - mPos2) / 2;
+                this.selectionBox.transform.localScale = new Vector3(width, height, 0);
+                Vector3 boxPos = mPos1 - midpoint;
+                this.selectionBox.transform.position = new Vector3(boxPos.x, boxPos.y, 0);
             }
         }
     }
