@@ -388,6 +388,7 @@ public class PlayerInput : MonoBehaviour
                 GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
                 if (clickedFactoryEntity != null)
                 {
+                    //  TODO: BUG: fStructure is null here sometimes
                     if (fStructure.GetComponent<FactoryStructureIOBehavior>() != null)
                     {
                         GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(fStructure, clickedFactoryEntity);

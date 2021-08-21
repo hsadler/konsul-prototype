@@ -36,8 +36,7 @@ public class FactoryEntityLaunchable : MonoBehaviour
         if (this.doLaunch)
         {
             fe.InTransit = true;
-            this.rb.AddForce(launchDirection * launchForce, ForceMode2D.Impulse);
-            this.transform.rotation = Quaternion.LookRotation(Vector3.forward, launchDirection);
+            this.rb.AddForce(this.launchDirection * this.launchForce, ForceMode2D.Impulse);
             this.doLaunch = false;
         }
     }
@@ -58,6 +57,7 @@ public class FactoryEntityLaunchable : MonoBehaviour
     {
         this.launchForce = force;
         this.launchDirection = direction;
+        this.transform.rotation = Quaternion.LookRotation(Vector3.forward, this.launchDirection);
     }
 
     // IMPLEMENTATION METHODS

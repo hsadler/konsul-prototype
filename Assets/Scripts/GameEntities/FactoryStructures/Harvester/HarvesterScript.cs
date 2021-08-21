@@ -68,7 +68,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
                 Vector3 launchDirection = this.io.GetNextSendDirection();
                 GameObject go = Instantiate(
                     this.rawResourcePrefab,
-                    this.transform.position,
+                    this.transform.position + launchDirection,
                     Quaternion.identity
                 );
                 go.GetComponent<RawResourceScript>().FactoryEntityType = this.harvestedResource;

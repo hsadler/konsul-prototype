@@ -64,7 +64,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
             GameObject fePrefab = GalaxySceneManager.instance.playerFactory.GetFactoryEntityPrefabByType(feType);
             GameObject go = Instantiate(
                 fePrefab,
-                this.transform.position,
+                this.transform.position + launchDirection,
                 Quaternion.identity
             );
             var fe = go.GetComponent<IFactoryEntity>();

@@ -11,7 +11,7 @@ X player controls update:
     X batch removal
     X batch io creation
 
-- fix in-transit spawn location to be away from spawner in order to not collide (or similar solution)
+X fix in-transit spawn location to be away from spawner in order to not collide (or similar solution)
 
 - BUGFIX TODOs noted in code
 
