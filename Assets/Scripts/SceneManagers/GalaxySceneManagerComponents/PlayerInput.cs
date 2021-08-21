@@ -270,38 +270,49 @@ public class PlayerInput : MonoBehaviour
         //  removal key press
         if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_KEY))
         {
+            List<GameObject> fStructuresToRemove = new List<GameObject>();
             // entity-select mode
             if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
             {
-                var feRemovable = this.currentEntitySelected.GetComponent<FactoryEntityRemovable>();
+                fStructuresToRemove.Add(this.currentEntitySelected);
+            }
+            // entity-multiselect mode
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            {
+                fStructuresToRemove = this.currentEntitiesSelected;
+            }
+            foreach (var fStructure in fStructuresToRemove)
+            {
+                var feRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
                 if (feRemovable != null)
                 {
+                    // remove immediately if admin
                     if (this.isAdminMode)
                     {
-                        GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentEntitySelected);
+                        GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
                         this.currentEntitySelected = null;
                         this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
                     }
                     else
                     {
-                        IFactoryStructure fs = this.currentEntitySelected.GetComponent<IFactoryStructure>();
+                        IFactoryStructure fs = fStructure.GetComponent<IFactoryStructure>();
                         // remove immediately if not an active structure
                         if (fs != null && !fs.IsStructureActive)
                         {
-                            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(this.currentEntitySelected);
+                            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
                         }
                         // mark structure as to-remove and create worker task
                         else
                         {
                             feRemovable.SetMarkForRemoval(true);
-                            var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
+                            var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, fStructure);
                             GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                         }
                     }
                 }
             }
             // structure-io-select mode
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
                 this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
                 this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;

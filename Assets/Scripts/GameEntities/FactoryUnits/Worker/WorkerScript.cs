@@ -121,7 +121,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.SelectStorageForFetch();
         }
         // close enough to storage for retrieval of item
-        if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
+        else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
         {
             // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
             // TODO: account for retrieved to be NONE feType

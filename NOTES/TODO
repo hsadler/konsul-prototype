@@ -6,9 +6,9 @@ X multiselect with selection box
 
 X additive select
 
-player controls update:
-    - removal schedule toggle via multiple D-keypresses
-    - batch removal
+- player controls update:
+    X cancel removal task with C-keypress 
+    X batch removal
     - batch io creation
 
 - fix in-transit spawn location to be away from spawner in order to not collide (or similar solution)
