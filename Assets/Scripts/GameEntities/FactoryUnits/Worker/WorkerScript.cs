@@ -43,6 +43,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             return;
         }
+        if (this.task.isCancelled)
+        {
+            this.InitWorker();
+            return;
+        }
         if (this.task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
         {
             this.FetchAndBuildFactoryStructure();

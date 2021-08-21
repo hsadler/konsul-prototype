@@ -23,9 +23,9 @@ public class FactoryEntityRemovable : MonoBehaviour
 
     // INTERFACE METHODS
 
-    public void MarkForRemoval()
+    public void SetMarkForRemoval(bool status)
     {
-        this.toRemoveIndicator.SetActive(true);
+        this.toRemoveIndicator.SetActive(status);
     }
 
     // IMPLEMENTATION METHODS

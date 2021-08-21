@@ -20,6 +20,8 @@ PLAYER CONTROLS
     - D-keypress:
         - if entity is blueprint, delete immediately
         - if entity is structure, schedule for removal
+    - C-keypress
+        - cancels scheduled or in-progress structure removal
     - E-keypress: change to "structure io" mode 
         - Left-click another structure: creates IO (upon completion, mode reverts to "entity select")
         - Q-keypress: revert to "entity select" mode
@@ -33,6 +35,8 @@ PLAYER CONTROLS
     - D-keypress:
         - blueprints are immediately removed
         - structures are scheduled for removal
+    - C-keypress
+        - cancels scheduled or in-progress structure removals
     - E-keypress: changes to "structure io multiselect" mode
         - Left-click another structure: creates IOs for each of the selected structures (upon completion, mode reverts to "entity multiselect")
         - Q-keypress: revert to "entity multiselect" mode

@@ -10,6 +10,7 @@ public class WorkerTaskQueue : MonoBehaviour
     private IDictionary<int, GameObject> workerIdToAvailableWorker = new Dictionary<int, GameObject>();
 
     private LinkedList<WorkerTask> tasks = new LinkedList<WorkerTask>();
+    private LinkedList<WorkerTask> tasksInProgress = new LinkedList<WorkerTask>();
 
 
     // UNITY HOOKS
@@ -85,7 +86,29 @@ public class WorkerTaskQueue : MonoBehaviour
     }
     public void CancelWorkerTask(WorkerTask task)
     {
+        task.isCancelled = true;
         this.tasks.Remove(task);
+        this.tasksInProgress.Remove(task);
+    }
+    public WorkerTask FindTaskByFactoryStructure(GameObject factoryStructure)
+    {
+        // check task queue
+        foreach (WorkerTask task in this.tasks)
+        {
+            if (task.structure == factoryStructure)
+            {
+                return task;
+            }
+        }
+        // check in-progress
+        foreach (WorkerTask task in this.tasksInProgress)
+        {
+            if (task.structure == factoryStructure)
+            {
+                return task;
+            }
+        }
+        return null;
     }
 
     // IMPLEMENTATION METHODS
@@ -95,7 +118,7 @@ public class WorkerTaskQueue : MonoBehaviour
         if (this.tasks.Count > 0 && this.workerIdToAvailableWorker.Values.Count > 0)
         {
             // try to match a worker for each task
-            var tasksToRemove = new List<WorkerTask>();
+            var tasksToSetInProgress = new List<WorkerTask>();
             foreach (WorkerTask task in this.tasks)
             {
                 if (this.workerIdToAvailableWorker.Values.Count > 0)
@@ -118,7 +141,7 @@ public class WorkerTaskQueue : MonoBehaviour
                     {
                         // Debug.Log("matching worker id: " + matchedWorker.GetInstanceID().ToString() + " to task id: " + task.taskId.ToString());
                         matchedWorker.GetComponent<WorkerScript>().DoTask(task);
-                        tasksToRemove.Add(task);
+                        tasksToSetInProgress.Add(task);
                     }
                 }
                 // no more available workers
@@ -127,10 +150,11 @@ public class WorkerTaskQueue : MonoBehaviour
                     break;
                 }
             }
-            foreach (WorkerTask task in tasksToRemove)
+            foreach (WorkerTask task in tasksToSetInProgress)
             {
-                // Debug.Log("removing worker task from queue with id: " + task.taskId.ToString());
+                // Debug.Log("setting worker task as in-progress with id: " + task.taskId.ToString());
                 this.tasks.Remove(task);
+                this.tasksInProgress.AddLast(task);
             }
         }
     }

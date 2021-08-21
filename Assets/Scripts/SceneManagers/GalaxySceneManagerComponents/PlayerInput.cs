@@ -61,6 +61,7 @@ public class PlayerInput : MonoBehaviour
             this.HandleAdminModeToggle();
             this.HandleEntityPlacementMode();
             this.HandleRemoval();
+            this.HandelCancelRemoval();
             this.HandleStructureIOMode();
             this.HandleCycleIOSelection();
             this.HandleModeRevert();
@@ -292,7 +293,7 @@ public class PlayerInput : MonoBehaviour
                         // mark structure as to-remove and create worker task
                         else
                         {
-                            feRemovable.MarkForRemoval();
+                            feRemovable.SetMarkForRemoval(true);
                             var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, this.currentEntitySelected);
                             GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                         }
@@ -304,6 +305,33 @@ public class PlayerInput : MonoBehaviour
             {
                 this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
                 this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+            }
+        }
+    }
+
+    private void HandelCancelRemoval()
+    {
+        // cancel-removal keypress
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_CANCEL_REMOVAL_KEY))
+        {
+            List<GameObject> fStructuresToCancel = new List<GameObject>();
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            {
+                fStructuresToCancel.Add(this.currentEntitySelected);
+            }
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            {
+                fStructuresToCancel = this.currentEntitiesSelected;
+            }
+            foreach (GameObject fStructure in fStructuresToCancel)
+            {
+                WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(fStructure);
+                if (task != null)
+                {
+                    FactoryEntityRemovable fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
+                    fRemovable.SetMarkForRemoval(false);
+                    GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                }
             }
         }
     }

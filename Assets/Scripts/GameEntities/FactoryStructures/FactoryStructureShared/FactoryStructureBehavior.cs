@@ -33,7 +33,10 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     void OnDestroy()
     {
-        GalaxySceneManager.instance.factoryStructureCount -= 1;
+        if (this.fs.IsStructureActive)
+        {
+            GalaxySceneManager.instance.factoryStructureCount -= 1;
+        }
         GalaxySceneManager.instance.playerFactory.RemoveFactoryEntityFromRegistry(this.gameObject);
     }
 
