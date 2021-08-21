@@ -256,11 +256,11 @@ public class PlayerInput : MonoBehaviour
         // entity-select mode or structure-io-select and key press
         if (
             (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
-            Input.GetKeyDown(Constants.PLAYER_INPUT_CYCLE_IO_SELECT)
+            Input.GetKeyDown(Constants.PLAYER_INPUT_CYCLE_IO_SELECT) &&
+            this.currentEntitySelected != null
         )
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
-            // TODO: BUG: something about object reference not set
             this.currentStructureIOSelected = this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
         }
     }
@@ -349,29 +349,62 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleStructureIOMode()
     {
-        // entity-select mode and mode key press
-        if (
-            (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
-            Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY)
-        )
+        // io key press
+        if (Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY))
         {
-            this.DeselectAllStructuresIO();
-            this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
+            // entity-select mode or io-select mode
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            {
+                this.DeselectAllStructuresIO();
+                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
+            }
+            // entity-multiselect mode
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO;
+            }
         }
     }
 
     private void HandleStructureIOCreation()
     {
-        // structure-io mode and left click
-        if (Input.GetMouseButtonUp(0) && this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+        // structure-io mode or multi-structure-io mode and left click
+        if (Input.GetMouseButtonUp(0))
         {
-            GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
-            if (clickedFactoryEntity != null)
+            bool iosCreated = false;
+            // collect structures on which to create IOs
+            List<GameObject> fStructuresToCreateIOs = new List<GameObject>();
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
             {
-                if (this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>() != null)
+                fStructuresToCreateIOs.Add(this.currentEntitySelected);
+            }
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+            {
+                fStructuresToCreateIOs = this.currentEntitiesSelected;
+            }
+            // create IOs
+            foreach (GameObject fStructure in fStructuresToCreateIOs)
+            {
+                GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
+                if (clickedFactoryEntity != null)
                 {
-                    GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(this.currentEntitySelected, clickedFactoryEntity);
+                    if (fStructure.GetComponent<FactoryStructureIOBehavior>() != null)
+                    {
+                        GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(fStructure, clickedFactoryEntity);
+                        iosCreated = true;
+                    }
+                }
+            }
+            // revert to correct mode if any IOs were created 
+            if (iosCreated)
+            {
+                if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+                {
                     this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                }
+                else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+                {
+                    this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
                 }
             }
         }
