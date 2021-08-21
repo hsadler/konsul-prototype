@@ -14,12 +14,16 @@ public static class Constants
     public const int PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT = 3;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO = 4;
     public const int PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT = 5;
+    public const int PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT = 6;
+    public const int PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO = 7;
 
     // player input key mappings
     public const KeyCode PLAYER_INPUT_STRUCTURE_IO_MODE_KEY = KeyCode.E;
-    public const KeyCode PLAYER_INPUT_REVERT_MODE_KEY = KeyCode.Q;
     public const KeyCode PLAYER_INPUT_CYCLE_IO_SELECT = KeyCode.Tab;
     public const KeyCode PLAYER_INPUT_REMOVAL_KEY = KeyCode.D;
+    public const KeyCode PLAYER_INPUT_REVERT_MODE_KEY = KeyCode.Q;
+    public const KeyCode PLAYER_INPUT_FAST_ZOOM_KEY = KeyCode.LeftShift;
+    public const KeyCode PLAYER_INPUT_ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
     public const KeyCode PLAYER_INPUT_QUIT_GAME_KEY = KeyCode.Escape;
     public const KeyCode PLAYER_INPUT_ADMIN_MODE_TOGGLE = KeyCode.A;
     public const KeyCode PLAYER_INPUT_ADMIN_CREATE_WORKER = KeyCode.W;

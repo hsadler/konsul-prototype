@@ -35,10 +35,6 @@ public class FactoryEntitySelectable : MonoBehaviour
         {
             this.SetSelected(true);
         }
-        else
-        {
-            this.SetSelected(false);
-        }
     }
 
     private void Deselect()

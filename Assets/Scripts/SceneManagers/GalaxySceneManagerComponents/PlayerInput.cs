@@ -17,6 +17,8 @@ public class PlayerInput : MonoBehaviour
         { Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT, "entity select" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "transit create" },
         { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT, "transit select" },
+        { Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT, "entity multiselect" },
+        { Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO, "batch transit create" },
     };
 
     public int currentPlacementStructureType;
@@ -33,7 +35,8 @@ public class PlayerInput : MonoBehaviour
 
     // multiselect
     public GameObject selectionBox;
-    public Vector3 initialMultiselectMousePosition;
+    private Vector3 initialMultiselectMousePosition;
+    private List<GameObject> currentEntitiesSelected = new List<GameObject>();
 
 
     // UNITY HOOKS
@@ -169,35 +172,70 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleEntitySelection()
     {
-        // init mode or entity-select or structure-io-select mode and left click
         if (
             this.inputMode == Constants.PLAYER_INPUT_MODE_INIT ||
             this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT ||
+            this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT ||
             this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT
         )
         {
-            // initial mouse button press
+            // initial mouse button press: activate and initialize the selection-box
             if (Input.GetMouseButtonDown(0))
             {
                 this.selectionBox.SetActive(true);
                 this.selectionBox.transform.localScale = Vector3.zero;
                 this.initialMultiselectMousePosition = Input.mousePosition;
             }
-            // mouse button up
+            // mouse button up: selection handling
             else if (Input.GetMouseButtonUp(0))
             {
-                // TODO: end multiselect box
+                this.selectionBox.SetActive(false);
+                // selection box handling
                 if (Input.mousePosition != this.initialMultiselectMousePosition)
                 {
+                    // detect what factory entities are within selection box
+                    Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 mPos2 = Camera.main.ScreenToWorldPoint(this.initialMultiselectMousePosition);
+                    Collider2D[] hits = Physics2D.OverlapAreaAll(mPos1, mPos2);
+                    List<GameObject> boxSelectedFactoryEntities = new List<GameObject>();
+                    foreach (Collider2D col in hits)
+                    {
+                        if (col.gameObject.CompareTag("FactoryEntity"))
+                        {
+                            boxSelectedFactoryEntities.Add(col.gameObject);
+                        }
+                    }
+                    // multi-selection setting
+                    if (boxSelectedFactoryEntities.Count > 1)
+                    {
+                        this.MultiSelectEntities(boxSelectedFactoryEntities);
+                    }
+                    // single-selection setting
+                    else if (boxSelectedFactoryEntities.Count == 1)
+                    {
+                        this.SelectEntity(boxSelectedFactoryEntities[0]);
+                    }
+                    // nothing selected and not additive selection, so clear selections
+                    else if (!Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+                    {
+                        this.DeselectAllFactoryEntities();
+                    }
                 }
-
-                GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
-                if (clickedFactoryEntity != null)
+                // single-point click selection handling
+                else
                 {
-                    this.SelectEntity(clickedFactoryEntity);
+                    GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
+                    if (clickedFactoryEntity != null)
+                    {
+                        this.SelectEntity(clickedFactoryEntity);
+                    }
+                    else
+                    {
+                        this.DeselectAllFactoryEntities();
+                    }
                 }
             }
-            // mouse button held down
+            // mouse button held down: update the position and shape of the selection-box
             else if (Input.GetMouseButton(0))
             {
                 Vector3 mPos1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -221,6 +259,7 @@ public class PlayerInput : MonoBehaviour
         )
         {
             this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
+            // TODO: BUG: something about object reference not set
             this.currentStructureIOSelected = this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
         }
     }
@@ -310,7 +349,7 @@ public class PlayerInput : MonoBehaviour
                 this.InitCurrentPlacementStructureType();
                 this.InitCursorFactoryStructureGO();
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
                 this.DeselectAllFactoryEntities();
@@ -318,6 +357,10 @@ public class PlayerInput : MonoBehaviour
             else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
             {
                 this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+            }
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+            {
+                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
             }
             else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
             {
@@ -372,15 +415,60 @@ public class PlayerInput : MonoBehaviour
 
     private void SelectEntity(GameObject factoryEntity)
     {
+        // method can handle single selection as well as additive multi-selection 
         this.DeselectAllStructuresIO();
+        // additive seleciton
+        if (Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+        {
+            // additive entity selection following a single selection
+            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            {
+                List<GameObject> multiSelected = new List<GameObject>() {
+                    this.currentEntitySelected,
+                    factoryEntity
+                };
+                this.MultiSelectEntities(multiSelected);
+                return;
+            }
+            // additive entity selection following a multiselection
+            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            {
+                this.MultiSelectEntities(new List<GameObject>() { factoryEntity });
+                return;
+            }
+            // additive entity selection following nothing selected
+            else
+            {
+                // fall through
+            }
+        }
+        // single entity selection
         this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
-        GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(factoryEntity);
+        this.DeselectAllFactoryEntities();
         this.currentEntitySelected = factoryEntity;
+        GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(factoryEntity);
+    }
+
+    private void MultiSelectEntities(List<GameObject> factoryEntities)
+    {
+        this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
+        this.currentEntitySelected = null;
+        this.DeselectAllStructuresIO();
+        if (!Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+        {
+            this.DeselectAllFactoryEntities();
+        }
+        foreach (GameObject fEntity in factoryEntities)
+        {
+            this.currentEntitiesSelected.Add(fEntity);
+            GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(fEntity);
+        }
     }
 
     private void DeselectAllFactoryEntities()
     {
         this.currentEntitySelected = null;
+        this.currentEntitiesSelected = new List<GameObject>();
         GalaxySceneManager.instance.factoryEntityDelesectAllEvent.Invoke();
     }
 
@@ -422,7 +510,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleCameraZoom()
     {
         float zoomMultiplier = 15f;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(Constants.PLAYER_INPUT_FAST_ZOOM_KEY))
         {
             zoomMultiplier = 150f;
         }

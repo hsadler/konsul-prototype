@@ -6,15 +6,7 @@ public class SelectionBoxScript : MonoBehaviour
 {
 
 
-    private BoxCollider2D col;
-
-
     // UNITY HOOKS
-
-    void Awake()
-    {
-        this.col = this.gameObject.GetComponent<BoxCollider2D>();
-    }
 
     void Start()
     {
@@ -23,11 +15,6 @@ public class SelectionBoxScript : MonoBehaviour
     }
 
     void Update()
-    {
-
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
     {
 
     }
