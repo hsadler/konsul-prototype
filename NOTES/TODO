@@ -2,7 +2,15 @@
 
 TODO
 
-- multiselect with selection box
+X multiselect with selection box
+
+X additive select
+
+- fix in-transit spawn location to be away from spawner in order to not collide (or similar solution)
+
+- BUGFIX TODOs noted in code
+
+- add music
 
 - system for the cost of each factory entity
 
@@ -27,8 +35,6 @@ TODO
     - Photovoltaic
     - Mirror
     - PowerCell
-
-- add music
 
 
 For consideration/prioritization:
