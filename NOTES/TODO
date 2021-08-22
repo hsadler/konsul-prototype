@@ -2,18 +2,10 @@
 
 TODO
 
-X multiselect with selection box
-
-X additive select
-
-X player controls update:
-    X cancel removal task with C-keypress 
-    X batch removal
-    X batch io creation
-
-X fix in-transit spawn location to be away from spawner in order to not collide (or similar solution)
-
-- BUGFIX TODOs noted in code
+- bugfixes and polish:
+    X make workers not removable
+    - cancel removal not working
+    - some selection vs. placement bugs
 
 - add music
 
@@ -43,6 +35,7 @@ X fix in-transit spawn location to be away from spawner in order to not collide 
 
 
 For consideration/prioritization:
+    - give in-transit entities a TTL
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - define output types for resource-IO
     - consider a freeze-time control
@@ -51,10 +44,7 @@ For consideration/prioritization:
 
 
 - Bugs:
-    - some selection vs. placement bugs
-    - game object destroyed but still trying to be accessed in WorkerTaskQueue
     - factory-structures without resource-io behavior should not be able to go into transit-mode
-    - bugfix why worker is not removable
 
 
 - CLI:
