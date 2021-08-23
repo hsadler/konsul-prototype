@@ -8,13 +8,20 @@ public class FactoryEntityRemovable : MonoBehaviour
 
     public GameObject toRemoveIndicator;
 
+    private IFactoryStructure fs;
+
 
     // UNITY HOOKS
+
+    void Awake()
+    {
+        this.fs = this.GetComponent<IFactoryStructure>();
+    }
 
     void Start()
     {
         this.toRemoveIndicator.SetActive(false);
-        GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.RemoveSelf);
+        GalaxySceneManager.instance.factoryStructureRemovalEvent.AddListener(this.HandlePlayerRemove);
     }
 
     void Update()
@@ -30,11 +37,19 @@ public class FactoryEntityRemovable : MonoBehaviour
 
     // IMPLEMENTATION METHODS
 
-    private void RemoveSelf(GameObject removedGO)
+    private void HandlePlayerRemove(GameObject removedGO)
     {
-        // Debug.Log("attemting to remove gameobject: " + removedGO.name);
         if (removedGO == this.gameObject)
         {
+            // attempt to remove associated task from worker-task-queue if structure is not active
+            if (!fs.IsStructureActive)
+            {
+                WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(this.gameObject);
+                if (task != null)
+                {
+                    GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                }
+            }
             Object.Destroy(this.gameObject);
         }
     }

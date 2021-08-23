@@ -128,7 +128,6 @@ public class WorkerTaskQueue : MonoBehaviour
                     GameObject matchedWorker = null;
                     foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
                     {
-                        // TODO: BUG: task.structure GO no longer exists
                         float distance = Vector3.Distance(worker.transform.position, task.structure.transform.position);
                         if (distance < shortestDistance)
                         {
