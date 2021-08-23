@@ -4,7 +4,7 @@ TODO
 
 - bugfixes and polish:
     X make workers not removable
-    - cancel removal not working
+    X cancel removal not working
     - some selection vs. placement bugs
 
 - add music

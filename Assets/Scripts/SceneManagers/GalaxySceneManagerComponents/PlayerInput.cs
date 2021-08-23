@@ -322,9 +322,6 @@ public class PlayerInput : MonoBehaviour
 
     private void HandelCancelRemoval()
     {
-
-        // TODO: BUG: removal cancelling is not working
-
         // cancel-removal keypress
         if (Input.GetKeyDown(Constants.PLAYER_INPUT_CANCEL_REMOVAL_KEY))
         {
@@ -342,7 +339,6 @@ public class PlayerInput : MonoBehaviour
                 WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(fStructure);
                 if (task != null)
                 {
-                    Debug.Log("cancelling task by id: " + task.taskId);
                     FactoryEntityRemovable fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
                     fRemovable.SetMarkForRemoval(false);
                     GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);

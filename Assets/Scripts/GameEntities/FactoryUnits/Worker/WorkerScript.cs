@@ -73,7 +73,6 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     public void DoTask(WorkerTask task)
     {
-        // Debug.Log("worker assigned task with id: " + task.taskId.ToString());
         GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsBusy(this.gameObject);
         this.task = task;
     }
@@ -147,6 +146,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.inventory.Retrieve(this.task.structureFeType);
             // activate the in-progress game object
             this.task.structure.GetComponent<FactoryStructureBehavior>().ActivateStructure();
+            // declare task complete
+            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
             // init worker
             this.InitWorker();
         }
@@ -238,6 +239,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.selectedDeliveryStorage.GetComponent<FactoryEntityInventory>().Store(
                 this.inventory.Retrieve(this.task.structureFeType)
             );
+            // declare task complete
+            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
             // init worker
             this.InitWorker();
         }

@@ -86,8 +86,12 @@ public class WorkerTaskQueue : MonoBehaviour
     }
     public void CancelWorkerTask(WorkerTask task)
     {
-        task.isCancelled = true;
         this.tasks.Remove(task);
+        this.tasksInProgress.Remove(task);
+        task.isCancelled = true;
+    }
+    public void TaskComplete(WorkerTask task)
+    {
         this.tasksInProgress.Remove(task);
     }
     public WorkerTask FindTaskByFactoryStructure(GameObject factoryStructure)
