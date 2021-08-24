@@ -5,7 +5,8 @@ TODO
 - bugfixes and polish:
     X make workers not removable
     X cancel removal not working
-    - some selection vs. placement bugs
+    X some selection vs. placement bugs
+    - io creation bug
 
 - add music
 

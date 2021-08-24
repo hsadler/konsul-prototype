@@ -476,11 +476,10 @@ public class PlayerInput : MonoBehaviour
             if (hit != null && hit.gameObject.CompareTag("FactoryEntity"))
             {
                 // don't return hover of cursor factory structure
-                if (hit.gameObject == this.cursorFactoryStructureGO)
+                if (hit.gameObject != this.cursorFactoryStructureGO)
                 {
-                    return null;
+                    return hit.gameObject;
                 }
-                return hit.gameObject;
             }
         }
         return null;
