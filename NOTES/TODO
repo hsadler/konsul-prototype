@@ -2,15 +2,15 @@
 
 TODO
 
-- bugfixes and polish:
+X bugfixes and polish:
     X make workers not removable
     X cancel removal not working
     X some selection vs. placement bugs
-    - io creation bug
-
-- add music
+    X io creation bug
 
 - system for the cost of each factory entity
+
+- add music
 
 - test and polish workers:
     - worker shouldn't fetch items if already in inventory

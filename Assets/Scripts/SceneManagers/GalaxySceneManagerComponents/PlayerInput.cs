@@ -383,13 +383,12 @@ public class PlayerInput : MonoBehaviour
                 fStructuresToCreateIOs = this.currentEntitiesSelected;
             }
             // create IOs
-            foreach (GameObject fStructure in fStructuresToCreateIOs)
+            GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
+            if (clickedFactoryEntity != null)
             {
-                GameObject clickedFactoryEntity = GetHoveredFactoryEntity();
-                if (clickedFactoryEntity != null)
+                foreach (GameObject fStructure in fStructuresToCreateIOs)
                 {
-                    //  TODO: BUG: fStructure is null here sometimes
-                    if (fStructure.GetComponent<FactoryStructureIOBehavior>() != null)
+                    if (fStructure != null && fStructure.GetComponent<FactoryStructureIOBehavior>() != null)
                     {
                         GalaxySceneManager.instance.factoryStructureIOPlacementEvent.Invoke(fStructure, clickedFactoryEntity);
                         iosCreated = true;
