@@ -2,13 +2,34 @@
 
 TODO
 
-X bugfixes and polish:
-    X make workers not removable
-    X cancel removal not working
-    X some selection vs. placement bugs
-    X io creation bug
+pre crafting system prep:
+    - split-up constants into separate files
+    - add processed resources to factory entities:
+        - Nitrogen
+        - Helium
+        - CO2
+        - Hydrogen
+        - Oxygen
+        - Silicates
+        - Quartz
+        - Iron
+        - Copper
+        - Aluminum
+        - Lead
+        - Rare Metals
+        - Biomass
+        - Cell Culture
+    - add factory structures:
+        - Raw Resource Processor
+        - Furnace
+        - Refinery
+        - Assembler
+    - get raw resource processing working
+    - ability to define output types for resource-IO:
+        - all IOs or only some structures?
+        - think about UX/UI, something quick and easy for the prototype
 
-- system for the cost of each factory entity
+- crafting system: resource cost of each factory entity
 
 - add music
 
@@ -38,7 +59,6 @@ X bugfixes and polish:
 For consideration/prioritization:
     - give in-transit entities a TTL
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
-    - define output types for resource-IO
     - consider a freeze-time control
     - consider different tiers of power gathering
         (though prob not for prototype)
