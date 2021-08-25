@@ -8,7 +8,7 @@ public class RawResourceScript : MonoBehaviour, IFactoryEntity, IFactoryResource
 
     public SpriteRenderer sr;
 
-    public int FactoryEntityType { get; set; } = Constants.ENTITY_TYPE_NONE;
+    public int FactoryEntityType { get; set; } = ConstFEType.NONE;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 

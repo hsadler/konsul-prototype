@@ -83,8 +83,8 @@ public class GalaxySceneManager : MonoBehaviour
     private void GenerateGrid()
     {
         const int GALAXY_BUFFER = 200;
-        int galaxyLowerBound = -(Constants.GALAXY_SIZE / 2) - GALAXY_BUFFER;
-        int galaxyUpperBound = (Constants.GALAXY_SIZE / 2) + GALAXY_BUFFER;
+        int galaxyLowerBound = -(GameSettings.GALAXY_SIZE / 2) - GALAXY_BUFFER;
+        int galaxyUpperBound = (GameSettings.GALAXY_SIZE / 2) + GALAXY_BUFFER;
         for (int i = 0; i < galaxyUpperBound; i++)
         {
             this.CreateYGridLine(galaxyLowerBound, galaxyUpperBound, i);
@@ -119,7 +119,7 @@ public class GalaxySceneManager : MonoBehaviour
     // procedural generation
     private void GeneratePlanetarySystems()
     {
-        for (int i = 0; i < Constants.PLANETARY_SYSTEMS_COUNT; i++)
+        for (int i = 0; i < GameSettings.PLANETARY_SYSTEMS_COUNT; i++)
         {
             GameObject planetarySystem = Instantiate(this.planetarySystemPrefab, Vector3.zero, Quaternion.identity);
             this.planetarySystemCount += 1;

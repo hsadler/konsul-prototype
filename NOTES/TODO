@@ -3,7 +3,7 @@
 TODO
 
 pre crafting system prep:
-    - split-up constants into separate files
+    X split-up constants into separate files
     - add processed resources to factory entities:
         - Nitrogen
         - Helium

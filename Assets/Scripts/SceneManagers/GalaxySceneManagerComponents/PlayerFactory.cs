@@ -33,20 +33,20 @@ public class PlayerFactory : MonoBehaviour
         this.entityTypeToPrefab = new Dictionary<int, GameObject>()
         {
             // resources
-            { Constants.RESOURCE_ENTITY_TYPE_WATER, this.rawResourcePrefab },
-            { Constants.RESOURCE_ENTITY_TYPE_GAS, this.rawResourcePrefab },
-            { Constants.RESOURCE_ENTITY_TYPE_STONE, this.rawResourcePrefab },
-            { Constants.RESOURCE_ENTITY_TYPE_METAL, this.rawResourcePrefab },
-            { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, this.rawResourcePrefab },
+            { ConstFEType.WATER, this.rawResourcePrefab },
+            { ConstFEType.GAS, this.rawResourcePrefab },
+            { ConstFEType.STONE, this.rawResourcePrefab },
+            { ConstFEType.METAL, this.rawResourcePrefab },
+            { ConstFEType.ORGANICS, this.rawResourcePrefab },
             // structures
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER, this.harvesterPrefab },
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR, this.distributorPrefab },
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE, this.storagePrefab },
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_MIRROR, this.mirrorPrefab },
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_PHOTOVOLTAIC, this.photovotaicPrefab },
-            { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_ACCUMULATOR, this.accumulatorPrefab },
+            { ConstFEType.HARVESTER, this.harvesterPrefab },
+            { ConstFEType.DISTRIBUTOR, this.distributorPrefab },
+            { ConstFEType.STORAGE, this.storagePrefab },
+            { ConstFEType.MIRROR, this.mirrorPrefab },
+            { ConstFEType.PHOTOVOLTAIC, this.photovotaicPrefab },
+            { ConstFEType.ACCUMULATOR, this.accumulatorPrefab },
             // units
-            { Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, this.workerPrefab },
+            { ConstFEType.WORKER, this.workerPrefab },
         };
     }
 

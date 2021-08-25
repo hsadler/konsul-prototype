@@ -10,19 +10,19 @@ public class SharedData
     // raw resources
     public List<int> rawResourceTypes = new List<int>()
     {
-        Constants.RESOURCE_ENTITY_TYPE_WATER,
-        Constants.RESOURCE_ENTITY_TYPE_GAS,
-        Constants.RESOURCE_ENTITY_TYPE_STONE,
-        Constants.RESOURCE_ENTITY_TYPE_METAL,
-        Constants.RESOURCE_ENTITY_TYPE_ORGANICS
+        ConstFEType.WATER,
+        ConstFEType.GAS,
+        ConstFEType.STONE,
+        ConstFEType.METAL,
+        ConstFEType.ORGANICS,
     };
     public IDictionary<int, Color> rawResourceTypeToColor = new Dictionary<int, Color>()
     {
-        { Constants.RESOURCE_ENTITY_TYPE_WATER, Color.blue },
-        { Constants.RESOURCE_ENTITY_TYPE_GAS, Color.yellow },
-        { Constants.RESOURCE_ENTITY_TYPE_STONE, Color.gray },
-        { Constants.RESOURCE_ENTITY_TYPE_METAL, Color.magenta },
-        { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, Color.green }
+        { ConstFEType.WATER, Color.blue },
+        { ConstFEType.GAS, Color.yellow },
+        { ConstFEType.STONE, Color.gray },
+        { ConstFEType.METAL, Color.magenta },
+        { ConstFEType.ORGANICS, Color.green },
     };
 
     // intermediate resources
@@ -33,44 +33,44 @@ public class SharedData
     // factory structures
     public List<int> factoryStructureTypes = new List<int>()
     {
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER,
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR,
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE,
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_MIRROR,
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_PHOTOVOLTAIC,
-        Constants.FACTORY_STRUCTURE_ENTITY_TYPE_ACCUMULATOR,
+        ConstFEType.HARVESTER,
+        ConstFEType.DISTRIBUTOR,
+        ConstFEType.STORAGE,
+        ConstFEType.MIRROR,
+        ConstFEType.PHOTOVOLTAIC,
+        ConstFEType.ACCUMULATOR,
     };
 
     // factory units
     public List<int> factoryUnitTypes = new List<int>()
     {
-        Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER,
-        Constants.FACTORY_UNIT_ENTITY_TYPE_PROBE,
-        Constants.FACTORY_UNIT_ENTITY_TYPE_SYSTEM_EXPANSION_SHIP,
+        ConstFEType.WORKER,
+        ConstFEType.PROBE,
+        ConstFEType.SYSTEM_EXPANSION_SHIP,
     };
 
     // all factory entities
     public List<int> allFactoryEntityTypes;
     public IDictionary<int, string> factoryEntityTypeToDisplayString = new Dictionary<int, string>()
     {
-        { Constants.ENTITY_TYPE_NONE, "none" },
+        { ConstFEType.NONE, "none" },
         // resources
-        { Constants.RESOURCE_ENTITY_TYPE_WATER, "water" },
-        { Constants.RESOURCE_ENTITY_TYPE_GAS, "gas" },
-        { Constants.RESOURCE_ENTITY_TYPE_STONE, "stone" },
-        { Constants.RESOURCE_ENTITY_TYPE_METAL, "metal" },
-        { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, "organics" },
+        { ConstFEType.WATER, "water" },
+        { ConstFEType.GAS, "gas" },
+        { ConstFEType.STONE, "stone" },
+        { ConstFEType.METAL, "metal" },
+        { ConstFEType.ORGANICS, "organics" },
         // structure
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER, "harvester" },
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR, "distributor" },
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE, "storage" },
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_MIRROR, "mirror" },
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_PHOTOVOLTAIC, "photovoltaic" },
-        { Constants.FACTORY_STRUCTURE_ENTITY_TYPE_ACCUMULATOR, "accumulator" },
+        { ConstFEType.HARVESTER, "harvester" },
+        { ConstFEType.DISTRIBUTOR, "distributor" },
+        { ConstFEType.STORAGE, "storage" },
+        { ConstFEType.MIRROR, "mirror" },
+        { ConstFEType.PHOTOVOLTAIC, "photovoltaic" },
+        { ConstFEType.ACCUMULATOR, "accumulator" },
         // units
-        { Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, "worker" },
-        { Constants.FACTORY_UNIT_ENTITY_TYPE_PROBE, "probe" },
-        { Constants.FACTORY_UNIT_ENTITY_TYPE_SYSTEM_EXPANSION_SHIP, "system expansion ship" },
+        { ConstFEType.WORKER, "worker" },
+        { ConstFEType.PROBE, "probe" },
+        { ConstFEType.SYSTEM_EXPANSION_SHIP, "system expansion ship" },
     };
 
 

@@ -6,7 +6,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 {
 
 
-    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR;
+    public int FactoryEntityType { get; set; } = ConstFEType.DISTRIBUTOR;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 

@@ -49,7 +49,7 @@ public class FactoryEntityBufferQueue : MonoBehaviour
         }
         else
         {
-            return Constants.ENTITY_TYPE_NONE;
+            return ConstFEType.NONE;
         }
     }
 

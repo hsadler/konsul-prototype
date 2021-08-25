@@ -6,7 +6,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 {
 
 
-    public int FactoryEntityType { get; set; } = Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER;
+    public int FactoryEntityType { get; set; } = ConstFEType.WORKER;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 
@@ -16,7 +16,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private FactoryEntityInventory inventory;
     // private IDictionary<int, int> inventory = new Dictionary<int, int>();
     private WorkerTask task;
-    private int workerMode = Constants.WORKER_MODE_INIT;
+    private int workerMode = ConstWorker.MODE_INIT;
 
     // fetch and build
     private GameObject selectedFetchStorage;
@@ -48,11 +48,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.InitWorker();
             return;
         }
-        if (this.task.taskType == Constants.WORKER_TASK_TYPE_BUILD)
+        if (this.task.taskType == ConstWorker.TASK_TYPE_BUILD)
         {
             this.FetchAndBuildFactoryStructure();
         }
-        else if (this.task.taskType == Constants.WORKER_TASK_TYPE_REMOVE)
+        else if (this.task.taskType == ConstWorker.TASK_TYPE_REMOVE)
         {
             this.RemoveAndStoreFactoryStructure();
         }
@@ -81,7 +81,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void InitWorker()
     {
-        this.workerMode = Constants.WORKER_MODE_INIT;
+        this.workerMode = ConstWorker.MODE_INIT;
         this.task = null;
         this.selectedFetchStorage = null;
         this.selectedDeliveryStorage = null;
@@ -98,16 +98,15 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.InitWorker();
             return;
         }
-        if (this.workerMode == Constants.WORKER_MODE_INIT)
+        if (this.workerMode == ConstWorker.MODE_INIT)
         {
-            // Debug.Log("setting worker mode to fetch");
-            this.workerMode = Constants.WORKER_MODE_FETCH;
+            this.workerMode = ConstWorker.MODE_FETCH;
         }
-        else if (this.workerMode == Constants.WORKER_MODE_FETCH)
+        else if (this.workerMode == ConstWorker.MODE_FETCH)
         {
             this.FetchFromStorage();
         }
-        else if (this.workerMode == Constants.WORKER_MODE_BUILD)
+        else if (this.workerMode == ConstWorker.MODE_BUILD)
         {
             this.BuildFactoryStructure();
         }
@@ -127,7 +126,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // retrieve and bump worker mode
             int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.structureFeType);
             this.inventory.Store(retrieved);
-            this.workerMode = Constants.WORKER_MODE_BUILD;
+            this.workerMode = ConstWorker.MODE_BUILD;
         }
         // move closer to fetch storage
         else
@@ -161,7 +160,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private void SelectStorageForFetch()
     {
         // Debug.Log("selecting storage for fetch");
-        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE);
+        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(ConstFEType.STORAGE);
         float shortestDistance = Mathf.Infinity;
         GameObject closestStorage = null;
         foreach (GameObject storage in storages)
@@ -191,16 +190,16 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void RemoveAndStoreFactoryStructure()
     {
-        if (this.workerMode == Constants.WORKER_MODE_INIT)
+        if (this.workerMode == ConstWorker.MODE_INIT)
         {
             // Debug.Log("setting worker mode to remove");
-            this.workerMode = Constants.WORKER_MODE_REMOVE;
+            this.workerMode = ConstWorker.MODE_REMOVE;
         }
-        else if (this.workerMode == Constants.WORKER_MODE_REMOVE)
+        else if (this.workerMode == ConstWorker.MODE_REMOVE)
         {
             this.RemoveFactoryStructure();
         }
-        else if (this.workerMode == Constants.WORKER_MODE_STORE)
+        else if (this.workerMode == ConstWorker.MODE_STORE)
         {
             this.DeliverAndStoreFactoryStructure();
         }
@@ -217,7 +216,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // add structure to inventory
             this.inventory.Store(this.task.structureFeType);
             // bump mode
-            this.workerMode = Constants.WORKER_MODE_STORE;
+            this.workerMode = ConstWorker.MODE_STORE;
         }
         // move closer to build location
         else
@@ -254,7 +253,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private void SelectStorageForDelivery()
     {
         // Debug.Log("selecting storage for delivery");
-        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE);
+        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(ConstFEType.STORAGE);
         float shortestDistance = Mathf.Infinity;
         GameObject closestStorage = null;
         foreach (GameObject storage in storages)

@@ -6,7 +6,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 {
 
 
-    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER;
+    public int FactoryEntityType { get; set; } = ConstFEType.HARVESTER;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 
@@ -16,8 +16,8 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     public float launchImpulse = 1f;
 
     private FactoryStructureIOBehavior io;
-    private int harvestedResource = Constants.ENTITY_TYPE_NONE;
-    private int lastHarvestedResource = Constants.ENTITY_TYPE_NONE;
+    private int harvestedResource = ConstFEType.NONE;
+    private int lastHarvestedResource = ConstFEType.NONE;
 
 
     // UNITY HOOKS
@@ -39,7 +39,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     {
         if (this.IsStructureActive)
         {
-            if (this.harvestedResource == Constants.ENTITY_TYPE_NONE && other.gameObject.CompareTag("Planet"))
+            if (this.harvestedResource == ConstFEType.NONE && other.gameObject.CompareTag("Planet"))
             {
                 PlanetScript pScript = other.gameObject.GetComponentInParent<PlanetScript>();
                 this.harvestedResource = pScript.ExtractResource();
@@ -61,7 +61,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     private void CheckAndSendResource()
     {
-        if (this.harvestedResource != Constants.ENTITY_TYPE_NONE)
+        if (this.harvestedResource != ConstFEType.NONE)
         {
             if (this.io.ResourceIOsExist())
             {
@@ -75,7 +75,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
                 var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
                 feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
                 feLaunchable.Launch();
-                this.harvestedResource = Constants.ENTITY_TYPE_NONE;
+                this.harvestedResource = ConstFEType.NONE;
             }
         }
     }

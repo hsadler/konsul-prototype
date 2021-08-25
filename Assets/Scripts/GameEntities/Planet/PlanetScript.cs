@@ -25,11 +25,11 @@ public class PlanetScript : MonoBehaviour
 
     private List<int> resources = new List<int>();
     private IDictionary<int, int> resourceTypeToCount = new Dictionary<int, int>() {
-        { Constants.RESOURCE_ENTITY_TYPE_WATER, 0 },
-        { Constants.RESOURCE_ENTITY_TYPE_GAS, 0 },
-        { Constants.RESOURCE_ENTITY_TYPE_STONE, 0 },
-        { Constants.RESOURCE_ENTITY_TYPE_METAL, 0 },
-        { Constants.RESOURCE_ENTITY_TYPE_ORGANICS, 0 }
+        { ConstFEType.WATER, 0 },
+        { ConstFEType.GAS, 0 },
+        { ConstFEType.STONE, 0 },
+        { ConstFEType.METAL, 0 },
+        { ConstFEType.ORGANICS, 0 }
     };
 
     // planet color
@@ -69,7 +69,7 @@ public class PlanetScript : MonoBehaviour
 
     private void GenPlanetSize()
     {
-        this.sizeRadius = Random.Range(Constants.PLANET_MIN_SIZE_RADIUS, Constants.PLANET_MAX_SIZE_RADIUS);
+        this.sizeRadius = Random.Range(GameSettings.PLANET_MIN_SIZE_RADIUS, GameSettings.PLANET_MAX_SIZE_RADIUS);
         this.planetBody.transform.localScale = new Vector3(this.sizeRadius * 2, this.sizeRadius * 2, 0);
     }
 
@@ -95,7 +95,7 @@ public class PlanetScript : MonoBehaviour
         int randOrbit;
         do
         {
-            randOrbit = Random.Range(Constants.PLANET_MIN_ORBIT_RADIUS, Constants.PLANET_MAX_ORBIT_RADIUS + 1);
+            randOrbit = Random.Range(GameSettings.PLANET_MIN_ORBIT_RADIUS, GameSettings.PLANET_MAX_ORBIT_RADIUS + 1);
         } while (occupiedOrbits.Contains(randOrbit));
         this.orbitRadius = randOrbit;
         // set waypoint positions
@@ -122,7 +122,7 @@ public class PlanetScript : MonoBehaviour
         // set current waypoint
         this.currentWaypointIndex = 1;
         // set orbit speed
-        this.orbitSpeed = Random.Range(Constants.PLANET_MIN_ORBIT_SPEED, Constants.PLANET_MAX_ORBIT_SPEED + 1);
+        this.orbitSpeed = Random.Range(GameSettings.PLANET_MIN_ORBIT_SPEED, GameSettings.PLANET_MAX_ORBIT_SPEED + 1);
         // set orbit line
         var orbitLineRenderer = this.orbitLine.GetComponent<LineRenderer>();
         var linePositions = new Vector3[5];

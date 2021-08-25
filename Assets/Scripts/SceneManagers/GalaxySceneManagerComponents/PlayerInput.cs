@@ -12,21 +12,21 @@ public class PlayerInput : MonoBehaviour
     public bool isAdminMode;
     public IDictionary<int, string> inputModeToDisplayString = new Dictionary<int, string>()
     {
-        { Constants.PLAYER_INPUT_MODE_INIT, "init" },
-        { Constants.PLAYER_INPUT_MODE_PLACEMENT, "structure placement" },
-        { Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT, "entity select" },
-        { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO, "transit create" },
-        { Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT, "transit select" },
-        { Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT, "entity multiselect" },
-        { Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO, "batch transit create" },
+        { ConstPlayerInput.MODE_INIT, "init" },
+        { ConstPlayerInput.MODE_PLACEMENT, "structure placement" },
+        { ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT, "entity select" },
+        { ConstPlayerInput.MODE_STRUCTURE_IO, "transit create" },
+        { ConstPlayerInput.MODE_STRUCTURE_IO_SELECT, "transit select" },
+        { ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT, "entity multiselect" },
+        { ConstPlayerInput.MODE_MULTI_STRUCTURE_IO, "batch transit create" },
     };
 
     public int currentPlacementStructureType;
     private IDictionary<UnityEngine.KeyCode, int> keyCodeToFactoryStructureType = new Dictionary<UnityEngine.KeyCode, int>()
     {
-        { KeyCode.Alpha1, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_HARVESTER },
-        { KeyCode.Alpha2, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_DISTRIBUTOR },
-        { KeyCode.Alpha3, Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE },
+        { KeyCode.Alpha1, ConstFEType.HARVESTER },
+        { KeyCode.Alpha2, ConstFEType.DISTRIBUTOR },
+        { KeyCode.Alpha3, ConstFEType.STORAGE },
     };
 
     public GameObject currentEntitySelected;
@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
 
     void Awake()
     {
-        this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+        this.inputMode = ConstPlayerInput.MODE_INIT;
         this.isAdminMode = false;
         this.InitCurrentPlacementStructureType();
     }
@@ -92,7 +92,7 @@ public class PlayerInput : MonoBehaviour
     // admin mode
     private void HandleAdminModeToggle()
     {
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_MODE_TOGGLE))
+        if (Input.GetKeyDown(ConstPlayerInput.ADMIN_MODE_TOGGLE_KEY))
         {
             this.isAdminMode = !this.isAdminMode;
         }
@@ -110,7 +110,7 @@ public class PlayerInput : MonoBehaviour
                 this.DeselectAllFactoryEntities();
                 this.DeselectAllStructuresIO();
                 this.InitCursorFactoryStructureGO();
-                this.inputMode = Constants.PLAYER_INPUT_MODE_PLACEMENT;
+                this.inputMode = ConstPlayerInput.MODE_PLACEMENT;
                 this.currentPlacementStructureType = this.keyCodeToFactoryStructureType[numkey];
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 selectPlacementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
@@ -122,7 +122,7 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleEntityPlacementCursor()
     {
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
+        if (this.inputMode == ConstPlayerInput.MODE_PLACEMENT)
         {
             GameObject hoveredFactoryEntity = this.GetHoveredFactoryEntity();
             // not hovering, have a cursor object
@@ -143,7 +143,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleEntityPlacementOrSelection()
     {
         // placement mode and left click
-        if (Input.GetMouseButtonUp(0) && this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
+        if (Input.GetMouseButtonUp(0) && this.inputMode == ConstPlayerInput.MODE_PLACEMENT)
         {
             GameObject clickedFactoryEntity = this.GetHoveredFactoryEntity();
             if (clickedFactoryEntity != null)
@@ -164,7 +164,7 @@ public class PlayerInput : MonoBehaviour
                     // place in-progress structure
                     var go = GalaxySceneManager.instance.playerFactory.CreateInProgressInProgressFactoryStructure(this.currentPlacementStructureType, placementPosition);
                     // queue task for worker to build
-                    var task = new WorkerTask(Constants.WORKER_TASK_TYPE_BUILD, go);
+                    var task = new WorkerTask(ConstWorker.TASK_TYPE_BUILD, go);
                     GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                 }
             }
@@ -174,10 +174,10 @@ public class PlayerInput : MonoBehaviour
     private void HandleEntitySelection()
     {
         if (
-            this.inputMode == Constants.PLAYER_INPUT_MODE_INIT ||
-            this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT ||
-            this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT ||
-            this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT
+            this.inputMode == ConstPlayerInput.MODE_INIT ||
+            this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT ||
+            this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT ||
+            this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO_SELECT
         )
         {
             // initial mouse button press: activate and initialize the selection-box
@@ -217,7 +217,7 @@ public class PlayerInput : MonoBehaviour
                         this.SelectEntity(boxSelectedFactoryEntities[0]);
                     }
                     // nothing selected and not additive selection, so clear selections
-                    else if (!Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+                    else if (!Input.GetKey(ConstPlayerInput.ADDITIVE_SELECTION_KEY))
                     {
                         this.DeselectAllFactoryEntities();
                     }
@@ -255,12 +255,12 @@ public class PlayerInput : MonoBehaviour
     {
         // entity-select mode or structure-io-select and key press
         if (
-            (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT) &&
-            Input.GetKeyDown(Constants.PLAYER_INPUT_CYCLE_IO_SELECT) &&
+            (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT || this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO_SELECT) &&
+            Input.GetKeyDown(ConstPlayerInput.CYCLE_IO_SELECT_KEY) &&
             this.currentEntitySelected != null
         )
         {
-            this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT;
+            this.inputMode = ConstPlayerInput.MODE_STRUCTURE_IO_SELECT;
             this.currentStructureIOSelected = this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RotateSelection();
         }
     }
@@ -268,54 +268,57 @@ public class PlayerInput : MonoBehaviour
     private void HandleRemoval()
     {
         //  removal key press
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REMOVAL_KEY))
+        if (Input.GetKeyDown(ConstPlayerInput.REMOVAL_KEY))
         {
             List<GameObject> fStructuresToRemove = new List<GameObject>();
             // entity-select mode
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
             {
                 fStructuresToRemove.Add(this.currentEntitySelected);
             }
             // entity-multiselect mode
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
                 fStructuresToRemove = this.currentEntitiesSelected;
             }
             foreach (var fStructure in fStructuresToRemove)
             {
-                var feRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
-                if (feRemovable != null)
+                if (fStructure != null)
                 {
-                    // remove immediately if admin
-                    if (this.isAdminMode)
+                    var feRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
+                    if (feRemovable != null)
                     {
-                        GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
-                        this.currentEntitySelected = null;
-                        this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
-                    }
-                    else
-                    {
-                        IFactoryStructure fs = fStructure.GetComponent<IFactoryStructure>();
-                        // remove immediately if not an active structure
-                        if (fs != null && !fs.IsStructureActive)
+                        // remove immediately if admin
+                        if (this.isAdminMode)
                         {
                             GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
+                            this.currentEntitySelected = null;
+                            this.inputMode = ConstPlayerInput.MODE_INIT;
                         }
-                        // mark structure as to-remove and create worker task
                         else
                         {
-                            feRemovable.SetMarkForRemoval(true);
-                            var task = new WorkerTask(Constants.WORKER_TASK_TYPE_REMOVE, fStructure);
-                            GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                            IFactoryStructure fs = fStructure.GetComponent<IFactoryStructure>();
+                            // remove immediately if not an active structure
+                            if (fs != null && !fs.IsStructureActive)
+                            {
+                                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
+                            }
+                            // mark structure as to-remove and create worker task
+                            else
+                            {
+                                feRemovable.SetMarkForRemoval(true);
+                                var task = new WorkerTask(ConstWorker.TASK_TYPE_REMOVE, fStructure);
+                                GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                            }
                         }
                     }
                 }
             }
             // structure-io-select mode
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO_SELECT)
             {
                 this.currentEntitySelected.GetComponent<FactoryStructureIOBehavior>().RemoveCurrentSelectedResourceIO();
-                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
             }
         }
     }
@@ -323,25 +326,28 @@ public class PlayerInput : MonoBehaviour
     private void HandelCancelRemoval()
     {
         // cancel-removal keypress
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_CANCEL_REMOVAL_KEY))
+        if (Input.GetKeyDown(ConstPlayerInput.CANCEL_REMOVAL_KEY))
         {
             List<GameObject> fStructuresToCancel = new List<GameObject>();
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
             {
                 fStructuresToCancel.Add(this.currentEntitySelected);
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
                 fStructuresToCancel = this.currentEntitiesSelected;
             }
             foreach (GameObject fStructure in fStructuresToCancel)
             {
-                WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(fStructure);
-                if (task != null)
+                if (fStructure != null)
                 {
-                    FactoryEntityRemovable fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
-                    fRemovable.SetMarkForRemoval(false);
-                    GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                    WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(fStructure);
+                    if (task != null)
+                    {
+                        FactoryEntityRemovable fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
+                        fRemovable.SetMarkForRemoval(false);
+                        GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                    }
                 }
             }
         }
@@ -350,18 +356,18 @@ public class PlayerInput : MonoBehaviour
     private void HandleStructureIOMode()
     {
         // io key press
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_STRUCTURE_IO_MODE_KEY))
+        if (Input.GetKeyDown(ConstPlayerInput.STRUCTURE_IO_MODE_KEY))
         {
             // entity-select mode or io-select mode
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT || this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO_SELECT)
             {
                 this.DeselectAllStructuresIO();
-                this.inputMode = Constants.PLAYER_INPUT_MODE_STRUCTURE_IO;
+                this.inputMode = ConstPlayerInput.MODE_STRUCTURE_IO;
             }
             // entity-multiselect mode
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO;
+                this.inputMode = ConstPlayerInput.MODE_MULTI_STRUCTURE_IO;
             }
         }
     }
@@ -374,11 +380,11 @@ public class PlayerInput : MonoBehaviour
             bool iosCreated = false;
             // collect structures on which to create IOs
             List<GameObject> fStructuresToCreateIOs = new List<GameObject>();
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+            if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO)
             {
                 fStructuresToCreateIOs.Add(this.currentEntitySelected);
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+            else if (this.inputMode == ConstPlayerInput.MODE_MULTI_STRUCTURE_IO)
             {
                 fStructuresToCreateIOs = this.currentEntitiesSelected;
             }
@@ -398,13 +404,13 @@ public class PlayerInput : MonoBehaviour
             // revert to correct mode if any IOs were created 
             if (iosCreated)
             {
-                if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+                if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO)
                 {
-                    this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                    this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
                 }
-                else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+                else if (this.inputMode == ConstPlayerInput.MODE_MULTI_STRUCTURE_IO)
                 {
-                    this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
+                    this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT;
                 }
             }
         }
@@ -413,30 +419,30 @@ public class PlayerInput : MonoBehaviour
     private void HandleModeRevert()
     {
         // revert key press
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_REVERT_MODE_KEY))
+        if (Input.GetKeyDown(ConstPlayerInput.REVERT_MODE_KEY))
         {
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_PLACEMENT)
+            if (this.inputMode == ConstPlayerInput.MODE_PLACEMENT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+                this.inputMode = ConstPlayerInput.MODE_INIT;
                 this.InitCurrentPlacementStructureType();
                 this.InitCursorFactoryStructureGO();
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT || this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT || this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_INIT;
+                this.inputMode = ConstPlayerInput.MODE_INIT;
                 this.DeselectAllFactoryEntities();
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO)
+            else if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_MULTI_STRUCTURE_IO)
+            else if (this.inputMode == ConstPlayerInput.MODE_MULTI_STRUCTURE_IO)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
+                this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT;
             }
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_STRUCTURE_IO_SELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO_SELECT)
             {
-                this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+                this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
                 this.DeselectAllStructuresIO();
             }
         }
@@ -444,7 +450,7 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleAdminPopulateSelectedStorage()
     {
-        if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT && Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_POPULATE_STORAGE))
+        if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT && Input.GetKeyDown(ConstPlayerInput.ADMIN_POPULATE_STORAGE_KEY))
         {
             var inventory = this.currentEntitySelected.GetComponent<FactoryEntityInventory>();
             if (inventory != null)
@@ -456,11 +462,11 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleAdminSpawnWorker()
     {
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_ADMIN_CREATE_WORKER))
+        if (Input.GetKeyDown(ConstPlayerInput.ADMIN_CREATE_WORKER_KEY))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 placementPosition = GalaxySceneManager.instance.functions.GetIntRoundedVector3(new Vector3(mousePosition.x, mousePosition.y, 0));
-            GalaxySceneManager.instance.playerFactory.CreateFactoryEntity(Constants.FACTORY_UNIT_ENTITY_TYPE_WORKER, placementPosition);
+            GalaxySceneManager.instance.playerFactory.CreateFactoryEntity(ConstFEType.WORKER, placementPosition);
         }
     }
 
@@ -489,10 +495,10 @@ public class PlayerInput : MonoBehaviour
         // method can handle single selection as well as additive multi-selection 
         this.DeselectAllStructuresIO();
         // additive seleciton
-        if (Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+        if (Input.GetKey(ConstPlayerInput.ADDITIVE_SELECTION_KEY))
         {
             // additive entity selection following a single selection
-            if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT)
+            if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
             {
                 List<GameObject> multiSelected = new List<GameObject>() {
                     this.currentEntitySelected,
@@ -502,7 +508,7 @@ public class PlayerInput : MonoBehaviour
                 return;
             }
             // additive entity selection following a multiselection
-            else if (this.inputMode == Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
                 this.MultiSelectEntities(new List<GameObject>() { factoryEntity });
                 return;
@@ -514,7 +520,7 @@ public class PlayerInput : MonoBehaviour
             }
         }
         // single entity selection
-        this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_SELECT;
+        this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
         this.DeselectAllFactoryEntities();
         this.currentEntitySelected = factoryEntity;
         GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(factoryEntity);
@@ -522,10 +528,10 @@ public class PlayerInput : MonoBehaviour
 
     private void MultiSelectEntities(List<GameObject> factoryEntities)
     {
-        this.inputMode = Constants.PLAYER_INPUT_MODE_FACTORY_ENTITY_MULTISELECT;
+        this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT;
         this.currentEntitySelected = null;
         this.DeselectAllStructuresIO();
-        if (!Input.GetKey(Constants.PLAYER_INPUT_ADDITIVE_SELECTION_KEY))
+        if (!Input.GetKey(ConstPlayerInput.ADDITIVE_SELECTION_KEY))
         {
             this.DeselectAllFactoryEntities();
         }
@@ -572,8 +578,8 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             // scale camera move amount with size of camera view
-            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
-            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * Constants.CAMERA_MOVE_SPEED;
+            float vert = Input.GetAxis("Mouse Y") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
+            float horiz = Input.GetAxis("Mouse X") * Time.deltaTime * Camera.main.orthographicSize * GameSettings.CAMERA_MOVE_SPEED;
             Camera.main.transform.Translate(new Vector3(-horiz, -vert, 0));
         }
     }
@@ -581,7 +587,7 @@ public class PlayerInput : MonoBehaviour
     private void HandleCameraZoom()
     {
         float zoomMultiplier = 15f;
-        if (Input.GetKey(Constants.PLAYER_INPUT_FAST_ZOOM_KEY))
+        if (Input.GetKey(ConstPlayerInput.FAST_ZOOM_KEY))
         {
             zoomMultiplier = 150f;
         }
@@ -590,21 +596,21 @@ public class PlayerInput : MonoBehaviour
         {
             this.cameraSize = currCameraSize - (Input.mouseScrollDelta.y * zoomMultiplier);
             // clamp
-            if (this.cameraSize < Constants.CAMERA_SIZE_MIN)
+            if (this.cameraSize < GameSettings.CAMERA_SIZE_MIN)
             {
-                this.cameraSize = Constants.CAMERA_SIZE_MIN;
+                this.cameraSize = GameSettings.CAMERA_SIZE_MIN;
             }
-            else if (this.cameraSize > Constants.CAMERA_SIZE_MAX)
+            else if (this.cameraSize > GameSettings.CAMERA_SIZE_MAX)
             {
-                this.cameraSize = Constants.CAMERA_SIZE_MAX;
+                this.cameraSize = GameSettings.CAMERA_SIZE_MAX;
             }
         }
-        Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * Constants.CAMERA_ZOOM_SPEED);
+        Camera.main.orthographicSize = Mathf.Lerp(currCameraSize, this.cameraSize, Time.deltaTime * GameSettings.CAMERA_ZOOM_SPEED);
     }
 
     private void HandleGameQuit()
     {
-        if (Input.GetKeyDown(Constants.PLAYER_INPUT_QUIT_GAME_KEY))
+        if (Input.GetKeyDown(ConstPlayerInput.QUIT_GAME_KEY))
         {
             Application.Quit();
         }

@@ -6,7 +6,7 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 {
 
 
-    public int FactoryEntityType { get; set; } = Constants.FACTORY_STRUCTURE_ENTITY_TYPE_STORAGE;
+    public int FactoryEntityType { get; set; } = ConstFEType.STORAGE;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 

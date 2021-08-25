@@ -67,7 +67,7 @@ public class StarScript : MonoBehaviour
     private void GenStarSize()
     {
         // assign random size
-        this.sizeRadius = Random.Range(Constants.STAR_MIN_SIZE_RADIUS, Constants.STAR_MAX_SIZE_RADIUS + 1);
+        this.sizeRadius = Random.Range(GameSettings.STAR_MIN_SIZE_RADIUS, GameSettings.STAR_MAX_SIZE_RADIUS + 1);
         this.transform.localScale = new Vector3(this.sizeRadius * 2, this.sizeRadius * 2, 0);
     }
 
