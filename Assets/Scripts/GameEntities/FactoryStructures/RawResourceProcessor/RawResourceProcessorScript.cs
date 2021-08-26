@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryRawResourceProcessor
+public class RawResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryDistributor
 {
 
 
-    public int FactoryEntityType { get; set; } = ConstFEType.DISTRIBUTOR;
+    public int FactoryEntityType { get; set; } = ConstFEType.RAW_RESOURCE_PROCESSOR;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 

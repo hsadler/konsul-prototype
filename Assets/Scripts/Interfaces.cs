@@ -12,9 +12,7 @@ public interface IFactoryEntity
 }
 
 // factory-resource group and interfaces
-public interface IFactoryResource
-{
-}
+public interface IFactoryResource { }
 
 // factory-structure group and interfaces
 public interface IFactoryStructure
@@ -22,23 +20,15 @@ public interface IFactoryStructure
     bool IsStructureActive { get; set; }
 }
 
-public interface IFactoryHarvester
-{
-}
+public interface IFactoryHarvester { }
 
-public interface IFactoryDistributor
-{
-}
+public interface IFactoryDistributor { }
 
-public interface IFactoryStorage
-{
-}
+public interface IFactoryStorage { }
+
+public interface IFactoryRawResourceProcessor { }
 
 // factory-unit group and interfaces
-public interface IFactoryUnit
-{
-}
+public interface IFactoryUnit { }
 
-public interface IFactoryWorker
-{
-}
+public interface IFactoryWorker { }

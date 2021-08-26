@@ -13,6 +13,7 @@ public class PlayerFactory : MonoBehaviour
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
+    public GameObject rawResourceProcessorPrefab;
     public GameObject mirrorPrefab;
     public GameObject photovotaicPrefab;
     public GameObject accumulatorPrefab;
@@ -42,6 +43,7 @@ public class PlayerFactory : MonoBehaviour
             { ConstFEType.HARVESTER, this.harvesterPrefab },
             { ConstFEType.DISTRIBUTOR, this.distributorPrefab },
             { ConstFEType.STORAGE, this.storagePrefab },
+            { ConstFEType.RAW_RESOURCE_PROCESSOR, this.rawResourceProcessorPrefab },
             { ConstFEType.MIRROR, this.mirrorPrefab },
             { ConstFEType.PHOTOVOLTAIC, this.photovotaicPrefab },
             { ConstFEType.ACCUMULATOR, this.accumulatorPrefab },
