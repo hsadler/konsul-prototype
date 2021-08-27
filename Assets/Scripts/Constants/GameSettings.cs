@@ -9,7 +9,7 @@ public class GameSettings
     // GAME SETTINGS
 
     // camera settings
-    public const float CAMERA_SIZE_MIN = 10f;
+    public const float CAMERA_SIZE_MIN = 4f;
     public const float CAMERA_SIZE_MAX = 1000f;
     public const float CAMERA_ZOOM_SPEED = 5f;
     public const float CAMERA_MOVE_SPEED = 4f;

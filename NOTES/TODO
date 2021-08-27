@@ -4,32 +4,21 @@ TODO
 
 pre crafting system prep:
     X split-up constants into separate files
-    - add processed resources to factory entities:
-        - Nitrogen
-        - Helium
-        - CO2
-        - Hydrogen
-        - Oxygen
-        - Silicates
-        - Quartz
-        - Iron
-        - Copper
-        - Aluminum
-        - Lead
-        - Rare Metals
-        - Biomass
-        - Cell Culture
+    X add new resources to factory entities
+    - refactor rawResource to be InTransitFE which displays sprite of item in transit
     - add factory structures:
         - Raw Resource Processor
-        - Furnace
-        - Refinery
-        - Assembler
     - get raw resource processing working
     - ability to define output types for resource-IO:
         - all IOs or only some structures?
         - think about UX/UI, something quick and easy for the prototype
 
 - crafting system: resource cost of each factory entity
+
+- add factory structures:
+    - Furnace
+    - Refinery
+    - Assembler
 
 - add music
 

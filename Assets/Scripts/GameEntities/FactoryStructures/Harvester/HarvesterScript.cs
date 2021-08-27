@@ -12,7 +12,6 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     public bool IsStructureActive { get; set; } = false;
 
-    public GameObject rawResourcePrefab;
     public float launchImpulse = 1f;
 
     private FactoryStructureIOBehavior io;
@@ -66,12 +65,13 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
             if (this.io.ResourceIOsExist())
             {
                 Vector3 launchDirection = this.io.GetNextSendDirection();
+                GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
                 GameObject go = Instantiate(
-                    this.rawResourcePrefab,
+                    prefab,
                     this.transform.position + launchDirection,
                     Quaternion.identity
                 );
-                go.GetComponent<RawResourceScript>().FactoryEntityType = this.harvestedResource;
+                go.GetComponent<InTransitFEScript>().FactoryEntityType = this.harvestedResource;
                 var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
                 feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
                 feLaunchable.Launch();

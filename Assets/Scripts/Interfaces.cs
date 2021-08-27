@@ -11,6 +11,9 @@ public interface IFactoryEntity
     string GetStringFormattedFactoryEntityInfo();
 }
 
+public interface IInTransitFE { }
+
+// TODO: OLD, remove once refactored
 // factory-resource group and interfaces
 public interface IFactoryResource { }
 

@@ -6,8 +6,13 @@ using UnityEngine;
 public class PlayerFactory : MonoBehaviour
 {
 
+
+    public GameObject inTransitFEPrefab;
+
     // resource prefabs
     public GameObject rawResourcePrefab;
+
+    [Space(20)]
 
     // structure prefabs
     public GameObject harvesterPrefab;
@@ -15,14 +20,30 @@ public class PlayerFactory : MonoBehaviour
     public GameObject storagePrefab;
     public GameObject rawResourceProcessorPrefab;
     public GameObject mirrorPrefab;
-    public GameObject photovotaicPrefab;
+    public GameObject photovoltaicPrefab;
     public GameObject accumulatorPrefab;
-    private IDictionary<int, GameObject> entityTypeToPrefab;
-
     // unit prefabs
     public GameObject workerPrefab;
     public GameObject probePrefab;
     public GameObject systemExpansionShipPrefab;
+    private IDictionary<int, GameObject> entityTypeToPrefab;
+
+    [Space(20)]
+
+    // factory entity sprites
+    public Sprite waterSprite;
+    public Sprite gasSprite;
+    public Sprite stoneSprite;
+    public Sprite metalSprite;
+    public Sprite organicsSprite;
+    public Sprite harvesterSprite;
+    public Sprite distributorSprite;
+    public Sprite storageSprite;
+    public Sprite rawResourceProcessorSprite;
+    public Sprite mirrorSprite;
+    public Sprite photovoltaicSprite;
+    public Sprite accumulatorSprite;
+    public IDictionary<int, Sprite> entityTypeToSprite;
 
     private IDictionary<int, LinkedList<GameObject>> entityTypeToEntities = new Dictionary<int, LinkedList<GameObject>>();
 
@@ -45,10 +66,27 @@ public class PlayerFactory : MonoBehaviour
             { ConstFEType.STORAGE, this.storagePrefab },
             { ConstFEType.RAW_RESOURCE_PROCESSOR, this.rawResourceProcessorPrefab },
             { ConstFEType.MIRROR, this.mirrorPrefab },
-            { ConstFEType.PHOTOVOLTAIC, this.photovotaicPrefab },
+            { ConstFEType.PHOTOVOLTAIC, this.photovoltaicPrefab },
             { ConstFEType.ACCUMULATOR, this.accumulatorPrefab },
             // units
             { ConstFEType.WORKER, this.workerPrefab },
+        };
+        this.entityTypeToSprite = new Dictionary<int, Sprite>()
+        {
+            // resources
+            { ConstFEType.WATER, this.waterSprite },
+            { ConstFEType.GAS, this.gasSprite },
+            { ConstFEType.STONE, this.stoneSprite },
+            { ConstFEType.METAL, this.metalSprite },
+            { ConstFEType.ORGANICS, this.organicsSprite },
+            // structures
+            { ConstFEType.HARVESTER, this.harvesterSprite },
+            { ConstFEType.DISTRIBUTOR, this.distributorSprite },
+            { ConstFEType.STORAGE, this.storageSprite },
+            { ConstFEType.RAW_RESOURCE_PROCESSOR, this.rawResourceProcessorSprite },
+            { ConstFEType.MIRROR, this.mirrorSprite },
+            { ConstFEType.PHOTOVOLTAIC, this.photovoltaicSprite },
+            { ConstFEType.ACCUMULATOR, this.accumulatorSprite },
         };
     }
 
@@ -149,16 +187,28 @@ public class PlayerFactory : MonoBehaviour
         return this.GetFactoryEntityLinkedListByType(factoryEntityType).ToList<GameObject>();
     }
 
-    // prefab API
-    public GameObject GetFactoryEntityPrefabByType(int factoryEntityType)
+    // prefab and sprite APIs
+    public GameObject GetFactoryEntityPrefabByType(int feType)
     {
-        if (this.entityTypeToPrefab.ContainsKey(factoryEntityType))
+        if (this.entityTypeToPrefab.ContainsKey(feType))
         {
-            return this.entityTypeToPrefab[factoryEntityType];
+            return this.entityTypeToPrefab[feType];
         }
         else
         {
-            Debug.LogWarning("unable to fetch factory entity prefab by type: " + factoryEntityType.ToString());
+            Debug.LogWarning("unable to fetch factory entity prefab by type: " + feType.ToString());
+            return null;
+        }
+    }
+    public Sprite GetFactoryEntitySpriteByType(int feType)
+    {
+        if (this.entityTypeToSprite.ContainsKey(feType))
+        {
+            return this.entityTypeToSprite[feType];
+        }
+        else
+        {
+            Debug.LogWarning("unable to fetch factory entity sprite by type: " + feType.ToString());
             return null;
         }
     }

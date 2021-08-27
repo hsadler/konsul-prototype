@@ -61,9 +61,9 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
         {
             int feType = this.bufferQueue.GetNext();
             Vector3 launchDirection = this.io.GetNextSendDirection();
-            GameObject fePrefab = GalaxySceneManager.instance.playerFactory.GetFactoryEntityPrefabByType(feType);
+            GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
             GameObject go = Instantiate(
-                fePrefab,
+                prefab,
                 this.transform.position + launchDirection,
                 Quaternion.identity
             );
