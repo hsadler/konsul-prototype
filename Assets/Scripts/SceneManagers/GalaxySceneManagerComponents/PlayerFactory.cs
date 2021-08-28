@@ -18,7 +18,7 @@ public class PlayerFactory : MonoBehaviour
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
-    public GameObject rawResourceProcessorPrefab;
+    public GameObject resourceProcessorPrefab;
     public GameObject mirrorPrefab;
     public GameObject photovoltaicPrefab;
     public GameObject accumulatorPrefab;
@@ -55,7 +55,7 @@ public class PlayerFactory : MonoBehaviour
     public Sprite harvesterSprite;
     public Sprite distributorSprite;
     public Sprite storageSprite;
-    public Sprite rawResourceProcessorSprite;
+    public Sprite resourceProcessorSprite;
     public Sprite mirrorSprite;
     public Sprite photovoltaicSprite;
     public Sprite accumulatorSprite;
@@ -80,7 +80,7 @@ public class PlayerFactory : MonoBehaviour
             { ConstFEType.HARVESTER, this.harvesterPrefab },
             { ConstFEType.DISTRIBUTOR, this.distributorPrefab },
             { ConstFEType.STORAGE, this.storagePrefab },
-            { ConstFEType.RAW_RESOURCE_PROCESSOR, this.rawResourceProcessorPrefab },
+            { ConstFEType.RESOURCE_PROCESSOR, this.resourceProcessorPrefab },
             { ConstFEType.MIRROR, this.mirrorPrefab },
             { ConstFEType.PHOTOVOLTAIC, this.photovoltaicPrefab },
             { ConstFEType.ACCUMULATOR, this.accumulatorPrefab },
@@ -114,7 +114,7 @@ public class PlayerFactory : MonoBehaviour
             { ConstFEType.HARVESTER, this.harvesterSprite },
             { ConstFEType.DISTRIBUTOR, this.distributorSprite },
             { ConstFEType.STORAGE, this.storageSprite },
-            { ConstFEType.RAW_RESOURCE_PROCESSOR, this.rawResourceProcessorSprite },
+            { ConstFEType.RESOURCE_PROCESSOR, this.resourceProcessorSprite },
             { ConstFEType.MIRROR, this.mirrorSprite },
             { ConstFEType.PHOTOVOLTAIC, this.photovoltaicSprite },
             { ConstFEType.ACCUMULATOR, this.accumulatorSprite },

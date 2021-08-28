@@ -36,7 +36,7 @@ public class ConstFEType
     public const int HARVESTER = 201;
     public const int DISTRIBUTOR = 202;
     public const int STORAGE = 203;
-    public const int RAW_RESOURCE_PROCESSOR = 204;
+    public const int RESOURCE_PROCESSOR = 204;
     public const int FURNACE = 205;
     public const int REFINERY = 206;
     public const int ASSEMBLER = 207;

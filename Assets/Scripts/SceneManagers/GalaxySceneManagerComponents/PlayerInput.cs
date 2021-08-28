@@ -27,7 +27,7 @@ public class PlayerInput : MonoBehaviour
         { KeyCode.Alpha1, ConstFEType.HARVESTER },
         { KeyCode.Alpha2, ConstFEType.DISTRIBUTOR },
         { KeyCode.Alpha3, ConstFEType.STORAGE },
-        { KeyCode.Alpha4, ConstFEType.RAW_RESOURCE_PROCESSOR },
+        { KeyCode.Alpha4, ConstFEType.RESOURCE_PROCESSOR },
     };
 
     public GameObject currentEntitySelected;

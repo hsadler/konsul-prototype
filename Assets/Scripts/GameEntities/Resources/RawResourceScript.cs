@@ -6,6 +6,9 @@ public class RawResourceScript : MonoBehaviour, IFactoryEntity, IFactoryResource
 {
 
 
+    // TODO: DEPRECATED
+
+
     public SpriteRenderer sr;
 
     public int FactoryEntityType { get; set; } = ConstFEType.NONE;

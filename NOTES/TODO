@@ -5,7 +5,7 @@ TODO
 pre crafting system prep:
     X split-up constants into separate files
     X refactor rawResource to be InTransitFE which displays sprite of item in transit
-    - add new resource sprites and system mappings:
+    X add new resource sprites and system mappings:
         - NITROGEN
         - HELIUM
         - CO2
