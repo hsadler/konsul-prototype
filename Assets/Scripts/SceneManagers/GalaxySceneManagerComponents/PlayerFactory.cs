@@ -36,6 +36,22 @@ public class PlayerFactory : MonoBehaviour
     public Sprite stoneSprite;
     public Sprite metalSprite;
     public Sprite organicsSprite;
+    [Space(10)]
+    public Sprite nitrogenSprite;
+    public Sprite heliumSprite;
+    public Sprite co2Sprite;
+    public Sprite hydrogenSprite;
+    public Sprite oxygenSprite;
+    public Sprite silicatesSprite;
+    public Sprite quartzeSprite;
+    public Sprite ironSprite;
+    public Sprite copperSprite;
+    public Sprite aluminumSprite;
+    public Sprite leadSprite;
+    public Sprite rareMetalsSprite;
+    public Sprite biomassSprite;
+    public Sprite cellCultureSprite;
+    [Space(10)]
     public Sprite harvesterSprite;
     public Sprite distributorSprite;
     public Sprite storageSprite;
@@ -73,12 +89,27 @@ public class PlayerFactory : MonoBehaviour
         };
         this.entityTypeToSprite = new Dictionary<int, Sprite>()
         {
-            // resources
+            // raw resources
             { ConstFEType.WATER, this.waterSprite },
             { ConstFEType.GAS, this.gasSprite },
             { ConstFEType.STONE, this.stoneSprite },
             { ConstFEType.METAL, this.metalSprite },
             { ConstFEType.ORGANICS, this.organicsSprite },
+            // intermediate resources
+            { ConstFEType.NITROGEN, this.nitrogenSprite },
+            { ConstFEType.HELIUM, this.heliumSprite },
+            { ConstFEType.CO2, this.co2Sprite },
+            { ConstFEType.HYDROGEN, this.hydrogenSprite },
+            { ConstFEType.OXYGEN, this.oxygenSprite },
+            { ConstFEType.SILICATES, this.silicatesSprite },
+            { ConstFEType.QUARTZ, this.quartzeSprite },
+            { ConstFEType.IRON, this.ironSprite },
+            { ConstFEType.COPPER, this.copperSprite },
+            { ConstFEType.ALUMINUM, this.aluminumSprite },
+            { ConstFEType.LEAD, this.leadSprite },
+            { ConstFEType.RARE_METALS, this.rareMetalsSprite },
+            { ConstFEType.BIOMASS, this.biomassSprite },
+            { ConstFEType.CELL_CULTURE, this.cellCultureSprite },
             // structures
             { ConstFEType.HARVESTER, this.harvesterSprite },
             { ConstFEType.DISTRIBUTOR, this.distributorSprite },

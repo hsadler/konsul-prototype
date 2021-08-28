@@ -55,12 +55,27 @@ public class SharedData
     public IDictionary<int, string> factoryEntityTypeToDisplayString = new Dictionary<int, string>()
     {
         { ConstFEType.NONE, "none" },
-        // resources
+        // raw resources
         { ConstFEType.WATER, "water" },
         { ConstFEType.GAS, "gas" },
         { ConstFEType.STONE, "stone" },
         { ConstFEType.METAL, "metal" },
         { ConstFEType.ORGANICS, "organics" },
+        // intermediate resources
+        { ConstFEType.NITROGEN, "nitrogen" },
+        { ConstFEType.HELIUM, "helium" },
+        { ConstFEType.CO2, "co2" },
+        { ConstFEType.HYDROGEN, "hydrogen" },
+        { ConstFEType.OXYGEN, "oxygen" },
+        { ConstFEType.SILICATES, "silicates" },
+        { ConstFEType.QUARTZ, "quartz" },
+        { ConstFEType.IRON, "iron" },
+        { ConstFEType.COPPER, "copper" },
+        { ConstFEType.ALUMINUM, "aluminum" },
+        { ConstFEType.LEAD, "lead" },
+        { ConstFEType.RARE_METALS, "rare metals" },
+        { ConstFEType.BIOMASS, "biomass" },
+        { ConstFEType.CELL_CULTURE, "cell culture" },
         // structure
         { ConstFEType.HARVESTER, "harvester" },
         { ConstFEType.DISTRIBUTOR, "distributor" },
