@@ -43,7 +43,7 @@ public class PlayerFactory : MonoBehaviour
     public Sprite hydrogenSprite;
     public Sprite oxygenSprite;
     public Sprite silicatesSprite;
-    public Sprite quartzeSprite;
+    public Sprite quartzSprite;
     public Sprite ironSprite;
     public Sprite copperSprite;
     public Sprite aluminumSprite;
@@ -102,7 +102,7 @@ public class PlayerFactory : MonoBehaviour
             { ConstFEType.HYDROGEN, this.hydrogenSprite },
             { ConstFEType.OXYGEN, this.oxygenSprite },
             { ConstFEType.SILICATES, this.silicatesSprite },
-            { ConstFEType.QUARTZ, this.quartzeSprite },
+            { ConstFEType.QUARTZ, this.quartzSprite },
             { ConstFEType.IRON, this.ironSprite },
             { ConstFEType.COPPER, this.copperSprite },
             { ConstFEType.ALUMINUM, this.aluminumSprite },
