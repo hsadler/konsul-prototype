@@ -13,7 +13,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
     public bool IsStructureActive { get; set; } = false;
 
     public float distributionPerSecond = 1f;
-    public float launchImpulse = 3f;
+    public float launchImpulse = 0f;
 
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;

@@ -12,8 +12,12 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     public bool IsStructureActive { get; set; } = false;
 
-    public float distributionPerSecond = 1f;
-    public float launchImpulse = 3f;
+    public float launchImpulse = 0f;
+    public float processTime = 0f;
+
+    private int processedFEType = ConstFEType.NONE;
+    private const int STATUS_IDLE = 1;
+    private const int STATUS_PROCESSING = 2;
 
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;
@@ -30,7 +34,7 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     void Start()
     {
-        InvokeRepeating("DistributeItems", 0f, this.distributionPerSecond);
+
     }
 
     void Update()
@@ -44,6 +48,7 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
             this.receiver.SetCanReceive(true);
             this.LoadFromBufferQueue();
         }
+        this.CheckAndProcessNextResource();
     }
 
     // INTERFACE METHODS
@@ -55,6 +60,7 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     // IMPLEMENTATION METHODS
 
+    // TODO: delete when ready
     private void DistributeItems()
     {
         if (this.IsStructureActive && !this.bufferQueue.IsEmpty() && this.io.ResourceIOsExist())
@@ -85,6 +91,26 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
         {
             this.bufferQueue.Add(feType);
         }
+    }
+
+    private void CheckAndProcessNextResource()
+    {
+        // TODO: implement stub
+
+        // logic:
+        // if resource is avail
+        // set status as "processing"
+        // process item
+        // set timout to call DistributeProcessed after processing time is complete
+    }
+
+    private void DistributeProcessed()
+    {
+        // TODO: implement stub
+
+        // logic:
+        // distribute the processed resource
+        // set status to "idle"
     }
 
 

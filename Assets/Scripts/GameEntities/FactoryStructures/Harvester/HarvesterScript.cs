@@ -12,7 +12,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     public bool IsStructureActive { get; set; } = false;
 
-    public float launchImpulse = 1f;
+    public float launchImpulse = 0f;
 
     private FactoryStructureIOBehavior io;
     private int harvestedResource = ConstFEType.NONE;
@@ -58,6 +58,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     // IMPLEMENTATION METHODS
 
+    // TODO: maybe replace this with a buffer queue
     private void CheckAndSendResource()
     {
         if (this.harvestedResource != ConstFEType.NONE)

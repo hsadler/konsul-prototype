@@ -20,6 +20,7 @@ pre crafting system prep:
         - RARE_METALS
         - BIOMASS
         - CELL_CULTURE
+    - create "launcher" behavior script for factory structures that are capable of launching in-transit items
     - implement Raw Resource Processor factory structure
     - get raw resource processing working
     - ability to define output types for resource-IO:

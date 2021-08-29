@@ -63,6 +63,37 @@ public class PlayerFactory : MonoBehaviour
 
     private IDictionary<int, LinkedList<GameObject>> entityTypeToEntities = new Dictionary<int, LinkedList<GameObject>>();
 
+    // raw resource to intermediate resource probabilities
+    public IDictionary<int, IDictionary<int, float>> resourceToProcessedResources = new Dictionary<int, IDictionary<int, float>>()
+    {
+        { ConstFEType.WATER, new Dictionary<int, float>() {
+            { ConstFEType.HYDROGEN, 66f },
+            { ConstFEType.OXYGEN, 33f },
+        }},
+        { ConstFEType.GAS, new Dictionary<int, float>() {
+            { ConstFEType.NITROGEN, 40f },
+            { ConstFEType.HELIUM, 5f },
+            { ConstFEType.CO2, 5f },
+            { ConstFEType.HYDROGEN, 20f },
+            { ConstFEType.OXYGEN, 30f },
+        }},
+        { ConstFEType.STONE, new Dictionary<int, float>() {
+            { ConstFEType.SILICATES, 90f },
+            { ConstFEType.QUARTZ, 10f },
+        }},
+        { ConstFEType.METAL, new Dictionary<int, float>() {
+            { ConstFEType.IRON, 60f },
+            { ConstFEType.COPPER, 20f },
+            { ConstFEType.ALUMINUM, 10f },
+            { ConstFEType.LEAD, 8f },
+            { ConstFEType.RARE_METALS, 2f },
+        }},
+        { ConstFEType.ORGANICS, new Dictionary<int, float>() {
+            { ConstFEType.BIOMASS, 98f },
+            { ConstFEType.CELL_CULTURE, 2f },
+        }},
+    };
+
 
     // UNITY HOOKS
 
@@ -136,7 +167,6 @@ public class PlayerFactory : MonoBehaviour
         }
         return null;
     }
-
     public GameObject CreateInProgressInProgressFactoryStructure(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryStructureInProgressPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
@@ -153,7 +183,6 @@ public class PlayerFactory : MonoBehaviour
             return null;
         }
     }
-
     public GameObject CreateFactoryEntity(int factoryEntityType, Vector3 placementPosition)
     {
         GameObject factoryEntityPrefab = this.GetFactoryEntityPrefabByType(factoryEntityType);
@@ -192,7 +221,6 @@ public class PlayerFactory : MonoBehaviour
         }
         // Debug.Log(this.entityTypeToEntities.ToString());
     }
-
     public void RemoveFactoryEntityFromRegistry(GameObject feGO)
     {
         // Debug.Log("attempting to remove FE from registry: " + feGO.name);
@@ -212,7 +240,6 @@ public class PlayerFactory : MonoBehaviour
         }
         // Debug.Log(this.entityTypeToEntities.ToString());
     }
-
     public List<GameObject> GetFactoryEntityListByType(int factoryEntityType)
     {
         return this.GetFactoryEntityLinkedListByType(factoryEntityType).ToList<GameObject>();
@@ -241,6 +268,19 @@ public class PlayerFactory : MonoBehaviour
         {
             Debug.LogWarning("unable to fetch factory entity sprite by type: " + feType.ToString());
             return null;
+        }
+    }
+
+    // resource processing API
+    public int GetProcessedResourceFromResource(int resourceType)
+    {
+        if (this.resourceToProcessedResources.ContainsKey(resourceType))
+        {
+            return GalaxySceneManager.instance.functions.GetRandomTypeFromProbabilities(this.resourceToProcessedResources[resourceType]);
+        }
+        else
+        {
+            return ConstFEType.NONE;
         }
     }
 

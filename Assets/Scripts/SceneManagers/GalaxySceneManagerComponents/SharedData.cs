@@ -107,37 +107,6 @@ public class SharedData
         { ConstFEType.SYSTEM_EXPANSION_SHIP, "system expansion ship" },
     };
 
-    // raw resource to intermediate resource chance
-    public IDictionary<int, IDictionary<int, float>> resourceToProcessedResources = new Dictionary<int, IDictionary<int, float>>()
-    {
-        { ConstFEType.WATER, new Dictionary<int, float>() {
-            { ConstFEType.HYDROGEN, 66f },
-            { ConstFEType.OXYGEN, 33f },
-        }},
-        { ConstFEType.GAS, new Dictionary<int, float>() {
-            { ConstFEType.NITROGEN, 40f },
-            { ConstFEType.HELIUM, 5f },
-            { ConstFEType.CO2, 5f },
-            { ConstFEType.HYDROGEN, 20f },
-            { ConstFEType.OXYGEN, 30f },
-        }},
-        { ConstFEType.STONE, new Dictionary<int, float>() {
-            { ConstFEType.SILICATES, 90f },
-            { ConstFEType.QUARTZ, 10f },
-        }},
-        { ConstFEType.METAL, new Dictionary<int, float>() {
-            { ConstFEType.IRON, 60f },
-            { ConstFEType.COPPER, 20f },
-            { ConstFEType.ALUMINUM, 10f },
-            { ConstFEType.LEAD, 8f },
-            { ConstFEType.RARE_METALS, 2f },
-        }},
-        { ConstFEType.ORGANICS, new Dictionary<int, float>() {
-            { ConstFEType.BIOMASS, 98f },
-            { ConstFEType.CELL_CULTURE, 2f },
-        }},
-    };
-
 
     public SharedData()
     {
@@ -149,12 +118,6 @@ public class SharedData
             .Concat(this.factoryStructureTypes)
             .Concat(this.factoryUnitTypes);
         this.allFactoryEntityTypes = new List<int>(bucket);
-    }
-
-    public int GetProcessedResourceFromResource(int resourceType)
-    {
-        // TODO: implement stub
-        return ConstFEType.NONE;
     }
 
 
