@@ -23,7 +23,8 @@ public class ConstPlayerInput
     public const KeyCode REMOVAL_KEY = KeyCode.D;
     public const KeyCode CANCEL_REMOVAL_KEY = KeyCode.C;
     public const KeyCode REVERT_MODE_KEY = KeyCode.Q;
-    public const KeyCode FAST_ZOOM_KEY = KeyCode.LeftShift;
+    public const KeyCode SMALL_ZOOM_KEY = KeyCode.LeftControl;
+    public const KeyCode LARGE_ZOOM_KEY = KeyCode.LeftShift;
     public const KeyCode ADDITIVE_SELECTION_KEY = KeyCode.LeftShift;
     public const KeyCode QUIT_GAME_KEY = KeyCode.Escape;
     public const KeyCode ADMIN_MODE_TOGGLE_KEY = KeyCode.A;

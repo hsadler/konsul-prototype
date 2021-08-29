@@ -15,9 +15,11 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
     public float launchImpulse = 0f;
     public float processTime = 0f;
 
-    private int processedFEType = ConstFEType.NONE;
+    private int processedFEType;
+    private int status;
     private const int STATUS_IDLE = 1;
     private const int STATUS_PROCESSING = 2;
+    private const int STATUS_DISTRIBUTING = 3;
 
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;
@@ -27,6 +29,8 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     void Awake()
     {
+        this.status = STATUS_IDLE;
+        this.processedFEType = ConstFEType.NONE;
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
         this.bufferQueue = this.gameObject.GetComponent<FactoryEntityBufferQueue>();
@@ -39,6 +43,10 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     void Update()
     {
+        if (!this.IsStructureActive)
+        {
+            return;
+        }
         if (this.bufferQueue.CapacityFull())
         {
             this.receiver.SetCanReceive(false);
@@ -48,7 +56,14 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
             this.receiver.SetCanReceive(true);
             this.LoadFromBufferQueue();
         }
-        this.CheckAndProcessNextResource();
+        if (this.status == STATUS_IDLE)
+        {
+            this.CheckAndProcessNextResource();
+        }
+        else if (this.status == STATUS_DISTRIBUTING)
+        {
+            this.DistributeProcessed();
+        }
     }
 
     // INTERFACE METHODS
@@ -59,28 +74,6 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
     }
 
     // IMPLEMENTATION METHODS
-
-    // TODO: delete when ready
-    private void DistributeItems()
-    {
-        if (this.IsStructureActive && !this.bufferQueue.IsEmpty() && this.io.ResourceIOsExist())
-        {
-            int feType = this.bufferQueue.GetNext();
-            Vector3 launchDirection = this.io.GetNextSendDirection();
-            GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
-            GameObject go = Instantiate(
-                prefab,
-                this.transform.position + launchDirection,
-                Quaternion.identity
-            );
-            var fe = go.GetComponent<IFactoryEntity>();
-            fe.LauncherGameObjectId = this.gameObject.GetInstanceID();
-            fe.FactoryEntityType = feType;
-            var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
-            feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
-            feLaunchable.Launch();
-        }
-    }
 
     private void LoadFromBufferQueue()
     {
@@ -95,22 +88,41 @@ public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactorySt
 
     private void CheckAndProcessNextResource()
     {
-        // TODO: implement stub
-
-        // logic:
-        // if resource is avail
-        // set status as "processing"
-        // process item
-        // set timout to call DistributeProcessed after processing time is complete
+        if (!this.bufferQueue.IsEmpty())
+        {
+            this.status = STATUS_PROCESSING;
+            this.processedFEType = GalaxySceneManager.instance.playerFactory.GetProcessedResourceFromResource(this.bufferQueue.GetNext());
+            Invoke("DistributeProcessed", this.processTime);
+        }
     }
 
     private void DistributeProcessed()
     {
-        // TODO: implement stub
-
-        // logic:
-        // distribute the processed resource
-        // set status to "idle"
+        if (this.io.ResourceIOsExist())
+        {
+            // launch processed resource
+            Vector3 launchDirection = this.io.GetNextSendDirection();
+            GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
+            GameObject go = Instantiate(
+                prefab,
+                this.transform.position + launchDirection,
+                Quaternion.identity
+            );
+            var fe = go.GetComponent<IFactoryEntity>();
+            fe.LauncherGameObjectId = this.gameObject.GetInstanceID();
+            fe.FactoryEntityType = this.processedFEType;
+            var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
+            feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
+            feLaunchable.Launch();
+            // init vars
+            this.status = STATUS_IDLE;
+            this.processedFEType = ConstFEType.NONE;
+        }
+        else
+        {
+            // set status in order to keep trying to distribute until successfull
+            this.status = STATUS_DISTRIBUTING;
+        }
     }
 
 

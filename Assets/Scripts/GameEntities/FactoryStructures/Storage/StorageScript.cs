@@ -31,6 +31,10 @@ public class StorageScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     void Update()
     {
+        if (!this.IsStructureActive)
+        {
+            return;
+        }
         if (this.inventory.CapacityFull())
         {
             this.receiver.SetCanReceive(false);

@@ -35,6 +35,10 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     void Update()
     {
+        if (!this.IsStructureActive)
+        {
+            return;
+        }
         if (this.bufferQueue.CapacityFull())
         {
             this.receiver.SetCanReceive(false);

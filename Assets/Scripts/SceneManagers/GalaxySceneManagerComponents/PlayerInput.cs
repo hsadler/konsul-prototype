@@ -587,10 +587,14 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleCameraZoom()
     {
-        float zoomMultiplier = 15f;
-        if (Input.GetKey(ConstPlayerInput.FAST_ZOOM_KEY))
+        float zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_NORMAL;
+        if (Input.GetKey(ConstPlayerInput.SMALL_ZOOM_KEY))
         {
-            zoomMultiplier = 150f;
+            zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_SMALL;
+        }
+        else if (Input.GetKey(ConstPlayerInput.LARGE_ZOOM_KEY))
+        {
+            zoomMultiplier = GameSettings.CAMERA_ZOOM_AMOUNT_LARGE;
         }
         float currCameraSize = Camera.main.orthographicSize;
         if (Input.mouseScrollDelta.y != 0)
