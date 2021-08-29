@@ -15,6 +15,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     public float launchImpulse = 0f;
 
     private FactoryStructureIOBehavior io;
+    private FactoryEntityLauncher launcher;
     private int harvestedResource = ConstFEType.NONE;
     private int lastHarvestedResource = ConstFEType.NONE;
 
@@ -24,13 +25,14 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     void Start()
     {
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
+        this.launcher = this.gameObject.GetComponent<FactoryEntityLauncher>();
     }
 
     void Update()
     {
         if (this.IsStructureActive)
         {
-            this.CheckAndSendResource();
+            this.CheckAndLaunchResource();
         }
     }
 
@@ -59,23 +61,14 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     // IMPLEMENTATION METHODS
 
     // TODO: maybe replace this with a buffer queue
-    private void CheckAndSendResource()
+    private void CheckAndLaunchResource()
     {
         if (this.harvestedResource != ConstFEType.NONE)
         {
             if (this.io.ResourceIOsExist())
             {
                 Vector3 launchDirection = this.io.GetNextSendDirection();
-                GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
-                GameObject go = Instantiate(
-                    prefab,
-                    this.transform.position + launchDirection,
-                    Quaternion.identity
-                );
-                go.GetComponent<InTransitFEScript>().FactoryEntityType = this.harvestedResource;
-                var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
-                feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
-                feLaunchable.Launch();
+                this.launcher.Launch(this.harvestedResource, launchDirection, this.launchImpulse);
                 this.harvestedResource = ConstFEType.NONE;
             }
         }

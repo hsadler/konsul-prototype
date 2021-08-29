@@ -18,6 +18,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;
     private FactoryEntityBufferQueue bufferQueue;
+    private FactoryEntityLauncher launcher;
 
     // UNITY HOOKS
 
@@ -26,6 +27,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
         this.bufferQueue = this.gameObject.GetComponent<FactoryEntityBufferQueue>();
+        this.launcher = this.gameObject.GetComponent<FactoryEntityLauncher>();
     }
 
     void Start()
@@ -65,18 +67,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
         {
             int feType = this.bufferQueue.GetNext();
             Vector3 launchDirection = this.io.GetNextSendDirection();
-            GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
-            GameObject go = Instantiate(
-                prefab,
-                this.transform.position + launchDirection,
-                Quaternion.identity
-            );
-            var fe = go.GetComponent<IFactoryEntity>();
-            fe.LauncherGameObjectId = this.gameObject.GetInstanceID();
-            fe.FactoryEntityType = feType;
-            var feLaunchable = go.GetComponent<FactoryEntityLaunchable>();
-            feLaunchable.SetLaunchForceAndDirection(this.launchImpulse, launchDirection);
-            feLaunchable.Launch();
+            this.launcher.Launch(feType, launchDirection, this.launchImpulse);
         }
     }
 
