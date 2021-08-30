@@ -2,30 +2,18 @@
 
 TODO
 
+- take some new videos
+
 pre crafting system prep:
-    X split-up constants into separate files
-    X refactor rawResource to be InTransitFE which displays sprite of item in transit
-    X add new resource sprites and system mappings:
-        - NITROGEN
-        - HELIUM
-        - CO2
-        - HYDROGEN
-        - OXYGEN
-        - SILICATES
-        - QUARTZ
-        - IRON
-        - COPPER
-        - ALUMINUM
-        - LEAD
-        - RARE_METALS
-        - BIOMASS
-        - CELL_CULTURE
-    X implement Raw Resource Processor factory structure
-    X get raw resource processing working
-    X create "launcher" behavior script for factory structures that are capable of launching in-transit items
-    - ability to define output types for resource-IO:
-        - all IOs or only some structures?
-        - think about UX/UI, something quick and easy for the prototype
+    - structure io filter:
+        - The ability to apply either an include or exclude filter list to an existing structure-io
+        - UX:
+            - select structure
+            - tab to desired io
+            - press edit-key to enter structure-io-edit mode
+            - select either include or exclude filter type
+            - select factory-entities from a list of icons in order to build the filter list
+            - press back-key to back out of structure-io-edit mode
 
 - crafting system: resource cost of each factory entity
 

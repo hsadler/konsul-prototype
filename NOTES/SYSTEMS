@@ -45,6 +45,17 @@ Worker Task Queue:
             task is reported as cancelled, and the worker is unassigned from the task.
 
 
+Structure IO Filter:
+    - The ability to apply either an include or exclude filter list to an existing structure-io
+    - UX:
+        - select structure
+        - tab to desired io
+        - press edit-key to enter structure-io-edit mode
+        - select either include or exclude filter type
+        - select factory-entities from a list of icons in order to build the filter list
+        - press back-key to back out of structure-io-edit mode
+
+
 Other likely systems:
     - more galactic object types
     - player code input to create, destroy, manipulate structures
