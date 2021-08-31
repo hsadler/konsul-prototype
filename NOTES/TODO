@@ -4,18 +4,27 @@ TODO
 
 - take some new videos
 
-pre crafting system prep:
-    - structure io filter:
-        - The ability to apply either an include or exclude filter list to an existing structure-io
-        - UX:
-            - select structure
-            - tab to desired io
-            - press edit-key to enter structure-io-edit mode
-            - select either include or exclude filter type
-            - select factory-entities from a list of icons in order to build the filter list
-            - press back-key to back out of structure-io-edit mode
+- crafting system:
+    - The resource cost of each factory entity
+    - requirements:
+        - ability to lookup resources required to create a particular factory-entity
+        - ability to easily tweak recipies
 
-- crafting system: resource cost of each factory entity
+- structure io filter:
+    - The ability to apply either an include or exclude filter list to an existing structure-io
+    - UX:
+        - select structure
+        - tab to desired io
+        - press edit-key to enter structure-io-edit mode
+        - select either include or exclude filter type
+        - select factory-entities from a list of icons in order to build the filter list
+        - press back-key to back out of structure-io-edit mode
+    - requirements:
+        - structure-io-edit mode player control
+        - edit mode modal
+        - io-filter type selection buttons
+        - io-filter fe-type icons to add or remove from filter
+        - io-filter clear button to remove filter from the selected io
 
 - add factory structures:
     - Furnace
