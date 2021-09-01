@@ -7,6 +7,9 @@ public class SharedData
 {
 
 
+    // TODO: deprecate after move to FEData
+
+
     // raw resources
     public List<int> rawResourceTypes = new List<int>()
     {
@@ -15,15 +18,6 @@ public class SharedData
         ConstFEType.STONE,
         ConstFEType.METAL,
         ConstFEType.ORGANICS,
-    };
-    // TODO: DEPRECATED
-    public IDictionary<int, Color> rawResourceTypeToColor = new Dictionary<int, Color>()
-    {
-        { ConstFEType.WATER, Color.blue },
-        { ConstFEType.GAS, Color.yellow },
-        { ConstFEType.STONE, Color.gray },
-        { ConstFEType.METAL, Color.magenta },
-        { ConstFEType.ORGANICS, Color.green },
     };
 
     // intermediate resources

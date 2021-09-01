@@ -20,7 +20,7 @@ public class RawResourceScript : MonoBehaviour, IFactoryEntity, IFactoryResource
 
     void Start()
     {
-        this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.FactoryEntityType];
+        // this.sr.color = GalaxySceneManager.instance.sharedData.rawResourceTypeToColor[this.FactoryEntityType];
     }
 
     void Update()

@@ -4,6 +4,21 @@ TODO
 
 - take some new videos
 
+- refactor to shared data factory-entity-template objects for mappings
+    - would be keyed by feType
+    - schema:
+        - type <int>
+        - group <int> (maybe)
+        - sprite <Sprite>
+        - prefab <GameObject>
+        - displayName <string>
+        - processedFrom <Dictionary <type <int>, count <int>>>
+        - assembledFrom <Dictionary <type <int>, count <int>>>
+        - refinedFrom <Dictionary <type <int>, count <int>>>
+        - furnacedFrom <Dictionary <type <int>, count <int>>>
+        - biolabedFrom <Dictionary <type <int>, count <int>>>
+    - house in FEData manager component script as the single place where factory-entity-template definitions are created
+
 - crafting system:
     - The resource cost of each factory entity
     - requirements:
