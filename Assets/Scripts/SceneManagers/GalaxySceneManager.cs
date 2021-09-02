@@ -15,6 +15,7 @@ public class GalaxySceneManager : MonoBehaviour
     public SharedData sharedData;
 
     // MonoBehaviour manager components
+    public FEData feData;
     public PlayerInput playerInput;
     public PlayerFactory playerFactory;
     public WorkerTaskQueue workerTaskQueue;
