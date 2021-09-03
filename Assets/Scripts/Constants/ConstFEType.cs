@@ -16,6 +16,7 @@ public class ConstFEType
     public const int STONE = 103;
     public const int METAL = 104;
     public const int ORGANICS = 105;
+
     public const int NITROGEN = 106;
     public const int HELIUM = 107;
     public const int CO2 = 108;
@@ -30,6 +31,21 @@ public class ConstFEType
     public const int RARE_METALS = 117;
     public const int BIOMASS = 118;
     public const int CELL_CULTURE = 119;
+
+    public const int CARBON = 120;
+    public const int LASER = 121;
+    public const int RADIATION_SHIELDING = 122;
+    public const int STEEL = 123;
+    public const int CERAMICS = 124;
+    public const int CEMENT = 125;
+    public const int GLASS = 126;
+    public const int SILICON = 127;
+    public const int PETROLEUM = 128;
+    public const int PLASTIC = 129;
+    public const int ELECTRONICS = 130;
+    public const int CPU = 131;
+    public const int COMPUTER = 132;
+    public const int PROGRAMMED_CELLS = 133;
 
 
     // factory structures types

@@ -90,7 +90,88 @@ public class FEData : MonoBehaviour
 
     private void PopulateFactoryEntityTemplates()
     {
+
         this.feTypeToFETemplate = new Dictionary<int, FactoryEntityTemplate>();
+
+        // RESOURCES
+
+        // water
+        var waterTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.WATER,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "water",
+            sprite: this.waterSprite,
+            prefab: null
+        );
+        waterTemplate.SetProcessedTo(new Dictionary<int, int>() {
+            { ConstFEType.HYDROGEN, 66 },
+            { ConstFEType.OXYGEN, 33 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.WATER, waterTemplate);
+        // gas
+        var gasTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.GAS,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "gas",
+            sprite: this.gasSprite,
+            prefab: null
+        );
+        gasTemplate.SetProcessedTo(new Dictionary<int, int>() {
+            { ConstFEType.NITROGEN, 40 },
+            { ConstFEType.HELIUM, 5 },
+            { ConstFEType.CO2, 5 },
+            { ConstFEType.HYDROGEN, 20 },
+            { ConstFEType.OXYGEN, 30 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.GAS, gasTemplate);
+        // stone
+        var stoneTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.STONE,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "stone",
+            sprite: this.stoneSprite,
+            prefab: null
+        );
+        stoneTemplate.SetProcessedTo(new Dictionary<int, int>() {
+            { ConstFEType.SILICATES, 90 },
+            { ConstFEType.QUARTZ, 10 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.STONE, stoneTemplate);
+        // metal
+        var metalTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.METAL,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "metal",
+            sprite: this.metalSprite,
+            prefab: null
+        );
+        metalTemplate.SetProcessedTo(new Dictionary<int, int>() {
+            { ConstFEType.IRON, 60 },
+            { ConstFEType.COPPER, 20 },
+            { ConstFEType.ALUMINUM, 10 },
+            { ConstFEType.LEAD, 8 },
+            { ConstFEType.RARE_METALS, 2 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.METAL, metalTemplate);
+        // organics
+        var organicsTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.ORGANICS,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "organics",
+            sprite: this.organicsSprite,
+            prefab: null
+        );
+        organicsTemplate.SetProcessedTo(new Dictionary<int, int>() {
+            { ConstFEType.BIOMASS, 98 },
+            { ConstFEType.CELL_CULTURE, 2 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.ORGANICS, organicsTemplate);
+
+        // TODO: add more resource templates
+
+
+        // STRUCTURES
+
         // harvester
         var harvesterTemplate = new FactoryEntityTemplate(
             type: ConstFEType.HARVESTER,
@@ -100,7 +181,8 @@ public class FEData : MonoBehaviour
             prefab: this.harvesterPrefab
         );
         harvesterTemplate.SetAssebledFrom(new Dictionary<int, int>() {
-            { ConstFEType.IRON, 5 },
+            { ConstFEType.IRON, 10 },
+            { ConstFEType.LASER, 1 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.HARVESTER, harvesterTemplate);
         // distributor
@@ -117,6 +199,39 @@ public class FEData : MonoBehaviour
             { ConstFEType.COPPER, 5 }
         });
         this.feTypeToFETemplate.Add(ConstFEType.DISTRIBUTOR, distributorTemplate);
+        // storage
+        var storageTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.STORAGE,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "storage",
+            sprite: this.storageSprite,
+            prefab: this.storagePrefab
+        );
+        storageTemplate.SetAssebledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.IRON, 5 },
+            { ConstFEType.STONE, 20 }
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.STORAGE, storageTemplate);
+        // resource processor
+        var resourceProcessor = new FactoryEntityTemplate(
+            type: ConstFEType.RESOURCE_PROCESSOR,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "resource processor",
+            sprite: this.resourceProcessorSprite,
+            prefab: this.resourceProcessorPrefab
+        );
+        resourceProcessor.SetAssebledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.DISTRIBUTOR, 10 },
+            { ConstFEType.STORAGE, 1 }
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.RESOURCE_PROCESSOR, resourceProcessor);
+
+        // TODO: add more structure templates
+
+        // TODO: add unit templates
+
     }
 
 
