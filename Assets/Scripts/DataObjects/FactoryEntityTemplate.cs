@@ -45,7 +45,7 @@ public class FactoryEntityTemplate
         this.processedTo = products;
     }
 
-    public void SetAssebledFrom(IDictionary<int, int> constituents)
+    public void SetAssembledFrom(IDictionary<int, int> constituents)
     {
         this.isAssemblerProduct = true;
         this.assembledFrom = constituents;

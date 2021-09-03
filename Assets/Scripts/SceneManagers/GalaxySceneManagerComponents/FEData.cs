@@ -307,7 +307,7 @@ public class FEData : MonoBehaviour
             sprite: this.harvesterSprite,
             prefab: this.harvesterPrefab
         );
-        harvesterTemplate.SetAssebledFrom(new Dictionary<int, int>() {
+        harvesterTemplate.SetAssembledFrom(new Dictionary<int, int>() {
             { ConstFEType.IRON, 10 },
             { ConstFEType.LASER, 1 },
         });
@@ -320,7 +320,7 @@ public class FEData : MonoBehaviour
             sprite: this.distributorSprite,
             prefab: this.distributorPrefab
         );
-        distributorTemplate.SetAssebledFrom(new Dictionary<int, int>()
+        distributorTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
             { ConstFEType.IRON, 5 },
             { ConstFEType.COPPER, 5 }
@@ -334,26 +334,71 @@ public class FEData : MonoBehaviour
             sprite: this.storageSprite,
             prefab: this.storagePrefab
         );
-        storageTemplate.SetAssebledFrom(new Dictionary<int, int>()
+        storageTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
             { ConstFEType.IRON, 5 },
             { ConstFEType.STONE, 20 }
         });
         this.feTypeToFETemplate.Add(ConstFEType.STORAGE, storageTemplate);
         // resource processor
-        var resourceProcessor = new FactoryEntityTemplate(
+        var resourceProcessorTemplate = new FactoryEntityTemplate(
             type: ConstFEType.RESOURCE_PROCESSOR,
             group: ConstFEGroup.STRUCTURE,
             displayName: "resource processor",
             sprite: this.resourceProcessorSprite,
             prefab: this.resourceProcessorPrefab
         );
-        resourceProcessor.SetAssebledFrom(new Dictionary<int, int>()
+        resourceProcessorTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
             { ConstFEType.DISTRIBUTOR, 10 },
             { ConstFEType.STORAGE, 1 }
         });
-        this.feTypeToFETemplate.Add(ConstFEType.RESOURCE_PROCESSOR, resourceProcessor);
+        this.feTypeToFETemplate.Add(ConstFEType.RESOURCE_PROCESSOR, resourceProcessorTemplate);
+        // mirror
+        var mirrorTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.MIRROR,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "mirror",
+            sprite: this.mirrorSprite,
+            prefab: this.mirrorPrefab
+        );
+        mirrorTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.ALUMINUM, 5 },
+            { ConstFEType.GLASS, 20 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.MIRROR, mirrorTemplate);
+        // photovoltaic
+        var photovoltaicTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.PHOTOVOLTAIC,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "photovoltaic",
+            sprite: this.photovoltaicSprite,
+            prefab: this.photovoltaicPrefab
+        );
+        photovoltaicTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.ALUMINUM, 10 },
+            { ConstFEType.ELECTRONICS, 5 },
+            { ConstFEType.GLASS, 10 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.PHOTOVOLTAIC, photovoltaicTemplate);
+        // accumulator
+        var accumulatorTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.ACCUMULATOR,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "accumulator",
+            sprite: this.accumulatorSprite,
+            prefab: this.accumulatorPrefab
+        );
+        accumulatorTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.STEEL, 5 },
+            { ConstFEType.CARBON, 5 },
+            { ConstFEType.PLASTIC, 10 },
+            { ConstFEType.WATER, 50 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.ACCUMULATOR, accumulatorTemplate);
 
         // TODO: add more structure templates
 
