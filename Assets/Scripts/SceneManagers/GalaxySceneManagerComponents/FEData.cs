@@ -167,6 +167,133 @@ public class FEData : MonoBehaviour
         });
         this.feTypeToFETemplate.Add(ConstFEType.ORGANICS, organicsTemplate);
 
+        // nitrogen
+        var nitrogenTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.NITROGEN,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "nitrogen",
+            sprite: this.nitrogenSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.NITROGEN, nitrogenTemplate);
+        // helium
+        var heliumTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.HELIUM,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "helium",
+            sprite: this.heliumSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.HELIUM, heliumTemplate);
+        // co2
+        var co2Template = new FactoryEntityTemplate(
+            type: ConstFEType.CO2,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "co2",
+            sprite: this.co2Sprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.CO2, co2Template);
+        // hydrogen
+        var hydrogenTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.HYDROGEN,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "hydrogen",
+            sprite: this.hydrogenSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.HYDROGEN, hydrogenTemplate);
+        // oxygen
+        var oxygenTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.OXYGEN,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "oxygen",
+            sprite: this.oxygenSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.OXYGEN, oxygenTemplate);
+        // silicates
+        var silicatesTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.SILICATES,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "silicates",
+            sprite: this.silicatesSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.SILICATES, silicatesTemplate);
+        // quartz
+        var quartzTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.QUARTZ,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "quartz",
+            sprite: this.quartzSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.QUARTZ, quartzTemplate);
+        // iron
+        var ironTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.IRON,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "iron",
+            sprite: this.ironSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.IRON, ironTemplate);
+        // copper
+        var copperTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.COPPER,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "copper",
+            sprite: this.copperSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.COPPER, copperTemplate);
+        // aluminum
+        var aluminumTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.ALUMINUM,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "aluminum",
+            sprite: this.aluminumSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.ALUMINUM, aluminumTemplate);
+        // lead
+        var leadTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.LEAD,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "lead",
+            sprite: this.leadSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.LEAD, leadTemplate);
+        // rare metals
+        var rareMetalsTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.RARE_METALS,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "rare metals",
+            sprite: this.rareMetalsSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.RARE_METALS, rareMetalsTemplate);
+        // biomass
+        var biomassTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.BIOMASS,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "biomass",
+            sprite: this.biomassSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.BIOMASS, biomassTemplate);
+        // cell culture
+        var cellCultureTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.CELL_CULTURE,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "cell culture",
+            sprite: this.cellCultureSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.CELL_CULTURE, cellCultureTemplate);
+
         // TODO: add more resource templates
 
 
