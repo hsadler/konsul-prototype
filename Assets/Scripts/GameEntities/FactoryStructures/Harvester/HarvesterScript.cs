@@ -55,7 +55,7 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     {
         return
             "last harvested resource: " +
-            "\n  " + GalaxySceneManager.instance.sharedData.factoryEntityTypeToDisplayString[this.lastHarvestedResource];
+            "\n  " + GalaxySceneManager.instance.feData.GetFETemplate(this.lastHarvestedResource).displayName;
     }
 
     // IMPLEMENTATION METHODS

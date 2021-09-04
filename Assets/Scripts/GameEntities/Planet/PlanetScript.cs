@@ -139,8 +139,16 @@ public class PlanetScript : MonoBehaviour
 
     private void GenPlanetResourceComposition()
     {
+        var rawResourceTypes = new List<int>
+        {
+            ConstFEType.WATER,
+            ConstFEType.GAS,
+            ConstFEType.STONE,
+            ConstFEType.METAL,
+            ConstFEType.ORGANICS,
+        };
         // populate resources list
-        foreach (int resource in GalaxySceneManager.instance.sharedData.rawResourceTypes)
+        foreach (int resource in rawResourceTypes)
         {
             int resourceSampleAmount = Random.Range(0, 11);
             for (int i = 0; i < resourceSampleAmount; i++)

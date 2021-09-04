@@ -22,6 +22,8 @@ public class FEData : MonoBehaviour
     [Space(20)]
 
     // factory entity sprites
+    public Sprite noneSprite;
+
     public Sprite waterSprite;
     public Sprite gasSprite;
     public Sprite stoneSprite;
@@ -101,12 +103,28 @@ public class FEData : MonoBehaviour
         }
     }
 
+    public List<int> GetAllFETypes()
+    {
+        return new List<int>(this.feTypeToFETemplate.Keys);
+    }
+
     // IMPLEMENTATION METHODS
 
     private void PopulateFactoryEntityTemplates()
     {
 
         this.feTypeToFETemplate = new Dictionary<int, FactoryEntityTemplate>();
+
+        // TODO: maybe keep this or get rid of it
+        // none
+        var noneTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.NONE,
+            group: ConstFEGroup.RESOURCE,
+            displayName: "none",
+            sprite: this.noneSprite,
+            prefab: null
+        );
+        this.feTypeToFETemplate.Add(ConstFEType.NONE, noneTemplate);
 
 
         // RESOURCES

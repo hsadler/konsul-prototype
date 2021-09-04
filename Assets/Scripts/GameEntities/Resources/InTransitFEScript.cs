@@ -30,7 +30,7 @@ public class InTransitFEScript : MonoBehaviour, IFactoryEntity, IInTransitFE
     public string GetStringFormattedFactoryEntityInfo()
     {
         return "resource type: " +
-            "\n  " + GalaxySceneManager.instance.sharedData.factoryEntityTypeToDisplayString[this.FactoryEntityType];
+            "\n  " + GalaxySceneManager.instance.feData.GetFETemplate(this.FactoryEntityType).displayName;
     }
 
     // IMPLEMENTATION METHODS

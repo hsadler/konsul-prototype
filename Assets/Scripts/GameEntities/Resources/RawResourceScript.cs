@@ -33,7 +33,7 @@ public class RawResourceScript : MonoBehaviour, IFactoryEntity, IFactoryResource
     public string GetStringFormattedFactoryEntityInfo()
     {
         return "raw resource type: " +
-            "\n  " + GalaxySceneManager.instance.sharedData.factoryEntityTypeToDisplayString[this.FactoryEntityType];
+            "\n  " + GalaxySceneManager.instance.feData.GetFETemplate(this.FactoryEntityType).displayName;
     }
 
     // IMPLEMENTATION METHODS

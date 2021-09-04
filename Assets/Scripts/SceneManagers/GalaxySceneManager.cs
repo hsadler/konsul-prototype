@@ -12,7 +12,6 @@ public class GalaxySceneManager : MonoBehaviour
 
     // manager components
     public Functions functions;
-    public SharedData sharedData;
 
     // MonoBehaviour manager components
     public FEData feData;
@@ -57,7 +56,6 @@ public class GalaxySceneManager : MonoBehaviour
             Destroy(gameObject);
         }
         this.functions = new Functions();
-        this.sharedData = new SharedData();
     }
 
     void Start()
@@ -138,7 +136,7 @@ public class GalaxySceneManager : MonoBehaviour
             string selectedForPlacement = "none";
             if (this.playerInput.currentPlacementStructureType != 0)
             {
-                selectedForPlacement = this.sharedData.factoryEntityTypeToDisplayString[this.playerInput.currentPlacementStructureType];
+                selectedForPlacement = this.feData.GetFETemplate(this.playerInput.currentPlacementStructureType).displayName;
             }
             // show scene telemetry
             GUI.contentColor = Color.green;
@@ -170,7 +168,7 @@ public class GalaxySceneManager : MonoBehaviour
             GameObject feGO = this.playerInput.currentEntitySelected;
             var feScript = feGO.GetComponent<IFactoryEntity>();
             string selectedInfo =
-                "Selected Entity: " + this.sharedData.factoryEntityTypeToDisplayString[feScript.FactoryEntityType];
+                "Selected Entity: " + this.feData.GetFETemplate(feScript.FactoryEntityType).displayName;
             selectedInfo +=
                 "\n--------------------\n" +
                 feScript.GetStringFormattedFactoryEntityInfo();
