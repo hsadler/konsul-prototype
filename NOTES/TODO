@@ -2,33 +2,22 @@
 
 TODO
 
-X refactor to shared data factory-entity-template objects for mappings
-    X would be keyed by feType
-    X schema:
-        - type <int>
-        - group <int> (maybe)
-        - sprite <Sprite>
-        - prefab <GameObject>
-        - displayName <string>
-        - processedFrom <Dictionary <type <int>, count <int>>>
-        - assembledFrom <Dictionary <type <int>, count <int>>>
-        - refinedFrom <Dictionary <type <int>, count <int>>>
-        - furnacedFrom <Dictionary <type <int>, count <int>>>
-        - biolabedFrom <Dictionary <type <int>, count <int>>>
-    X house in FEData manager component script as the single place where factory-entity-template definitions are created
+- take some new videos
 
-X crafting system:
-    X The resource cost of each factory entity
-    X requirements:
-        X ability to lookup resources required to create a particular factory-entity
-        X ability to easily tweak recipies
+- worker building a structure from constituent parts:
+    - worker checks if structure exists in storage
+    - if yes, fetch and place
+    - if no, check for constituent parts
+    - if yes, fetch and add to in-progress structure
+    - if no, skip task
 
-- add factory structures:
+- implement factory structures:
     - Furnace
     - Refinery
-    - Assembler
 
-- take some new videos
+- implement Assembler
+    - requesting items from storages:
+        - ex: an assembler need 5 iron and 5 copper to make a distributor. how does it get these items?
 
 - structure io filter:
     - The ability to apply either an include or exclude filter list to an existing structure-io
