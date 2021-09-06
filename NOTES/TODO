@@ -8,8 +8,11 @@ TODO
     - worker checks if structure exists in storage
     - if yes, fetch and place
     - if no, check for constituent parts
-    - if yes, fetch and add to in-progress structure
-    - if no, skip task
+    - if yes, convert single task to multiple constituent tasks
+
+- workers removing a partially built structure's constituent parts and storing
+
+- removal of a structure by a worker should result in dump of inventory to space
 
 - implement factory structures:
     - Furnace

@@ -165,7 +165,7 @@ public class PlayerInput : MonoBehaviour
                     // place in-progress structure
                     var go = GalaxySceneManager.instance.playerFactory.CreateInProgressInProgressFactoryStructure(this.currentPlacementStructureType, placementPosition);
                     // queue task for worker to build
-                    var task = new WorkerTask(ConstWorker.TASK_TYPE_BUILD, go);
+                    var task = new WorkerTask(ConstWorker.TASK_TYPE_FETCH_AND_PLACE, go);
                     GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                 }
             }
@@ -308,7 +308,7 @@ public class PlayerInput : MonoBehaviour
                             else
                             {
                                 feRemovable.SetMarkForRemoval(true);
-                                var task = new WorkerTask(ConstWorker.TASK_TYPE_REMOVE, fStructure);
+                                var task = new WorkerTask(ConstWorker.TASK_TYPE_REMOVE_AND_STORE, fStructure);
                                 GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                             }
                         }

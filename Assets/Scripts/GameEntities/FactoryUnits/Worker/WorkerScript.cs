@@ -14,11 +14,10 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     public float interactionDistance = 1f;
 
     private FactoryEntityInventory inventory;
-    // private IDictionary<int, int> inventory = new Dictionary<int, int>();
     private WorkerTask task;
     private int workerMode = ConstWorker.MODE_INIT;
 
-    // fetch and build
+    // fetch and place
     private GameObject selectedFetchStorage;
 
     // remove and store
@@ -48,11 +47,15 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             this.InitWorker();
             return;
         }
-        if (this.task.taskType == ConstWorker.TASK_TYPE_BUILD)
+        if (this.task.taskType == ConstWorker.TASK_TYPE_FETCH_AND_PLACE)
         {
-            this.FetchAndBuildFactoryStructure();
+            this.FetchAndPlaceFactoryStructure();
         }
-        else if (this.task.taskType == ConstWorker.TASK_TYPE_REMOVE)
+        else if (this.task.taskType == ConstWorker.TASK_TYPE_FETCH_AND_ADD_CONSTITUENT_PART)
+        {
+            this.FetchAndAddConstituentPartToFactoryStructure();
+        }
+        else if (this.task.taskType == ConstWorker.TASK_TYPE_REMOVE_AND_STORE)
         {
             this.RemoveAndStoreFactoryStructure();
         }
@@ -90,7 +93,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     // fetch and build
 
-    private void FetchAndBuildFactoryStructure()
+    private void FetchAndPlaceFactoryStructure()
     {
         // in-progress structure has been removed, task can be cancelled via worker initialization
         if (this.task.structure == null)
@@ -100,19 +103,19 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
-            this.workerMode = ConstWorker.MODE_FETCH;
+            this.workerMode = ConstWorker.MODE_FETCH_STRUCTURE;
         }
-        else if (this.workerMode == ConstWorker.MODE_FETCH)
+        else if (this.workerMode == ConstWorker.MODE_FETCH_STRUCTURE)
         {
-            this.FetchFromStorage();
+            this.FetchStructureFromStorage();
         }
-        else if (this.workerMode == ConstWorker.MODE_BUILD)
+        else if (this.workerMode == ConstWorker.MODE_PLACE_STRUCTURE)
         {
-            this.BuildFactoryStructure();
+            this.PlaceFactoryStructure();
         }
     }
 
-    private void FetchFromStorage()
+    private void FetchStructureFromStorage()
     {
         if (this.selectedFetchStorage == null)
         {
@@ -126,7 +129,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // retrieve and bump worker mode
             int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.structureFeType);
             this.inventory.Store(retrieved);
-            this.workerMode = ConstWorker.MODE_BUILD;
+            this.workerMode = ConstWorker.MODE_PLACE_STRUCTURE;
         }
         // move closer to fetch storage
         else
@@ -135,7 +138,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
     }
 
-    private void BuildFactoryStructure()
+    private void PlaceFactoryStructure()
     {
         // close enough to location to build
         if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
@@ -182,8 +185,19 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
         else
         {
-            // TODO: maybe declare task as unable to complete and free worker
+            // TODO NEXT:
+            // - check storages for constituent parts
+            // - if any exist, convert task to multiple constituent part fetch-and-place tasks
+            // - cancel current tasks and free worker
+            // - if no contituent parts exist, requeue the task and free worker
         }
+    }
+
+    // fetch and add constituent part
+
+    private void FetchAndAddConstituentPartToFactoryStructure()
+    {
+        Debug.Log("FetchAndAddConstituentPartToFactoryStructure...");
     }
 
     // remove and store
@@ -193,13 +207,13 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
             // Debug.Log("setting worker mode to remove");
-            this.workerMode = ConstWorker.MODE_REMOVE;
+            this.workerMode = ConstWorker.MODE_REMOVE_STRUCTURE;
         }
-        else if (this.workerMode == ConstWorker.MODE_REMOVE)
+        else if (this.workerMode == ConstWorker.MODE_REMOVE_STRUCTURE)
         {
             this.RemoveFactoryStructure();
         }
-        else if (this.workerMode == ConstWorker.MODE_STORE)
+        else if (this.workerMode == ConstWorker.MODE_STORE_STRUCTURE)
         {
             this.DeliverAndStoreFactoryStructure();
         }
@@ -216,7 +230,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // add structure to inventory
             this.inventory.Store(this.task.structureFeType);
             // bump mode
-            this.workerMode = ConstWorker.MODE_STORE;
+            this.workerMode = ConstWorker.MODE_STORE_STRUCTURE;
         }
         // move closer to build location
         else
