@@ -84,6 +84,12 @@ public class WorkerTaskQueue : MonoBehaviour
     {
         this.tasks.AddFirst(task);
     }
+    public void RequeueWorkerTask(WorkerTask task)
+    {
+        this.tasks.Remove(task);
+        this.tasksInProgress.Remove(task);
+        this.AddWorkerTask(task);
+    }
     public void CancelWorkerTask(WorkerTask task)
     {
         this.tasks.Remove(task);
@@ -113,6 +119,35 @@ public class WorkerTaskQueue : MonoBehaviour
             }
         }
         return null;
+    }
+    public void ConvertFetchAndPlaceTaskIfPossible(WorkerTask task)
+    {
+        // should be a fetch and place task
+        if (task.taskType != ConstWorker.TASK_TYPE_FETCH_AND_PLACE)
+        {
+            Debug.LogWarning("ConvertFetchAndPlaceTaskIfPossible cannot operate on non-fetchAndPlace task type. Requeueing task");
+            this.RequeueWorkerTask(task);
+            return;
+        }
+        // check if any storages contain any of the constituent parts
+        FactoryEntityTemplate structureTemplate = GalaxySceneManager.instance.feData.GetFETemplate(task.structureFeType);
+        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(ConstFEType.STORAGE);
+        foreach (GameObject storage in storages)
+        {
+            var storageInventory = storage.GetComponent<FactoryEntityInventory>();
+            foreach (KeyValuePair<int, int> entry in structureTemplate.assembledFrom)
+            {
+                if (storageInventory.Contains(entry.Key))
+                {
+                    this.CreateContituentPartsTasksForStructure(task.structure, structureTemplate.assembledFrom);
+                    this.CancelWorkerTask(task);
+                    return;
+                }
+            }
+
+        }
+        // if execution reaches this point, that means there's no constituent parts, so simply requeue original task
+        this.RequeueWorkerTask(task);
     }
 
     // IMPLEMENTATION METHODS
@@ -159,6 +194,20 @@ public class WorkerTaskQueue : MonoBehaviour
                 // Debug.Log("setting worker task as in-progress with id: " + task.taskId.ToString());
                 this.tasks.Remove(task);
                 this.tasksInProgress.AddLast(task);
+            }
+        }
+    }
+
+    private void CreateContituentPartsTasksForStructure(GameObject structure, IDictionary<int, int> constituents)
+    {
+        foreach (KeyValuePair<int, int> entry in constituents)
+        {
+            int feType = entry.Key;
+            int feAmount = entry.Value;
+            for (int i = 0; i < feAmount; i++)
+            {
+                var task = new WorkerTask(ConstWorker.TASK_TYPE_FETCH_AND_ADD_CONSTITUENT_PART, structure, feType);
+                this.AddWorkerTask(task);
             }
         }
     }

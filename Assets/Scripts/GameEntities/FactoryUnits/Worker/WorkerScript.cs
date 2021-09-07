@@ -168,7 +168,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         GameObject closestStorage = null;
         foreach (GameObject storage in storages)
         {
-            // storage is the closest and contains the needed item
+            // TODO: enforce storage max distance
+            // storage is the closest and contains the needed structure
             float d = Vector3.Distance(this.transform.position, storage.transform.position);
             if (d < shortestDistance)
             {
@@ -185,11 +186,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
         else
         {
-            // TODO NEXT:
-            // - check storages for constituent parts
-            // - if any exist, convert task to multiple constituent part fetch-and-place tasks
-            // - cancel current tasks and free worker
-            // - if no contituent parts exist, requeue the task and free worker
+            GalaxySceneManager.instance.workerTaskQueue.ConvertFetchAndPlaceTaskIfPossible(this.task);
+            this.InitWorker();
         }
     }
 
