@@ -195,7 +195,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchAndAddConstituentPartToFactoryStructure()
     {
-        Debug.Log("FetchAndAddConstituentPartToFactoryStructure...");
+        Debug.Log("worker doing fetch-and-add-constituent-part task...");
+        // TODO NEXT: implement stub
     }
 
     // remove and store
