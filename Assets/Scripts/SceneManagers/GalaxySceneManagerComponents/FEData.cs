@@ -634,7 +634,24 @@ public class FEData : MonoBehaviour
 
         // TODO: add more structure templates
 
-        // TODO: add unit templates
+        // UNITS
+
+        // worker
+        // TODO: this is a stub, update later
+        var workerTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.WORKER,
+            group: ConstFEGroup.UNIT,
+            displayName: "worker",
+            sprite: null,
+            prefab: null
+        );
+        workerTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.IRON, 5 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.WORKER, workerTemplate);
+
+        // TODO: add more unit templates
 
     }
 
