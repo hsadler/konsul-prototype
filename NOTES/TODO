@@ -4,7 +4,7 @@ TODO
 
 - take some new videos
 
-- worker building a structure from constituent parts:
+X worker building a structure from constituent parts:
     - worker checks if structure exists in storage
     - if yes, fetch and place
     - if no, check for constituent parts

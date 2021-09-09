@@ -86,7 +86,7 @@ public class WorkerTaskQueue : MonoBehaviour
     }
     public void RequeueWorkerTask(WorkerTask task)
     {
-        Debug.Log("requeueing worker task by id: " + task.taskId.ToString());
+        // Debug.Log("requeueing worker task by id: " + task.taskId.ToString());
         this.tasks.Remove(task);
         this.tasksInProgress.Remove(task);
         this.AddWorkerTask(task);
@@ -123,11 +123,11 @@ public class WorkerTaskQueue : MonoBehaviour
     }
     public void ConvertFetchAndPlaceTaskIfPossible(WorkerTask task)
     {
-        Debug.Log("attempting to convert structure placement task to constituent placement task by task id: " + task.taskId.ToString());
+        // Debug.Log("attempting to convert structure placement task to constituent placement task by task id: " + task.taskId.ToString());
         // should be a fetch and place task
         if (task.taskType != ConstWorker.TASK_TYPE_FETCH_AND_PLACE)
         {
-            Debug.LogWarning("ConvertFetchAndPlaceTaskIfPossible cannot operate on non-fetchAndPlace task type. Requeueing task");
+            // Debug.LogWarning("ConvertFetchAndPlaceTaskIfPossible cannot operate on non-fetchAndPlace task type. Requeueing task");
             this.RequeueWorkerTask(task);
             return;
         }
@@ -210,8 +210,8 @@ public class WorkerTaskQueue : MonoBehaviour
             {
                 var task = new WorkerTask(ConstWorker.TASK_TYPE_FETCH_AND_ADD_CONSTITUENT_PART, structure, feType);
                 this.AddWorkerTask(task);
-                Debug.Log("constituent task created for taskId: " + task.taskId.ToString() + " and constituent part: " +
-                    GalaxySceneManager.instance.feData.GetFETemplate(feType).displayName);
+                // Debug.Log("constituent task created for taskId: " + task.taskId.ToString() + " and constituent part: " +
+                //     GalaxySceneManager.instance.feData.GetFETemplate(feType).displayName);
             }
         }
     }

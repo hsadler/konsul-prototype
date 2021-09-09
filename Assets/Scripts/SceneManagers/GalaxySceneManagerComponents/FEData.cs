@@ -108,6 +108,11 @@ public class FEData : MonoBehaviour
         return new List<int>(this.feTypeToFETemplate.Keys);
     }
 
+    public string GetDisplayNameFromFEType(int feType)
+    {
+        return this.GetFETemplate(feType).displayName;
+    }
+
     // IMPLEMENTATION METHODS
 
     private void PopulateFactoryEntityTemplates()

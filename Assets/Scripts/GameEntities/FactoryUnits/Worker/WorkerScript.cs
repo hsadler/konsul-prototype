@@ -171,7 +171,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchAndAddConstituentPartToFactoryStructure()
     {
-        Debug.Log("worker doing fetch-and-add-constituent-part task...");
+        // Debug.Log("worker doing fetch-and-add-constituent-part task...");
         // in-progress structure has been removed, task can be cancelled via worker initialization
         // TODO: this shouldn't be needed since tasks should be cancelled from outside the worker's logic
         // if (this.task.structure == null)
@@ -211,7 +211,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // close enough to storage for retrieval of constituent part
         else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
         {
-            Debug.Log("retrieving type: " + this.task.constituentPartFeType.ToString() + " from storage");
+
+            // Debug.Log("retrieving constituent part: " +
+            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
+            //     " from storage");
+
             // TODO: account for retrieved to be NONE feType
             // retrieve and bump worker mode
             int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.constituentPartFeType);
@@ -230,16 +234,27 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // close enough to location to build
         if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
         {
-            Debug.Log("adding constituent of type: " + this.task.constituentPartFeType.ToString() + " to structure of type: " + this.task.structureFeType.ToString());
-            // remove structure from inventory
-            this.inventory.Retrieve(this.task.constituentPartFeType);
 
-            // TODO NEXT: add the constituent part instead
+            // Debug.Log("adding constituent part: " +
+            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
+            //     " to structure of type: " +
+            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType));
 
-            // activate the in-progress game object
-            this.task.structure.GetComponent<FactoryStructureBehavior>().ActivateStructure();
-            // declare task complete
-            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
+            // attempt to add the constituent part
+            bool status = this.task.structure.GetComponent<FactoryStructureBehavior>().AddConstituentPart(this.task.constituentPartFeType);
+            if (status)
+            {
+                // Debug.Log("status of constituent part addition: " + status.ToString());
+                // remove structure from inventory
+                this.inventory.Retrieve(this.task.constituentPartFeType);
+                // declare task complete
+                GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
+            }
+            else
+            {
+                // requeue task if not successful
+                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
+            }
             // init worker
             this.InitWorker();
         }
