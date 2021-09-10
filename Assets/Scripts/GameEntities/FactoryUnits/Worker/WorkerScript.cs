@@ -17,8 +17,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private WorkerTask task;
     private int workerMode = ConstWorker.MODE_INIT;
 
-    private GameObject selectedFetchStorage;
-    private GameObject selectedDeliveryStorage;
+    private GameObject selectedStorage;
+    private FactoryEntityInventory selectedStorageInventory;
 
 
     // UNITY HOOKS
@@ -83,8 +83,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     {
         this.workerMode = ConstWorker.MODE_INIT;
         this.task = null;
-        this.selectedFetchStorage = null;
-        this.selectedDeliveryStorage = null;
+        this.selectedStorage = null;
         GalaxySceneManager.instance.workerTaskQueue.SetWorkerAsAvailable(this.gameObject);
     }
 
@@ -93,12 +92,6 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private void FetchAndPlaceFactoryStructure()
     {
         // in-progress structure has been removed, task can be cancelled via worker initialization
-        // TODO: this shouldn't be needed since tasks should be cancelled from outside the worker's logic
-        // if (this.task.structure == null)
-        // {
-        //     this.InitWorker();
-        //     return;
-        // }
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
             this.workerMode = ConstWorker.MODE_FETCH_STRUCTURE;
@@ -115,12 +108,14 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchStructureFromStorage()
     {
-        if (this.selectedFetchStorage == null)
+        // select storage
+        if (this.selectedStorage == null)
         {
-            GameObject storage = this.SelectStorageForFetch(this.task.structureFeType);
+            GameObject storage = this.SelectStorage(this.task.structureFeType);
             if (storage != null)
             {
-                this.selectedFetchStorage = storage;
+                this.selectedStorage = storage;
+                this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
             }
             else
             {
@@ -128,20 +123,29 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
                 this.InitWorker();
             }
         }
-        // close enough to storage for retrieval of item
-        else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
-        {
-            // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
-            // TODO: account for retrieved to be NONE feType
-            // retrieve and bump worker mode
-            int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.structureFeType);
-            this.inventory.Store(retrieved);
-            this.workerMode = ConstWorker.MODE_PLACE_STRUCTURE;
-        }
-        // move closer to fetch storage
+        // move and place
         else
         {
-            this.HandleMoveTowardsPosition(this.selectedFetchStorage.transform.position);
+            // check storage still constains item needed, if not, requeue task
+            if (!this.selectedStorageInventory.Contains(this.task.structureFeType))
+            {
+                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
+                this.InitWorker();
+            }
+            // close enough to storage for retrieval of item
+            if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
+            {
+                // Debug.Log("retrieving type: " + this.task.structureFeType.ToString() + " from storage");
+                // retrieve and bump worker mode
+                int retrieved = this.selectedStorageInventory.Retrieve(this.task.structureFeType);
+                this.inventory.Store(retrieved);
+                this.workerMode = ConstWorker.MODE_PLACE_STRUCTURE;
+            }
+            // move closer to fetch storage
+            else
+            {
+                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+            }
         }
     }
 
@@ -173,12 +177,6 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     {
         // Debug.Log("worker doing fetch-and-add-constituent-part task...");
         // in-progress structure has been removed, task can be cancelled via worker initialization
-        // TODO: this shouldn't be needed since tasks should be cancelled from outside the worker's logic
-        // if (this.task.structure == null)
-        // {
-        //     this.InitWorker();
-        //     return;
-        // }
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
             this.workerMode = ConstWorker.MODE_FETCH_CONSTITUENT_PART;
@@ -195,12 +193,13 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchConstituentPartFromStorage()
     {
-        if (this.selectedFetchStorage == null)
+        if (this.selectedStorage == null)
         {
-            GameObject storage = this.SelectStorageForFetch(this.task.constituentPartFeType);
+            GameObject storage = this.SelectStorage(this.task.constituentPartFeType);
             if (storage != null)
             {
-                this.selectedFetchStorage = storage;
+                this.selectedStorage = storage;
+                this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
             }
             else
             {
@@ -208,24 +207,32 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
                 this.InitWorker();
             }
         }
-        // close enough to storage for retrieval of constituent part
-        else if (Vector3.Distance(this.transform.position, this.selectedFetchStorage.transform.position) < this.interactionDistance)
-        {
-
-            // Debug.Log("retrieving constituent part: " +
-            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
-            //     " from storage");
-
-            // TODO: account for retrieved to be NONE feType
-            // retrieve and bump worker mode
-            int retrieved = this.selectedFetchStorage.GetComponent<FactoryEntityInventory>().Retrieve(this.task.constituentPartFeType);
-            this.inventory.Store(retrieved);
-            this.workerMode = ConstWorker.MODE_PLACE_CONSTITUENT_PART;
-        }
-        // move closer to fetch storage
         else
         {
-            this.HandleMoveTowardsPosition(this.selectedFetchStorage.transform.position);
+            // check storage still constains item needed, if not, requeue task
+            if (!this.selectedStorageInventory.Contains(this.task.constituentPartFeType))
+            {
+                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
+                this.InitWorker();
+            }
+            // close enough to storage for retrieval of constituent part
+            if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
+            {
+
+                // Debug.Log("retrieving constituent part: " +
+                //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
+                //     " from storage");
+
+                // retrieve and bump worker mode
+                int retrieved = this.selectedStorageInventory.Retrieve(this.task.constituentPartFeType);
+                this.inventory.Store(retrieved);
+                this.workerMode = ConstWorker.MODE_PLACE_CONSTITUENT_PART;
+            }
+            // move closer to fetch storage
+            else
+            {
+                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+            }
         }
     }
 
@@ -306,51 +313,37 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void DeliverAndStoreFactoryStructure()
     {
-        if (this.selectedDeliveryStorage == null)
+        if (this.selectedStorage == null)
         {
-            this.SelectStorageForDelivery();
-        }
-        // close enough to deliver to storage
-        else if (Vector3.Distance(this.transform.position, this.selectedDeliveryStorage.transform.position) < this.interactionDistance)
-        {
-            // remove structure from inventory and deposite to storage
-            this.selectedDeliveryStorage.GetComponent<FactoryEntityInventory>().Store(
-                this.inventory.Retrieve(this.task.structureFeType)
-            );
-            // declare task complete
-            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
-            // init worker
-            this.InitWorker();
-        }
-        // do move
-        else
-        {
-            this.HandleMoveTowardsPosition(this.selectedDeliveryStorage.transform.position);
-        }
-    }
-
-    private void SelectStorageForDelivery()
-    {
-        // Debug.Log("selecting storage for delivery");
-        List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(ConstFEType.STORAGE);
-        float shortestDistance = Mathf.Infinity;
-        GameObject closestStorage = null;
-        foreach (GameObject storage in storages)
-        {
-            float d = Vector3.Distance(this.transform.position, storage.transform.position);
-            if (d < shortestDistance)
+            GameObject storage = this.SelectStorage();
+            if (storage != null)
             {
-                shortestDistance = d;
-                closestStorage = storage;
+                this.selectedStorage = storage;
+                this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
+            }
+            else
+            {
+                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
+                this.InitWorker();
             }
         }
-        if (closestStorage != null)
-        {
-            this.selectedDeliveryStorage = closestStorage;
-        }
         else
         {
-            // TODO: maybe declare task as unable to complete and free worker
+            // close enough to deliver to storage
+            if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
+            {
+                // remove structure from inventory and deposite to storage
+                this.selectedStorageInventory.Store(this.inventory.Retrieve(this.task.structureFeType));
+                // declare task complete
+                GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
+                // init worker
+                this.InitWorker();
+            }
+            // do move closer to delivery storage
+            else
+            {
+                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+            }
         }
     }
 
@@ -368,20 +361,19 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         );
     }
 
-    private GameObject SelectStorageForFetch(int feTypeToFetch)
+    private GameObject SelectStorage(int feTypeToFetch = ConstFEType.NONE)
     {
-        // Debug.Log("selecting storage for fetch");
+        // Debug.Log("selecting storage to fetch item: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(feTypeToFetch));
         List<GameObject> storages = GalaxySceneManager.instance.playerFactory.GetFactoryEntityListByType(ConstFEType.STORAGE);
         float shortestDistance = Mathf.Infinity;
         GameObject closestStorage = null;
         foreach (GameObject storage in storages)
         {
-            // TODO: enforce storage max distance
-            // storage is the closest and contains the needed structure
+            // storage is the closest and contains the needed item (only if item is not NONE)
             float d = Vector3.Distance(this.transform.position, storage.transform.position);
-            if (d < shortestDistance)
+            if (d <= ConstWorker.MAX_WORKER_TO_STORAGE_DISTANCE && d < shortestDistance)
             {
-                if (storage.GetComponent<FactoryEntityInventory>().Contains(feTypeToFetch))
+                if (feTypeToFetch == ConstFEType.NONE || storage.GetComponent<FactoryEntityInventory>().Contains(feTypeToFetch))
                 {
                     shortestDistance = d;
                     closestStorage = storage;

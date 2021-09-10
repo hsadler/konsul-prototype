@@ -169,7 +169,7 @@ public class WorkerTaskQueue : MonoBehaviour
                     GameObject matchedWorker = null;
                     foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
                     {
-                        // TODO: BUG: task.structure GO doesn't is null sometimes
+                        // TODO: BUG: task.structure GO is null sometimes
                         float distance = Vector3.Distance(worker.transform.position, task.structure.transform.position);
                         if (distance < shortestDistance)
                         {
