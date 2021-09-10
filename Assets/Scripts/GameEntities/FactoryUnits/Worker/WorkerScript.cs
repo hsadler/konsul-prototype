@@ -91,6 +91,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void FetchAndPlaceFactoryStructure()
     {
+        if (this.task.structure == null)
+        {
+            GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(this.task);
+            this.InitWorker();
+        }
         // in-progress structure has been removed, task can be cancelled via worker initialization
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
@@ -121,6 +126,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             {
                 GalaxySceneManager.instance.workerTaskQueue.ConvertFetchAndPlaceTaskIfPossible(this.task);
                 this.InitWorker();
+                return;
             }
         }
         // move and place
@@ -131,6 +137,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             {
                 GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
                 this.InitWorker();
+                return;
             }
             // close enough to storage for retrieval of item
             if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
@@ -176,6 +183,11 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
     private void FetchAndAddConstituentPartToFactoryStructure()
     {
         // Debug.Log("worker doing fetch-and-add-constituent-part task...");
+        if (this.task.structure == null)
+        {
+            GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(this.task);
+            this.InitWorker();
+        }
         // in-progress structure has been removed, task can be cancelled via worker initialization
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
@@ -205,6 +217,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             {
                 GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
                 this.InitWorker();
+                return;
             }
         }
         else
@@ -214,6 +227,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             {
                 GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
                 this.InitWorker();
+                return;
             }
             // close enough to storage for retrieval of constituent part
             if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)

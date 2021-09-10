@@ -451,12 +451,19 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleAdminPopulateSelectedStorage()
     {
-        if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT && Input.GetKeyDown(ConstPlayerInput.ADMIN_POPULATE_STORAGE_KEY))
+        if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
         {
             var inventory = this.currentEntitySelected.GetComponent<FactoryEntityInventory>();
             if (inventory != null)
             {
-                inventory.AdminPopulate();
+                if (Input.GetKeyDown(ConstPlayerInput.ADMIN_POPULATE_STORAGE_ALL_KEY))
+                {
+                    inventory.AdminPopulate(amount: 1000);
+                }
+                else if (Input.GetKeyDown(ConstPlayerInput.ADMIN_POPULATE_STORAGE_RESOURCES_KEY))
+                {
+                    inventory.AdminPopulate(amount: 1000, filterFeGroup: ConstFEGroup.RESOURCE);
+                }
             }
         }
     }

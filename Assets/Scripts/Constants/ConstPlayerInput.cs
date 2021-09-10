@@ -29,7 +29,8 @@ public class ConstPlayerInput
     public const KeyCode QUIT_GAME_KEY = KeyCode.Escape;
     public const KeyCode ADMIN_MODE_TOGGLE_KEY = KeyCode.A;
     public const KeyCode ADMIN_CREATE_WORKER_KEY = KeyCode.W;
-    public const KeyCode ADMIN_POPULATE_STORAGE_KEY = KeyCode.P;
+    public const KeyCode ADMIN_POPULATE_STORAGE_ALL_KEY = KeyCode.P;
+    public const KeyCode ADMIN_POPULATE_STORAGE_RESOURCES_KEY = KeyCode.O;
 
 
 }

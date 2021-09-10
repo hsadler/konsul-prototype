@@ -67,17 +67,27 @@ public class FactoryEntityInventory : MonoBehaviour
         string status = "inventory (" + this.contentsCount.ToString() + "/" + this.capacity.ToString() + "): ";
         foreach (KeyValuePair<int, int> item in this.entityTypeToCount)
         {
-            // status += ("\n  " + gsm.sharedData.factoryEntityTypeToDisplayString[item.Key] + ": " + item.Value.ToString());
-            status += ("\n  " + gsm.feData.GetFETemplate(item.Key).displayName + ": " + item.Value.ToString());
+            status += ("\n  " + gsm.feData.GetDisplayNameFromFEType(item.Key) + ": " + item.Value.ToString());
         }
         return status;
     }
 
-    public void AdminPopulate()
+    public void AdminPopulate(int amount = 1000, int filterFeGroup = 0)
     {
         foreach (int eType in GalaxySceneManager.instance.feData.GetAllFETypes())
         {
-            this.StoreFactoryEntity(eType, 1000);
+
+            if (filterFeGroup > 0)
+            {
+                if (GalaxySceneManager.instance.feData.GetFETemplate(eType).group == filterFeGroup)
+                {
+                    this.StoreFactoryEntity(eType, amount);
+                }
+            }
+            else
+            {
+                this.StoreFactoryEntity(eType, amount);
+            }
         }
     }
 

@@ -2,13 +2,7 @@
 
 TODO
 
-- take some new videos
-
-X worker building a structure from constituent parts:
-    - worker checks if structure exists in storage
-    - if yes, fetch and place
-    - if no, check for constituent parts
-    - if yes, convert single task to multiple constituent tasks
+- add storage-item reservation
 
 - workers removing a partially built structure's constituent parts and storing
 
@@ -17,6 +11,8 @@ X worker building a structure from constituent parts:
 - implement factory structures:
     - Furnace
     - Refinery
+
+- take some new videos
 
 - implement Assembler
     - requesting items from storages:
