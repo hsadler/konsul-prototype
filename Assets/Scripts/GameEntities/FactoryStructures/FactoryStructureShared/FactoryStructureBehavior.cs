@@ -16,7 +16,8 @@ public class FactoryStructureBehavior : MonoBehaviour
     private float ghostAlpha = 0.3f;
     private float aliveAlpha = 1f;
 
-    private List<int> constituentPartsReceived = new List<int>();
+    private IDictionary<int, int> constituentPartsRequired;
+    private Stack<int> constituentPartsReceived = new Stack<int>();
 
 
     // UNITY HOOKS
@@ -31,6 +32,7 @@ public class FactoryStructureBehavior : MonoBehaviour
     void Start()
     {
         this.InitBuildProgressBar();
+        this.constituentPartsRequired = GalaxySceneManager.instance.feData.GetFETemplate(this.fe.FactoryEntityType).assembledFrom;
     }
 
     void Update()
@@ -74,10 +76,9 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     public bool AddConstituentPart(int feTypeReceived)
     {
-        IDictionary<int, int> constituentPartsRequired = GalaxySceneManager.instance.feData.GetFETemplate(this.fe.FactoryEntityType).assembledFrom;
         int totalPartsRequiredAmount = 0;
         int partReceivedRequiredAmount = 0;
-        foreach (KeyValuePair<int, int> entry in constituentPartsRequired)
+        foreach (KeyValuePair<int, int> entry in this.constituentPartsRequired)
         {
             int partFeType = entry.Key;
             int requiredAmount = entry.Value;
@@ -101,7 +102,7 @@ public class FactoryStructureBehavior : MonoBehaviour
         }
         else
         {
-            this.constituentPartsReceived.Add(feTypeReceived);
+            this.constituentPartsReceived.Push(feTypeReceived);
             // structure fully built, set active
             if (totalPartsRequiredAmount == this.constituentPartsReceived.Count)
             {
@@ -113,6 +114,26 @@ public class FactoryStructureBehavior : MonoBehaviour
                 this.SetBuildProgressBar(fractionComplete);
             }
             return true;
+        }
+    }
+
+    public int RemoveLastConstituentPart()
+    {
+        if (this.constituentPartsReceived.Count > 0)
+        {
+            int removedPart = this.constituentPartsReceived.Pop();
+            int totalPartsRequiredAmount = 0;
+            foreach (int partCount in this.constituentPartsRequired.Values)
+            {
+                totalPartsRequiredAmount += partCount;
+            }
+            float fractionComplete = (float)this.constituentPartsReceived.Count / (float)totalPartsRequiredAmount;
+            this.SetBuildProgressBar(fractionComplete);
+            return removedPart;
+        }
+        else
+        {
+            return ConstFEType.NONE;
         }
     }
 
