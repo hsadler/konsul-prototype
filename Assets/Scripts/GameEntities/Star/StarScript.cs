@@ -118,7 +118,6 @@ public class StarScript : MonoBehaviour
         var slbScript = starLightBeam.GetComponent<StarLightBeamScript>();
         slbScript.luminosity = this.luminosity;
         var lineRenderer = slbScript.beam.GetComponent<LineRenderer>();
-        // TODO: tuning values
         lineRenderer.startColor = new Color(this.starColor.r, this.starColor.g, this.starColor.b, lineRenderer.startColor.a);
         lineRenderer.endColor = new Color(this.starColor.r, this.starColor.g, this.starColor.b, lineRenderer.endColor.a);
         lineRenderer.SetPosition(

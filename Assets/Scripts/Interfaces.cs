@@ -13,9 +13,6 @@ public interface IFactoryEntity
 
 public interface IInTransitFE { }
 
-// TODO: OLD, remove once refactored
-// factory-resource group and interfaces
-public interface IFactoryResource { }
 
 // factory-structure group and interfaces
 public interface IFactoryStructure

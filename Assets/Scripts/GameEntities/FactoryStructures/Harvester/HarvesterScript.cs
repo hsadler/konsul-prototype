@@ -60,7 +60,6 @@ public class HarvesterScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     // IMPLEMENTATION METHODS
 
-    // TODO: maybe replace this with a buffer queue
     private void CheckAndLaunchResource()
     {
         if (this.harvestedResource != ConstFEType.NONE)

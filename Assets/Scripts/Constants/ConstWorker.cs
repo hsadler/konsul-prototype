@@ -20,7 +20,6 @@ public class ConstWorker
     public const int MODE_FETCH_CONSTITUENT_PART = 5;
     public const int MODE_PLACE_CONSTITUENT_PART = 6;
 
-    // TODO: use these to limit worker distances when assigning workers to tasks
     public const float MAX_WORKER_TO_WORKER_TASK_DISTANCE = 100f;
     public const float MAX_WORKER_TO_STORAGE_DISTANCE = 100f;
 

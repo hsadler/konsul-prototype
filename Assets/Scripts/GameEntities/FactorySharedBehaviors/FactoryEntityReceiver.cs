@@ -7,11 +7,8 @@ public class FactoryEntityReceiver : MonoBehaviour
 {
 
 
-    // TODO: may not be any reason to use a queue here..
-    public Queue<int> feBuffer = new Queue<int>();
-
+    private Queue<int> feBuffer = new Queue<int>();
     private IFactoryStructure selfFactoryStructure;
-
     private bool canReceive = true;
 
 

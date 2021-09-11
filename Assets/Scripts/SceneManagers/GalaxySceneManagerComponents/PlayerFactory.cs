@@ -7,7 +7,7 @@ public class PlayerFactory : MonoBehaviour
 {
 
 
-    // TODO: move all factory-entity references and mappings to FEData
+    // TODO: DEPRECATE: move all factory-entity references and mappings to FEData
 
 
     public GameObject inTransitFEPrefab;

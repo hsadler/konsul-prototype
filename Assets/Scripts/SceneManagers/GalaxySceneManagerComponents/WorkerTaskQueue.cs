@@ -169,9 +169,9 @@ public class WorkerTaskQueue : MonoBehaviour
                     GameObject matchedWorker = null;
                     foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
                     {
-                        // TODO: BUG: task.structure GO is null sometimes
+                        // TODO: BUG: task.structure GO is null sometimes, solve somewhere other than here, likely the structure onDestroy
                         float distance = Vector3.Distance(worker.transform.position, task.structure.transform.position);
-                        if (distance < shortestDistance)
+                        if (distance <= ConstWorker.MAX_WORKER_TO_WORKER_TASK_DISTANCE && distance < shortestDistance)
                         {
                             shortestDistance = distance;
                             matchedWorker = worker;
