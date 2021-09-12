@@ -64,7 +64,7 @@ public class WorkerTaskQueue : MonoBehaviour
     public void SetWorkerAsAvailable(GameObject worker)
     {
         int workerId = worker.GetInstanceID();
-        if (this.workerIdToAvailableWorker.ContainsKey(workerId))
+        if (this.WorkerIsAvailable(worker))
         {
             Debug.LogWarning("unable to set already available worker by id: " + workerId.ToString());
         }
@@ -72,6 +72,11 @@ public class WorkerTaskQueue : MonoBehaviour
         {
             this.workerIdToAvailableWorker.Add(worker.GetInstanceID(), worker);
         }
+    }
+
+    public bool WorkerIsAvailable(GameObject worker)
+    {
+        return this.workerIdToAvailableWorker.ContainsKey(worker.GetInstanceID());
     }
 
     // worker task management
@@ -139,7 +144,7 @@ public class WorkerTaskQueue : MonoBehaviour
             var storageInventory = storage.GetComponent<FactoryEntityInventory>();
             foreach (KeyValuePair<int, int> entry in structureTemplate.assembledFrom)
             {
-                if (storageInventory.Contains(entry.Key))
+                if (storageInventory.IsAvailable(entry.Key))
                 {
                     this.CreateContituentPartsTasksForStructure(task.structure, structureTemplate.assembledFrom);
                     this.CancelWorkerTask(task);

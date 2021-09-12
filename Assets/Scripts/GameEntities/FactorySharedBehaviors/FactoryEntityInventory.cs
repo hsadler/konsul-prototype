@@ -9,7 +9,8 @@ public class FactoryEntityInventory : MonoBehaviour
     public int capacity = 1;
 
     private int contentsCount = 0;
-    private IDictionary<int, int> entityTypeToCount = new Dictionary<int, int>();
+    private IDictionary<int, int> storageEntityTypeToCount = new Dictionary<int, int>();
+    private IDictionary<int, int> reservedEntityTypeToCount = new Dictionary<int, int>();
 
 
     // UNITY HOOKS
@@ -30,7 +31,7 @@ public class FactoryEntityInventory : MonoBehaviour
     {
         if (this.contentsCount < this.capacity)
         {
-            this.StoreFactoryEntity(feType);
+            this.StoreFactoryEntity(feType, this.storageEntityTypeToCount);
             return true;
         }
         else
@@ -39,16 +40,59 @@ public class FactoryEntityInventory : MonoBehaviour
         }
     }
 
-    public bool Contains(int feType)
+    public bool IsAvailable(int feType)
     {
-        return this.entityTypeToCount.ContainsKey(feType) && this.entityTypeToCount[feType] > 0;
+        return this.storageEntityTypeToCount.ContainsKey(feType) && this.storageEntityTypeToCount[feType] > 0;
+    }
+
+    public bool IsReserveAvailable(int feType)
+    {
+        return this.reservedEntityTypeToCount.ContainsKey(feType) && this.reservedEntityTypeToCount[feType] > 0;
+    }
+
+    public bool Reserve(int feType)
+    {
+        if (this.IsAvailable(feType))
+        {
+            this.StoreFactoryEntity(this.Retrieve(feType), this.reservedEntityTypeToCount);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool ReleaseReservation(int feType)
+    {
+        if (this.IsReserveAvailable(feType))
+        {
+            this.StoreFactoryEntity(this.RetrieveReserved(feType), this.storageEntityTypeToCount);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public int Retrieve(int feType)
     {
-        if (this.Contains(feType))
+        if (this.IsAvailable(feType))
         {
-            return this.RetrieveFactoryEntity(feType);
+            return this.RetrieveFactoryEntity(feType, this.storageEntityTypeToCount);
+        }
+        else
+        {
+            return ConstFEType.NONE;
+        }
+    }
+
+    public int RetrieveReserved(int feType)
+    {
+        if (this.IsReserveAvailable(feType))
+        {
+            return this.RetrieveFactoryEntity(feType, this.reservedEntityTypeToCount);
         }
         else
         {
@@ -65,7 +109,7 @@ public class FactoryEntityInventory : MonoBehaviour
     {
         GalaxySceneManager gsm = GalaxySceneManager.instance;
         string status = "inventory (" + this.contentsCount.ToString() + "/" + this.capacity.ToString() + "): ";
-        foreach (KeyValuePair<int, int> item in this.entityTypeToCount)
+        foreach (KeyValuePair<int, int> item in this.storageEntityTypeToCount)
         {
             status += ("\n  " + gsm.feData.GetDisplayNameFromFEType(item.Key) + ": " + item.Value.ToString());
         }
@@ -81,34 +125,34 @@ public class FactoryEntityInventory : MonoBehaviour
             {
                 if (GalaxySceneManager.instance.feData.GetFETemplate(eType).group == filterFeGroup)
                 {
-                    this.StoreFactoryEntity(eType, amount);
+                    this.StoreFactoryEntity(eType, this.storageEntityTypeToCount, amount);
                 }
             }
             else
             {
-                this.StoreFactoryEntity(eType, amount);
+                this.StoreFactoryEntity(eType, this.storageEntityTypeToCount, amount);
             }
         }
     }
 
     // IMPLEMENTATION METHODS
 
-    private void StoreFactoryEntity(int feType, int amount = 1)
+    private void StoreFactoryEntity(int feType, IDictionary<int, int> storage, int amount = 1)
     {
-        if (this.entityTypeToCount.ContainsKey(feType))
+        if (storage.ContainsKey(feType))
         {
-            this.entityTypeToCount[feType] += amount;
+            storage[feType] += amount;
         }
         else
         {
-            this.entityTypeToCount.Add(feType, amount);
+            storage.Add(feType, amount);
         }
         this.contentsCount += amount;
     }
 
-    private int RetrieveFactoryEntity(int feType)
+    private int RetrieveFactoryEntity(int feType, IDictionary<int, int> storage)
     {
-        this.entityTypeToCount[feType] -= 1;
+        storage[feType] -= 1;
         this.contentsCount -= 1;
         return feType;
     }
