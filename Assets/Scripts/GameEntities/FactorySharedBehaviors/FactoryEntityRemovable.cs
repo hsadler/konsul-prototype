@@ -28,6 +28,21 @@ public class FactoryEntityRemovable : MonoBehaviour
     {
     }
 
+    void OnDestroy()
+    {
+        // TODO: enable this code when ready
+        // attempt to remove associated task from worker-task-queue if structure is not active
+        // var wtq = GalaxySceneManager.instance.workerTaskQueue;
+        // if (!fs.IsStructureActive)
+        // {
+        //     WorkerTask task = wtq.FindTaskByFactoryStructure(this.gameObject);
+        //     if (task != null)
+        //     {
+        //         wtq.CancelWorkerTask(task);
+        //     }
+        // }
+    }
+
     // INTERFACE METHODS
 
     public void SetMarkForRemoval(bool status)

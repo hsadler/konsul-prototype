@@ -282,7 +282,7 @@ public class PlayerInput : MonoBehaviour
             {
                 fStructuresToRemove = this.currentEntitiesSelected;
             }
-            foreach (var fStructure in fStructuresToRemove)
+            foreach (GameObject fStructure in fStructuresToRemove)
             {
                 if (fStructure != null)
                 {

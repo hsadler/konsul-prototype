@@ -2,7 +2,7 @@
 
 TODO
 
-X add storage-item reservation
+- CODE CLEANUP: remove unnecessary player-input -> factory-entity operations by unity-events
 
 - workers removing a partially built structure's constituent parts and storing
 
@@ -59,19 +59,19 @@ X add storage-item reservation
     - PowerCell
 
 
+- Bugs and Code Cleanup:
+    - factory-structures without resource-io behavior should not be able to go into transit-mode
+    - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
+
+
 For consideration/prioritization:
     - give in-transit entities a TTL
-    - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
     - consider a freeze-time control
     - consider different tiers of power gathering
         (though prob not for prototype)
 
 
-- Bugs:
-    - factory-structures without resource-io behavior should not be able to go into transit-mode
-
-
-- CLI:
+- CLI gameplay:
     - TODO
 
 
