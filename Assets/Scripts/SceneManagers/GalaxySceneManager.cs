@@ -36,7 +36,6 @@ public class GalaxySceneManager : MonoBehaviour
     public FactoryEntitySelectedEvent factoryEntitySelectedEvent = new FactoryEntitySelectedEvent();
     public FactoryEntityDelesectAllEvent factoryEntityDelesectAllEvent = new FactoryEntityDelesectAllEvent();
     public FactoryStructureIODelesectAllEvent factoryStructureIODelesectAllEvent = new FactoryStructureIODelesectAllEvent();
-    public FactoryStructureRemovalEvent factoryStructureRemovalEvent = new FactoryStructureRemovalEvent();
     public FactoryStructureIOPlacementEvent factoryStructureIOPlacementEvent = new FactoryStructureIOPlacementEvent();
 
 

@@ -292,7 +292,7 @@ public class PlayerInput : MonoBehaviour
                         // remove immediately if admin
                         if (this.isAdminMode)
                         {
-                            GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
+                            feRemovable.Remove();
                             this.currentEntitySelected = null;
                             this.inputMode = ConstPlayerInput.MODE_INIT;
                         }
@@ -302,7 +302,7 @@ public class PlayerInput : MonoBehaviour
                             // remove immediately if not an active structure
                             if (fs != null && !fs.IsStructureActive)
                             {
-                                GalaxySceneManager.instance.factoryStructureRemovalEvent.Invoke(fStructure);
+                                feRemovable.Remove();
                             }
                             // mark structure as to-remove and create worker task
                             else
