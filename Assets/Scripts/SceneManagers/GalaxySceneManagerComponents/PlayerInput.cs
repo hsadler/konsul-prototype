@@ -453,6 +453,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
         {
+            // TODO: BUG: GameObject is destroyed but still trying to be accessed
             var inventory = this.currentEntitySelected.GetComponent<FactoryEntityInventory>();
             if (inventory != null)
             {
@@ -531,7 +532,12 @@ public class PlayerInput : MonoBehaviour
         this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
         this.DeselectAllFactoryEntities();
         this.currentEntitySelected = factoryEntity;
-        GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(factoryEntity);
+        var selectable = factoryEntity.GetComponent<FactoryEntitySelectable>();
+        if (selectable != null)
+        {
+            selectable.Select();
+        }
+        // GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(factoryEntity);
     }
 
     private void MultiSelectEntities(List<GameObject> factoryEntities)
@@ -546,7 +552,12 @@ public class PlayerInput : MonoBehaviour
         foreach (GameObject fEntity in factoryEntities)
         {
             this.currentEntitiesSelected.Add(fEntity);
-            GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(fEntity);
+            var selectable = fEntity.GetComponent<FactoryEntitySelectable>();
+            if (selectable != null)
+            {
+                selectable.Select();
+            }
+            // GalaxySceneManager.instance.factoryEntitySelectedEvent.Invoke(fEntity);
         }
     }
 

@@ -15,7 +15,6 @@ public class FactoryEntitySelectable : MonoBehaviour
 
     void Start()
     {
-        GalaxySceneManager.instance.factoryEntitySelectedEvent.AddListener(this.CheckSetSelected);
         GalaxySceneManager.instance.factoryEntityDelesectAllEvent.AddListener(this.Deselect);
         this.Deselect();
     }
@@ -27,15 +26,12 @@ public class FactoryEntitySelectable : MonoBehaviour
 
     // INTERFACE METHODS
 
-    // IMPLEMENTATION METHODS
-
-    private void CheckSetSelected(GameObject selectedGO)
+    public void Select()
     {
-        if (selectedGO == this.gameObject)
-        {
-            this.SetSelected(true);
-        }
+        this.SetSelected(true);
     }
+
+    // IMPLEMENTATION METHODS
 
     private void Deselect()
     {

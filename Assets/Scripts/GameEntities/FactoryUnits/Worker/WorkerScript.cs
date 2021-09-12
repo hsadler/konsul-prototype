@@ -327,9 +327,17 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // close enough to location to remove
         if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
         {
-            // Debug.Log("removing structure of type: " + this.task.structureFeType.ToString());
+            Debug.Log("removing structure of type: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType));
             // remove the structure
-            Object.Destroy(this.task.structure);
+            var removable = this.task.structure.GetComponent<FactoryEntityRemovable>();
+            if (removable != null)
+            {
+                this.task.structure.GetComponent<FactoryEntityRemovable>().Remove();
+            }
+            else
+            {
+                Debug.LogWarning("unable to remove structure of type: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType));
+            }
             // add structure to inventory
             this.inventory.Store(this.task.structureFeType);
             // bump mode

@@ -33,7 +33,6 @@ public class GalaxySceneManager : MonoBehaviour
 
     // TODO: remove unnecessary use of events, especially structure-removal
     // unity events
-    public FactoryEntitySelectedEvent factoryEntitySelectedEvent = new FactoryEntitySelectedEvent();
     public FactoryEntityDelesectAllEvent factoryEntityDelesectAllEvent = new FactoryEntityDelesectAllEvent();
     public FactoryStructureIODelesectAllEvent factoryStructureIODelesectAllEvent = new FactoryStructureIODelesectAllEvent();
     public FactoryStructureIOPlacementEvent factoryStructureIOPlacementEvent = new FactoryStructureIOPlacementEvent();
