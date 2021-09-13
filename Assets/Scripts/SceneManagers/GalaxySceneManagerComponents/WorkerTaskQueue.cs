@@ -167,14 +167,14 @@ public class WorkerTaskQueue : MonoBehaviour
             var tasksToSetInProgress = new List<WorkerTask>();
             foreach (WorkerTask task in this.tasks)
             {
-                if (this.workerIdToAvailableWorker.Values.Count > 0)
+                // NOTE: needed task.structure null check here for a bugfix
+                if (task.structure != null && this.workerIdToAvailableWorker.Values.Count > 0)
                 {
                     // match a worker by shortest distance to task
                     float shortestDistance = Mathf.Infinity;
                     GameObject matchedWorker = null;
                     foreach (GameObject worker in this.workerIdToAvailableWorker.Values)
                     {
-                        // TODO: BUG: task.structure GO is null sometimes, solve somewhere other than here, likely the structure onDestroy
                         float distance = Vector3.Distance(worker.transform.position, task.structure.transform.position);
                         if (distance <= ConstWorker.MAX_WORKER_TO_WORKER_TASK_DISTANCE && distance < shortestDistance)
                         {

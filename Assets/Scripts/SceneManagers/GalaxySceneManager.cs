@@ -31,7 +31,6 @@ public class GalaxySceneManager : MonoBehaviour
     public int factoryStructureCount = 0;
     public int factoryEntityItemsInTransit = 0;
 
-    // TODO: remove unnecessary use of events, especially structure-removal
     // unity events
     public FactoryEntityDelesectAllEvent factoryEntityDelesectAllEvent = new FactoryEntityDelesectAllEvent();
     public FactoryStructureIODelesectAllEvent factoryStructureIODelesectAllEvent = new FactoryStructureIODelesectAllEvent();

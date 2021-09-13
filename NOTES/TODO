@@ -2,7 +2,9 @@
 
 TODO
 
-- CODE CLEANUP: remove unnecessary player-input -> factory-entity operations by unity-events
+X CODE CLEANUP: remove unnecessary player-input -> factory-entity operations by unity-events
+
+X fix null check bugs
 
 - workers removing a partially built structure's constituent parts and storing
 
