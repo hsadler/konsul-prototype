@@ -120,7 +120,7 @@ public class FEData : MonoBehaviour
 
         this.feTypeToFETemplate = new Dictionary<int, FactoryEntityTemplate>();
 
-        // TODO: maybe keep this or get rid of it
+        // TODO: REFACTOR: consider removing NONE type FE Template
         // none
         var noneTemplate = new FactoryEntityTemplate(
             type: ConstFEType.NONE,
@@ -529,7 +529,7 @@ public class FEData : MonoBehaviour
         programmedCellsTemplate.SetBiolabedFrom(new Dictionary<int, int>()
         {
             { ConstFEType.CELL_CULTURE, 10 },
-            // TODO: add more constituents here
+            // TODO: FUTURE: add more constituents here
         });
         this.feTypeToFETemplate.Add(ConstFEType.PROGRAMMED_CELLS, programmedCellsTemplate);
 
@@ -637,12 +637,12 @@ public class FEData : MonoBehaviour
         });
         this.feTypeToFETemplate.Add(ConstFEType.ACCUMULATOR, accumulatorTemplate);
 
-        // TODO: add more structure templates
+        // TODO: FUTURE: add more structure templates
 
         // UNITS
 
         // worker
-        // TODO: this is a stub, update later
+        // TODO: FUTURE: replace placeholder
         var workerTemplate = new FactoryEntityTemplate(
             type: ConstFEType.WORKER,
             group: ConstFEGroup.UNIT,
@@ -656,7 +656,7 @@ public class FEData : MonoBehaviour
         });
         this.feTypeToFETemplate.Add(ConstFEType.WORKER, workerTemplate);
 
-        // TODO: add more unit templates
+        // TODO: FUTURE: add more unit templates
 
     }
 

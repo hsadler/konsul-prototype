@@ -13,7 +13,7 @@ public class StarScript : MonoBehaviour
     public int starType;
     private int[] starTypes = new int[4] { 1, 2, 3, 4 };
 
-    // TODO: refactor star type and color to be held in Constants and SharedData
+    // TODO: REFACTOR: move star type and color to be held in Constants and SharedData
     public Color starColor;
     private Color32[] starColors = new Color32[4]
     {

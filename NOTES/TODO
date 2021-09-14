@@ -2,10 +2,6 @@
 
 TODO
 
-X CODE CLEANUP: remove unnecessary player-input -> factory-entity operations by unity-events
-
-X fix null check bugs
-
 - workers removing a partially built structure's constituent parts and storing
 
 - removal of a structure by a worker should result in dump of inventory to space

@@ -133,7 +133,7 @@ public class PlanetScript : MonoBehaviour
         linePositions[4] = this.waypoint1.transform.localPosition;
         orbitLineRenderer.SetPositions(linePositions);
         // set initial planet position on orbit path
-        // TODO: change this to start at a random position along the path
+        // TODO: FUTURE: change this to start at a random position along the path
         this.planetBody.transform.localPosition = this.waypoint1.transform.localPosition;
     }
 
