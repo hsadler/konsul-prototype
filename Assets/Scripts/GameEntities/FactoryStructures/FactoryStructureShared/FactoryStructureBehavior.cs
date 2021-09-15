@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FactoryStructureBehavior : MonoBehaviour
@@ -50,6 +51,8 @@ public class FactoryStructureBehavior : MonoBehaviour
 
     // INTERFACE METHODS
 
+    // active / non-active structure methods
+
     public void ActivateStructure()
     {
         this.fs.IsStructureActive = true;
@@ -72,6 +75,33 @@ public class FactoryStructureBehavior : MonoBehaviour
     public void GivePrePlacementAppearance()
     {
         this.SetSpriteAlpha(this.prePlaceAlpha);
+    }
+
+    // constituent part methods
+
+    public int[] GetConstituentPartsAdded()
+    {
+        return this.constituentPartsReceived.ToArray();
+    }
+
+    public int[] GetRemainingContituentPartsNeeded()
+    {
+        // clone required parts dict
+        IDictionary<int, int> partToAmount = this.constituentPartsRequired.ToDictionary(entry => entry.Key, entry => entry.Value);
+        foreach (int feType in this.constituentPartsReceived)
+        {
+            partToAmount[feType] -= 1;
+        }
+        // gather remaining required together
+        var remainingPartsNeeded = new List<int>();
+        foreach (KeyValuePair<int, int> entry in partToAmount)
+        {
+            for (int i = 0; i < entry.Value; i++)
+            {
+                remainingPartsNeeded.Add(entry.Key);
+            }
+        }
+        return remainingPartsNeeded.ToArray();
     }
 
     public bool AddConstituentPart(int feTypeReceived)

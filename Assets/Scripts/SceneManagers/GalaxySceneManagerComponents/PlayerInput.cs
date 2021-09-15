@@ -271,13 +271,12 @@ public class PlayerInput : MonoBehaviour
         //  removal key press
         if (Input.GetKeyDown(ConstPlayerInput.REMOVAL_KEY))
         {
+            // collect structures to remove
             List<GameObject> fStructuresToRemove = new List<GameObject>();
-            // entity-select mode
             if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
             {
                 fStructuresToRemove.Add(this.currentEntitySelected);
             }
-            // entity-multiselect mode
             else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
             {
                 fStructuresToRemove = this.currentEntitiesSelected;
@@ -298,16 +297,37 @@ public class PlayerInput : MonoBehaviour
                         }
                         else
                         {
-                            IFactoryStructure fs = fStructure.GetComponent<IFactoryStructure>();
-                            // remove immediately if not an active structure
+                            var fs = fStructure.GetComponent<IFactoryStructure>();
+                            var fsb = fStructure.GetComponent<FactoryStructureBehavior>();
+                            // turn on removal indicator
+                            feRemovable.SetMarkForRemoval(true);
+                            // remove constituent parts already added to inactive structure if needed
                             if (fs != null && !fs.IsStructureActive)
                             {
-                                feRemovable.Remove();
+                                List<WorkerTask> tasks = GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure);
+                                int[] partsAdded = fsb.GetConstituentPartsAdded();
+                                // create constituent part removal tasks for all constituent parts added 
+                                if (partsAdded.Length > 0)
+                                {
+                                    foreach (int feType in partsAdded)
+                                    {
+                                        WorkerTask task = new WorkerTask(
+                                            ConstWorker.TASK_TYPE_REMOVE_CONSTITUENT_PART_AND_STORE,
+                                            fStructure,
+                                            constituentPartFeType: feType
+                                        );
+                                        GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                                    }
+                                }
+                                // remove immediately if no structure parts have been added yet
+                                else
+                                {
+                                    feRemovable.Remove();
+                                }
                             }
-                            // mark structure as to-remove and create worker task
+                            // create single worker task to remove active structure
                             else
                             {
-                                feRemovable.SetMarkForRemoval(true);
                                 var task = new WorkerTask(ConstWorker.TASK_TYPE_REMOVE_AND_STORE, fStructure);
                                 GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
                             }
@@ -329,6 +349,7 @@ public class PlayerInput : MonoBehaviour
         // cancel-removal keypress
         if (Input.GetKeyDown(ConstPlayerInput.CANCEL_REMOVAL_KEY))
         {
+            // collect structures to cancel removal
             List<GameObject> fStructuresToCancel = new List<GameObject>();
             if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
             {
@@ -342,12 +363,42 @@ public class PlayerInput : MonoBehaviour
             {
                 if (fStructure != null)
                 {
-                    WorkerTask task = GalaxySceneManager.instance.workerTaskQueue.FindTaskByFactoryStructure(fStructure);
-                    if (task != null)
+                    // remove removal indicator
+                    var fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
+                    if (fRemovable != null)
                     {
-                        FactoryEntityRemovable fRemovable = fStructure.GetComponent<FactoryEntityRemovable>();
                         fRemovable.SetMarkForRemoval(false);
+                    }
+                    // cancel all tasks associated with structure
+                    List<WorkerTask> tasks = GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure);
+                    foreach (WorkerTask task in tasks)
+                    {
                         GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                    }
+                    // create build tasks for non-active structure
+                    var fs = fStructure.GetComponent<IFactoryStructure>();
+                    if (fs != null && !fs.IsStructureActive)
+                    {
+                        var fsb = fStructure.GetComponent<FactoryStructureBehavior>();
+                        // create constituent-part-addition tasks for each remaining part needed
+                        if (fsb.GetConstituentPartsAdded().Length > 0)
+                        {
+                            foreach (int feType in fsb.GetRemainingContituentPartsNeeded())
+                            {
+                                var task = new WorkerTask(
+                                    ConstWorker.TASK_TYPE_FETCH_AND_ADD_CONSTITUENT_PART,
+                                    fStructure,
+                                    constituentPartFeType: feType
+                                );
+                                GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                            }
+                        }
+                        // no parts added yet, create single fetch-and-place-task
+                        else
+                        {
+                            var task = new WorkerTask(ConstWorker.TASK_TYPE_FETCH_AND_PLACE, fStructure);
+                            GalaxySceneManager.instance.workerTaskQueue.AddWorkerTask(task);
+                        }
                     }
                 }
             }

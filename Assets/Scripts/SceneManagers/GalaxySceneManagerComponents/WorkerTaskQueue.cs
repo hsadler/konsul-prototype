@@ -106,14 +106,15 @@ public class WorkerTaskQueue : MonoBehaviour
     {
         this.tasksInProgress.Remove(task);
     }
-    public WorkerTask FindTaskByFactoryStructure(GameObject factoryStructure)
+    public List<WorkerTask> FindTasksByFactoryStructure(GameObject factoryStructure)
     {
+        var tasks = new List<WorkerTask>();
         // check task queue
         foreach (WorkerTask task in this.tasks)
         {
             if (task.structure == factoryStructure)
             {
-                return task;
+                tasks.Add(task);
             }
         }
         // check in-progress
@@ -121,10 +122,10 @@ public class WorkerTaskQueue : MonoBehaviour
         {
             if (task.structure == factoryStructure)
             {
-                return task;
+                tasks.Add(task);
             }
         }
-        return null;
+        return tasks;
     }
     public void ConvertFetchAndPlaceTaskIfPossible(WorkerTask task)
     {

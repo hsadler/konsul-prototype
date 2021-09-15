@@ -57,6 +57,14 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             this.RemoveAndStoreFactoryStructure();
         }
+        // TODO NEXT: implement handling of remove-and-store-constituent-part task type 
+        else if (this.task.taskType == ConstWorker.TASK_TYPE_REMOVE_CONSTITUENT_PART_AND_STORE)
+        {
+            // this.RemoveAndStoreConstituentPart();
+            Debug.Log("doing RemoveAndStoreConstituentPart task...");
+            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
+            this.InitWorker();
+        }
     }
 
     void OnDestroy()
