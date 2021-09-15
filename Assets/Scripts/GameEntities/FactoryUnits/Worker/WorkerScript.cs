@@ -57,13 +57,9 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         {
             this.RemoveAndStoreFactoryStructure();
         }
-        // TODO NEXT: implement handling of remove-and-store-constituent-part task type 
         else if (this.task.taskType == ConstWorker.TASK_TYPE_REMOVE_CONSTITUENT_PART_AND_STORE)
         {
-            // this.RemoveAndStoreConstituentPart();
-            Debug.Log("doing RemoveAndStoreConstituentPart task...");
-            GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
-            this.InitWorker();
+            this.RemoveAndStoreConstituentPart();
         }
     }
 
@@ -120,7 +116,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
     }
 
-    // fetch and build
+    // fetch and place structure
 
     private void FetchAndPlaceFactoryStructure()
     {
@@ -311,13 +307,12 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
     }
 
-    // remove and store
+    // remove structure and store
 
     private void RemoveAndStoreFactoryStructure()
     {
         if (this.workerMode == ConstWorker.MODE_INIT)
         {
-            // Debug.Log("setting worker mode to remove");
             this.workerMode = ConstWorker.MODE_REMOVE_STRUCTURE;
         }
         else if (this.workerMode == ConstWorker.MODE_REMOVE_STRUCTURE)
@@ -340,7 +335,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             var removable = this.task.structure.GetComponent<FactoryEntityRemovable>();
             if (removable != null)
             {
-                this.task.structure.GetComponent<FactoryEntityRemovable>().Remove();
+                removable.Remove();
             }
             else
             {
@@ -381,6 +376,120 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             {
                 // remove structure from inventory and deposite to storage
                 this.selectedStorageInventory.Store(this.inventory.Retrieve(this.task.structureFeType));
+                // declare task complete
+                GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
+                // init worker
+                this.InitWorker();
+            }
+            // do move closer to delivery storage
+            else
+            {
+                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+            }
+        }
+    }
+
+    // remove and store constituent part
+
+    private void RemoveAndStoreConstituentPart()
+    {
+        if (this.workerMode == ConstWorker.MODE_INIT)
+        {
+            this.workerMode = ConstWorker.MODE_REMOVE_CONSTITUENT_PART;
+        }
+        else if (this.workerMode == ConstWorker.MODE_REMOVE_CONSTITUENT_PART)
+        {
+            this.RemoveConstituentPart();
+        }
+        else if (this.workerMode == ConstWorker.MODE_STORE_CONSTITUENT_PART)
+        {
+            this.DeliverAndStoreConstituentPart();
+        }
+    }
+
+    private void RemoveConstituentPart()
+    {
+        // close enough to structure to interact
+        if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
+        {
+
+            Debug.Log(
+                "removing constituent part of type: " +
+                GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
+                " from structure type: " +
+                GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType)
+            );
+
+            // extract constituent part
+            var fsb = this.task.structure.GetComponent<FactoryStructureBehavior>();
+            if (fsb != null)
+            {
+                int removedConstituentPart = fsb.RemoveLastConstituentPart();
+                if (removedConstituentPart != ConstFEType.NONE)
+                {
+                    this.inventory.Store(removedConstituentPart);
+                    // if final contituent part removed by this worker, remove the structure
+                    if (fsb.GetConstituentPartsAdded().Length < 1)
+                    {
+                        var removable = this.task.structure.GetComponent<FactoryEntityRemovable>();
+                        if (removable != null)
+                        {
+                            removable.Remove();
+                        }
+                        else
+                        {
+                            Debug.LogWarning("unable to remove structure of type: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType));
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        "removed constituent part NONE type from structure type: " +
+                        GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType)
+                    );
+                }
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "structure type has no factory structure behavior script: " +
+                    GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType)
+                );
+            }
+            // bump mode
+            this.workerMode = ConstWorker.MODE_STORE_CONSTITUENT_PART;
+        }
+        // move closer to build location
+        else
+        {
+            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+        }
+    }
+
+    private void DeliverAndStoreConstituentPart()
+    {
+        if (this.selectedStorage == null)
+        {
+            GameObject storage = this.GetClosestStorage();
+            if (storage != null)
+            {
+                this.selectedStorage = storage;
+                this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
+            }
+            else
+            {
+                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
+                this.InitWorker();
+            }
+        }
+        else
+        {
+            // close enough to deliver to storage
+            if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
+            {
+                // remove constituent part from inventory and deposite to storage
+                this.selectedStorageInventory.Store(this.inventory.Retrieve(this.task.constituentPartFeType));
                 // declare task complete
                 GalaxySceneManager.instance.workerTaskQueue.TaskComplete(this.task);
                 // init worker
