@@ -304,7 +304,11 @@ public class PlayerInput : MonoBehaviour
                             // remove constituent parts already added to inactive structure if needed
                             if (fs != null && !fs.IsStructureActive)
                             {
-                                List<WorkerTask> tasks = GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure);
+                                // cancel all tasks associated with structure
+                                foreach (WorkerTask task in GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure))
+                                {
+                                    GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
+                                }
                                 int[] partsAdded = fsb.GetConstituentPartsAdded();
                                 // create constituent part removal tasks for all constituent parts added 
                                 if (partsAdded.Length > 0)
@@ -370,8 +374,7 @@ public class PlayerInput : MonoBehaviour
                         fRemovable.SetMarkForRemoval(false);
                     }
                     // cancel all tasks associated with structure
-                    List<WorkerTask> tasks = GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure);
-                    foreach (WorkerTask task in tasks)
+                    foreach (WorkerTask task in GalaxySceneManager.instance.workerTaskQueue.FindTasksByFactoryStructure(fStructure))
                     {
                         GalaxySceneManager.instance.workerTaskQueue.CancelWorkerTask(task);
                     }

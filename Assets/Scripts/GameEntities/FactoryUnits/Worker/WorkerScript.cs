@@ -178,7 +178,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // move closer to fetch storage
             else
             {
-                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+                this.MoveTowardsPosition(this.selectedStorage.transform.position);
             }
         }
     }
@@ -201,7 +201,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to build location
         else
         {
-            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+            this.MoveTowardsPosition(this.task.structure.transform.position);
         }
     }
 
@@ -266,7 +266,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // move closer to fetch storage
             else
             {
-                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+                this.MoveTowardsPosition(this.selectedStorage.transform.position);
             }
         }
     }
@@ -303,7 +303,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to build location
         else
         {
-            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+            this.MoveTowardsPosition(this.task.structure.transform.position);
         }
     }
 
@@ -349,7 +349,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to build location
         else
         {
-            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+            this.MoveTowardsPosition(this.task.structure.transform.position);
         }
     }
 
@@ -365,8 +365,8 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             }
             else
             {
-                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
-                this.InitWorker();
+                // worker keeps task until storage is found for delivery
+                this.DoWaitingMovement();
             }
         }
         else
@@ -384,7 +384,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // do move closer to delivery storage
             else
             {
-                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+                this.MoveTowardsPosition(this.selectedStorage.transform.position);
             }
         }
     }
@@ -413,12 +413,12 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         if (Vector3.Distance(this.transform.position, this.task.structure.transform.position) < this.interactionDistance)
         {
 
-            Debug.Log(
-                "removing constituent part of type: " +
-                GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
-                " from structure type: " +
-                GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType)
-            );
+            // Debug.Log(
+            //     "removing constituent part of type: " +
+            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.constituentPartFeType) +
+            //     " from structure type: " +
+            //     GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.task.structureFeType)
+            // );
 
             // extract constituent part
             var fsb = this.task.structure.GetComponent<FactoryStructureBehavior>();
@@ -463,7 +463,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         // move closer to build location
         else
         {
-            this.HandleMoveTowardsPosition(this.task.structure.transform.position);
+            this.MoveTowardsPosition(this.task.structure.transform.position);
         }
     }
 
@@ -474,13 +474,14 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             GameObject storage = this.GetClosestStorage();
             if (storage != null)
             {
+                Debug.Log("DeliverAndStoreConstituentPart: storage found!");
                 this.selectedStorage = storage;
                 this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
             }
             else
             {
-                GalaxySceneManager.instance.workerTaskQueue.RequeueWorkerTask(this.task);
-                this.InitWorker();
+                // worker keeps the task until a storage is found
+                this.DoWaitingMovement();
             }
         }
         else
@@ -488,6 +489,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // close enough to deliver to storage
             if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
             {
+                Debug.Log("DeliverAndStoreConstituentPart: placing constituent part in storage...");
                 // remove constituent part from inventory and deposite to storage
                 this.selectedStorageInventory.Store(this.inventory.Retrieve(this.task.constituentPartFeType));
                 // declare task complete
@@ -498,14 +500,15 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // do move closer to delivery storage
             else
             {
-                this.HandleMoveTowardsPosition(this.selectedStorage.transform.position);
+                Debug.Log("DeliverAndStoreConstituentPart: moving towards storage...");
+                this.MoveTowardsPosition(this.selectedStorage.transform.position);
             }
         }
     }
 
     // helpers
 
-    private void HandleMoveTowardsPosition(Vector3 targetPosition)
+    private void MoveTowardsPosition(Vector3 targetPosition)
     {
         // face position
         this.transform.rotation = Quaternion.LookRotation(Vector3.forward, targetPosition - this.transform.position);
@@ -515,6 +518,13 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             targetPosition,
             this.moveSpeed * Time.deltaTime
         );
+    }
+
+    private void DoWaitingMovement()
+    {
+        Vector3[] possibleDirections = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        Vector3 randDirection = possibleDirections[Random.Range(0, possibleDirections.Length)];
+        this.MoveTowardsPosition(this.transform.position + randDirection);
     }
 
     private GameObject GetClosestStorage(int feTypeToFetch = ConstFEType.NONE)
