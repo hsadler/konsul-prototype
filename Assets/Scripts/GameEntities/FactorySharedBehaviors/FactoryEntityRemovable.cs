@@ -34,13 +34,16 @@ public class FactoryEntityRemovable : MonoBehaviour
         this.toRemoveIndicator.SetActive(status);
     }
 
-    public void Remove()
+    public void Remove(bool cancelAssociatedTasks = false)
     {
         // attempt to remove associated task from worker-task-queue
-        var wtq = GalaxySceneManager.instance.workerTaskQueue;
-        foreach (WorkerTask task in wtq.FindTasksByFactoryStructure(this.gameObject))
+        if (cancelAssociatedTasks)
         {
-            wtq.CancelWorkerTask(task);
+            var wtq = GalaxySceneManager.instance.workerTaskQueue;
+            foreach (WorkerTask task in wtq.FindTasksByFactoryStructure(this.gameObject))
+            {
+                wtq.CancelWorkerTask(task);
+            }
         }
         Object.Destroy(this.gameObject);
     }

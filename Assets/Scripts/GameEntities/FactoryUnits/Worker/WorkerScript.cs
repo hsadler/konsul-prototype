@@ -42,6 +42,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
         }
         if (this.task.isCancelled)
         {
+            // Debug.Log("task cancelled. initializing worker..");
             this.InitWorker();
             return;
         }
@@ -87,6 +88,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
 
     private void InitWorker()
     {
+        // Debug.Log("initializing worker...");
         // init mode
         this.workerMode = ConstWorker.MODE_INIT;
         // release storage reservations
@@ -474,7 +476,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             GameObject storage = this.GetClosestStorage();
             if (storage != null)
             {
-                Debug.Log("DeliverAndStoreConstituentPart: storage found!");
+                // Debug.Log("DeliverAndStoreConstituentPart: storage found!");
                 this.selectedStorage = storage;
                 this.selectedStorageInventory = storage.GetComponent<FactoryEntityInventory>();
             }
@@ -489,7 +491,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // close enough to deliver to storage
             if (Vector3.Distance(this.transform.position, this.selectedStorage.transform.position) < this.interactionDistance)
             {
-                Debug.Log("DeliverAndStoreConstituentPart: placing constituent part in storage...");
+                // Debug.Log("DeliverAndStoreConstituentPart: placing constituent part in storage...");
                 // remove constituent part from inventory and deposite to storage
                 this.selectedStorageInventory.Store(this.inventory.Retrieve(this.task.constituentPartFeType));
                 // declare task complete
@@ -500,7 +502,7 @@ public class WorkerScript : MonoBehaviour, IFactoryEntity, IFactoryUnit, IFactor
             // do move closer to delivery storage
             else
             {
-                Debug.Log("DeliverAndStoreConstituentPart: moving towards storage...");
+                // Debug.Log("DeliverAndStoreConstituentPart: moving towards storage...");
                 this.MoveTowardsPosition(this.selectedStorage.transform.position);
             }
         }

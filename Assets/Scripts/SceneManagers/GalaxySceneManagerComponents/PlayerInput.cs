@@ -291,7 +291,7 @@ public class PlayerInput : MonoBehaviour
                         // remove immediately if admin
                         if (this.isAdminMode)
                         {
-                            feRemovable.Remove();
+                            feRemovable.Remove(cancelAssociatedTasks: true);
                             this.currentEntitySelected = null;
                             this.inputMode = ConstPlayerInput.MODE_INIT;
                         }
@@ -326,7 +326,7 @@ public class PlayerInput : MonoBehaviour
                                 // remove immediately if no structure parts have been added yet
                                 else
                                 {
-                                    feRemovable.Remove();
+                                    feRemovable.Remove(cancelAssociatedTasks: true);
                                 }
                             }
                             // create single worker task to remove active structure
