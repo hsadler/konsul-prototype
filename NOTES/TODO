@@ -2,10 +2,6 @@
 
 TODO
 
-- workers removing a partially built structure's constituent parts and storing
-
-- removal of a structure by a worker should result in dump of inventory to space
-
 - implement factory structures:
     - Furnace
     - Refinery
@@ -35,9 +31,9 @@ TODO
 - add music
 
 - test and polish workers:
+    - workers with no task should empty their inventory at the nearest storage
     - worker shouldn't fetch items if already in inventory
     - workers shouldn't deliver to storages marked for removal
-    - worker should build structures from materials, not just placement
     - worker actions should take time:
         - rotating
         - retrieving
@@ -63,6 +59,7 @@ TODO
 
 
 For consideration/prioritization:
+    - removal of a structure by a worker should result in dump of inventory to space
     - give in-transit entities a TTL
     - consider a freeze-time control
     - consider different tiers of power gathering
