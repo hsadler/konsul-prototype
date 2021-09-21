@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryDistributor
+public class ResourceProcessorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryResourceProcessor
 {
 
 

@@ -25,7 +25,10 @@ public interface IFactoryDistributor { }
 
 public interface IFactoryStorage { }
 
-public interface IFactoryRawResourceProcessor { }
+public interface IFactoryResourceProcessor { }
+
+public interface IFactoryFurnace { }
+
 
 // factory-unit group and interfaces
 public interface IFactoryUnit { }

@@ -2,18 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryDistributor
+public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryFurnace
 {
 
 
-    public int FactoryEntityType { get; set; } = ConstFEType.DISTRIBUTOR;
+    // TODO: implement from ResourceProcessor example
+
+
+    public int FactoryEntityType { get; set; } = ConstFEType.FURNACE;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 
     public bool IsStructureActive { get; set; } = false;
 
-    public float distributionPerSecond = 1f;
     public float launchImpulse = 0f;
+    public float processTime = 0f;
+
+    private int processedFEType;
+    private int status;
+    private const int STATUS_IDLE = 1;
+    private const int STATUS_PROCESSING = 2;
+    private const int STATUS_DISTRIBUTING = 3;
 
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;
@@ -24,6 +33,8 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     void Awake()
     {
+        this.status = STATUS_IDLE;
+        this.processedFEType = ConstFEType.NONE;
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
         this.bufferQueue = this.gameObject.GetComponent<FactoryEntityBufferQueue>();
@@ -32,7 +43,7 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     void Start()
     {
-        InvokeRepeating("DistributeItems", 0f, this.distributionPerSecond);
+
     }
 
     void Update()
@@ -50,6 +61,14 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
             this.receiver.SetCanReceive(true);
             this.LoadFromBufferQueue();
         }
+        if (this.status == STATUS_IDLE)
+        {
+            this.CheckAndProcessNextResource();
+        }
+        else if (this.status == STATUS_DISTRIBUTING)
+        {
+            this.DistributeProcessed();
+        }
     }
 
     // INTERFACE METHODS
@@ -61,16 +80,6 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
 
     // IMPLEMENTATION METHODS
 
-    private void DistributeItems()
-    {
-        if (this.IsStructureActive && !this.bufferQueue.IsEmpty() && this.io.ResourceIOsExist())
-        {
-            int feType = this.bufferQueue.GetNext();
-            Vector3 launchDirection = this.io.GetNextSendDirection();
-            this.launcher.Launch(feType, launchDirection, this.launchImpulse);
-        }
-    }
-
     private void LoadFromBufferQueue()
     {
         // NOTE: this implementation may cause lost resources if reciever buffer 
@@ -79,6 +88,33 @@ public class DistributorScript : MonoBehaviour, IFactoryEntity, IFactoryStructur
         foreach (int feType in buffer)
         {
             this.bufferQueue.Add(feType);
+        }
+    }
+
+    private void CheckAndProcessNextResource()
+    {
+        if (!this.bufferQueue.IsEmpty())
+        {
+            this.status = STATUS_PROCESSING;
+            this.processedFEType = GalaxySceneManager.instance.playerFactory.GetProcessedResourceFromResource(this.bufferQueue.GetNext());
+            Invoke("DistributeProcessed", this.processTime);
+        }
+    }
+
+    private void DistributeProcessed()
+    {
+        if (this.io.ResourceIOsExist())
+        {
+            // launch processed resource
+            Vector3 launchDirection = this.io.GetNextSendDirection();
+            this.launcher.Launch(this.processedFEType, launchDirection, this.launchImpulse);
+            this.status = STATUS_IDLE;
+            this.processedFEType = ConstFEType.NONE;
+        }
+        else
+        {
+            // set status in order to keep trying to distribute until successfull
+            this.status = STATUS_DISTRIBUTING;
         }
     }
 
