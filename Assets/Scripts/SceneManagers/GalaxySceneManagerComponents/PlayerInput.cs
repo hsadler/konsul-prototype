@@ -28,6 +28,7 @@ public class PlayerInput : MonoBehaviour
         { KeyCode.Alpha2, ConstFEType.DISTRIBUTOR },
         { KeyCode.Alpha3, ConstFEType.STORAGE },
         { KeyCode.Alpha4, ConstFEType.RESOURCE_PROCESSOR },
+        { KeyCode.Alpha5, ConstFEType.FURNACE },
     };
 
     public GameObject currentEntitySelected;

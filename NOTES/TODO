@@ -2,6 +2,8 @@
 
 TODO
 
+- finish implementing cutover to FEData
+
 - implement factory structures:
     - Furnace
     - Refinery
@@ -54,6 +56,7 @@ TODO
 
 
 - Bugs and Code Cleanup:
+    - resource-processors shouldn't attempt to process resources that are not processable 
     - factory-structures without resource-io behavior should not be able to go into transit-mode
     - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
 
