@@ -11,9 +11,14 @@ public class FEData : MonoBehaviour
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
     public GameObject resourceProcessorPrefab;
+    public GameObject furnacePrefab;
+    public GameObject refineryPrefab;
+    public GameObject assemblerPrefab;
+    public GameObject biolabPrefab;
     public GameObject mirrorPrefab;
     public GameObject photovoltaicPrefab;
     public GameObject accumulatorPrefab;
+    [Space(10)]
     // unit prefabs
     public GameObject workerPrefab;
     public GameObject probePrefab;
@@ -64,9 +69,18 @@ public class FEData : MonoBehaviour
     public Sprite distributorSprite;
     public Sprite storageSprite;
     public Sprite resourceProcessorSprite;
+    public Sprite furnaceSprite;
+    public Sprite refinerySprite;
+    public Sprite assemblerSprite;
+    public Sprite biolabSprite;
     public Sprite mirrorSprite;
     public Sprite photovoltaicSprite;
     public Sprite accumulatorSprite;
+    [Space(10)]
+    public Sprite workerSprite;
+    public Sprite probeSprite;
+    public Sprite systemExpansionShipSprite;
+
 
     private IDictionary<int, FactoryEntityTemplate> feTypeToFETemplate;
 
