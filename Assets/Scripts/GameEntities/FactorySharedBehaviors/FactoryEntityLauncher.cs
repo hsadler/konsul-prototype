@@ -22,9 +22,8 @@ public class FactoryEntityLauncher : MonoBehaviour
 
     public void Launch(int feType, Vector3 direction, float impulse)
     {
-        GameObject prefab = GalaxySceneManager.instance.playerFactory.inTransitFEPrefab;
         GameObject go = Instantiate(
-            prefab,
+            GalaxySceneManager.instance.playerFactory.inTransitFEPrefab,
             this.transform.position + direction,
             Quaternion.identity
         );

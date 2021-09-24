@@ -16,16 +16,16 @@ public class Functions
     }
 
 
-    public int GetRandomTypeFromProbabilities(IDictionary<int, float> typeToProbability)
+    public int GetRandomTypeFromProbabilities(IDictionary<int, int> typeToProbability)
     {
         float total = 0;
-        foreach (KeyValuePair<int, float> entry in typeToProbability)
+        foreach (KeyValuePair<int, int> entry in typeToProbability)
         {
             total += entry.Value;
         }
         float rand = Random.Range(0, total);
         float top = 0;
-        foreach (KeyValuePair<int, float> entry in typeToProbability)
+        foreach (KeyValuePair<int, int> entry in typeToProbability)
         {
             top += entry.Value;
             if (rand <= top)

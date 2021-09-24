@@ -81,7 +81,6 @@ public class FEData : MonoBehaviour
     public Sprite probeSprite;
     public Sprite systemExpansionShipSprite;
 
-
     private IDictionary<int, FactoryEntityTemplate> feTypeToFETemplate;
 
 

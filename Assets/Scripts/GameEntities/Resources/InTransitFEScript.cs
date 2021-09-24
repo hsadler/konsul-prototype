@@ -17,7 +17,8 @@ public class InTransitFEScript : MonoBehaviour, IFactoryEntity, IInTransitFE
 
     void Start()
     {
-        this.sr.sprite = GalaxySceneManager.instance.playerFactory.GetFactoryEntitySpriteByType(this.FactoryEntityType);
+        FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.FactoryEntityType);
+        this.sr.sprite = feTemplate.sprite;
     }
 
     void Update()
