@@ -660,8 +660,8 @@ public class FEData : MonoBehaviour
             type: ConstFEType.WORKER,
             group: ConstFEGroup.UNIT,
             displayName: "worker",
-            sprite: null,
-            prefab: null
+            sprite: this.workerSprite,
+            prefab: this.workerPrefab
         );
         workerTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
