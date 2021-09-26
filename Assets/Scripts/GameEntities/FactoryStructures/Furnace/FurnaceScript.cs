@@ -15,7 +15,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     public float launchImpulse = 0f;
     public float processTime = 0f;
 
-    private int productFEType;
+    public int productFEType;
     private IDictionary<int, int> inputFETypeToCount;
     private int status;
     private const int STATUS_IDLE = 1;
