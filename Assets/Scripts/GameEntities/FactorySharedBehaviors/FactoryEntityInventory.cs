@@ -45,6 +45,21 @@ public class FactoryEntityInventory : MonoBehaviour
         return this.storageEntityTypeToCount.ContainsKey(feType) && this.storageEntityTypeToCount[feType] > 0;
     }
 
+    public bool IsMultipleAvailable(IDictionary<int, int> feTypeToCount)
+    {
+        foreach (KeyValuePair<int, int> entry in feTypeToCount)
+        {
+            if (
+                !this.storageEntityTypeToCount.ContainsKey(entry.Key) ||
+                this.storageEntityTypeToCount[entry.Key] < entry.Value
+            )
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public bool IsReserveAvailable(int feType)
     {
         return this.reservedEntityTypeToCount.ContainsKey(feType) && this.reservedEntityTypeToCount[feType] > 0;
@@ -85,6 +100,22 @@ public class FactoryEntityInventory : MonoBehaviour
         else
         {
             return ConstFEType.NONE;
+        }
+    }
+
+    public IDictionary<int, int> RetrieveMultiple(IDictionary<int, int> feTypeToCount)
+    {
+        if (this.IsMultipleAvailable(feTypeToCount))
+        {
+            foreach (KeyValuePair<int, int> entry in feTypeToCount)
+            {
+                this.storageEntityTypeToCount[entry.Key] -= entry.Value;
+            }
+            return feTypeToCount;
+        }
+        else
+        {
+            return null;
         }
     }
 

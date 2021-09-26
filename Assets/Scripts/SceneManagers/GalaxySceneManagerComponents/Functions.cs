@@ -38,4 +38,18 @@ public class Functions
     }
 
 
+    public List<int> GetIntListFromIntToCountDict(IDictionary<int, int> intToCount)
+    {
+        // TODO: implement stub
+        return new List<int>();
+    }
+
+
+    public IDictionary<int, int> GetIntToCountDictFromIntList(List<int> intList)
+    {
+        // TODO: implement stub
+        return new Dictionary<int, int>();
+    }
+
+
 }

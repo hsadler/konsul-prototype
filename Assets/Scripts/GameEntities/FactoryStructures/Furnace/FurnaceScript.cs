@@ -6,9 +6,6 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 {
 
 
-    // TODO: implement from ResourceProcessor example
-
-
     public int FactoryEntityType { get; set; } = ConstFEType.FURNACE;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
@@ -18,15 +15,16 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     public float launchImpulse = 0f;
     public float processTime = 0f;
 
-    private int processedFEType;
+    private int productFEType;
+    private IDictionary<int, int> inputFETypeToCount;
     private int status;
     private const int STATUS_IDLE = 1;
-    private const int STATUS_PROCESSING = 2;
+    private const int STATUS_FURNACING = 2;
     private const int STATUS_DISTRIBUTING = 3;
 
     private FactoryStructureIOBehavior io;
     private FactoryEntityReceiver receiver;
-    private FactoryEntityBufferQueue bufferQueue;
+    private FactoryEntityInventory inventory;
     private FactoryEntityLauncher launcher;
 
     // UNITY HOOKS
@@ -34,11 +32,11 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     void Awake()
     {
         this.status = STATUS_IDLE;
-        this.processedFEType = ConstFEType.NONE;
         this.io = this.gameObject.GetComponent<FactoryStructureIOBehavior>();
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
-        this.bufferQueue = this.gameObject.GetComponent<FactoryEntityBufferQueue>();
+        this.inventory = this.gameObject.GetComponent<FactoryEntityInventory>();
         this.launcher = this.gameObject.GetComponent<FactoryEntityLauncher>();
+        this.SetProductFEType(ConstFEType.NONE);
     }
 
     void Start()
@@ -52,22 +50,22 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
         {
             return;
         }
-        if (this.bufferQueue.CapacityFull())
+        if (this.inventory.CapacityFull())
         {
             this.receiver.SetCanReceive(false);
         }
         else
         {
             this.receiver.SetCanReceive(true);
-            this.LoadFromBufferQueue();
+            this.LoadFromReceiverBuffer();
         }
         if (this.status == STATUS_IDLE)
         {
-            this.CheckAndProcessNextResource();
+            this.CheckAndFurnaceNextResource();
         }
         else if (this.status == STATUS_DISTRIBUTING)
         {
-            this.DistributeProcessed();
+            this.DistributeFurnaced();
         }
     }
 
@@ -75,47 +73,56 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     public string GetStringFormattedFactoryEntityInfo()
     {
-        return this.bufferQueue.GetStatus();
+        return this.inventory.GetStatus();
     }
 
     // IMPLEMENTATION METHODS
 
-    private void LoadFromBufferQueue()
+    private void LoadFromReceiverBuffer()
     {
-        // NOTE: this implementation may cause lost resources if reciever buffer 
-        // contains more items than remaining capacity
+        // NOTE: this implementation may cause lost resources if buffer 
+        // contains more items than remaining storage capacity
         List<int> buffer = this.receiver.GetBuffer();
         foreach (int feType in buffer)
         {
-            this.bufferQueue.Add(feType);
+            this.inventory.Store(feType);
         }
     }
 
-    private void CheckAndProcessNextResource()
+    private void CheckAndFurnaceNextResource()
     {
-        if (!this.bufferQueue.IsEmpty())
+        if (this.productFEType != ConstFEType.NONE && this.inputFETypeToCount != null)
         {
-            this.status = STATUS_PROCESSING;
-            this.processedFEType = GalaxySceneManager.instance.playerFactory.GetProcessedResourceFromResource(this.bufferQueue.GetNext());
-            Invoke("DistributeProcessed", this.processTime);
+            if (this.inventory.IsMultipleAvailable(this.inputFETypeToCount))
+            {
+                this.inventory.RetrieveMultiple(inputFETypeToCount);
+                this.status = STATUS_FURNACING;
+                Invoke("DistributeFurnaced", this.processTime);
+            }
         }
     }
 
-    private void DistributeProcessed()
+    private void DistributeFurnaced()
     {
         if (this.io.ResourceIOsExist())
         {
-            // launch processed resource
+            // launch furnaced resource
             Vector3 launchDirection = this.io.GetNextSendDirection();
-            this.launcher.Launch(this.processedFEType, launchDirection, this.launchImpulse);
+            this.launcher.Launch(this.productFEType, launchDirection, this.launchImpulse);
             this.status = STATUS_IDLE;
-            this.processedFEType = ConstFEType.NONE;
         }
         else
         {
             // set status in order to keep trying to distribute until successfull
             this.status = STATUS_DISTRIBUTING;
         }
+    }
+
+    private void SetProductFEType(int productFEType)
+    {
+        this.productFEType = productFEType;
+        FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
+        this.inputFETypeToCount = feTemplate.furnacedFrom;
     }
 
 
