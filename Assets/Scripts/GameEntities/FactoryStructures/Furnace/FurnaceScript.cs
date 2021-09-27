@@ -36,7 +36,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
         this.inventory = this.gameObject.GetComponent<FactoryEntityInventory>();
         this.launcher = this.gameObject.GetComponent<FactoryEntityLauncher>();
-        this.SetProductFEType(ConstFEType.NONE);
+        this.SetProductFEType(this.productFEType);
     }
 
     void Start()
@@ -73,7 +73,9 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
 
     public string GetStringFormattedFactoryEntityInfo()
     {
-        return this.inventory.GetStatus();
+        return "product: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.productFEType) +
+            "\n\n" +
+            this.inventory.GetStatus();
     }
 
     // IMPLEMENTATION METHODS

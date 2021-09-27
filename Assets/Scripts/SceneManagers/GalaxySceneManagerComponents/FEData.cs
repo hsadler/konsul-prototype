@@ -356,7 +356,9 @@ public class FEData : MonoBehaviour
         );
         carbonTemplate.SetFurnacedFrom(new Dictionary<int, int>()
         {
-            { ConstFEType.BIOMASS, 10 },
+            // { ConstFEType.BIOMASS, 10 },
+            // TESTING
+            { ConstFEType.BIOMASS, 2 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.CARBON, carbonTemplate);
         // laser
