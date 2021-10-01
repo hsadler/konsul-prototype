@@ -427,9 +427,11 @@ public class FEData : MonoBehaviour
         );
         cementTemplate.SetRefinedFrom(new Dictionary<int, int>()
         {
-            { ConstFEType.STONE, 5 },
-            { ConstFEType.SILICATES, 20 },
-            { ConstFEType.WATER, 30 },
+            // TESTING:
+            { ConstFEType.STONE, 2 },
+        //     { ConstFEType.STONE, 5 },
+        //     { ConstFEType.SILICATES, 20 },
+        //     { ConstFEType.WATER, 30 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.CEMENT, cementTemplate);
         // glass

@@ -4,17 +4,19 @@ TODO
 
 X finish implementing cutover to FEData
 
-- consider using FactoryEntityInventory for all factory structures (replacing FactoryEntityBufferQueue)
-
 - implement factory structures:
-    - Furnace
+    X Furnace
     - Refinery
 
-- take some new videos
+- output product for Furnace, Refinery, Assembler, and Biolab:
+    - should be a factory-structure behavior script
+    - user input for selection 
 
 - implement Assembler
     - requesting items from storages:
         - ex: an assembler need 5 iron and 5 copper to make a distributor. how does it get these items?
+
+- take some new videos
 
 - structure io filter:
     - The ability to apply either an include or exclude filter list to an existing structure-io

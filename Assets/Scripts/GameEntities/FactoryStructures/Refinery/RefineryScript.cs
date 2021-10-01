@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryFurnace
+public class RefineryScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, IFactoryFurnace
 {
 
 
-    public int FactoryEntityType { get; set; } = ConstFEType.FURNACE;
+    public int FactoryEntityType { get; set; } = ConstFEType.REFINERY;
     public int LauncherGameObjectId { get; set; }
     public bool InTransit { get; set; } = false;
 
@@ -61,7 +61,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
         }
         if (this.status == STATUS_IDLE)
         {
-            this.CheckAndFurnaceNextResource();
+            this.CheckAndRefineNextResource();
         }
         else if (this.status == STATUS_DISTRIBUTING)
         {
@@ -91,7 +91,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
         }
     }
 
-    private void CheckAndFurnaceNextResource()
+    private void CheckAndRefineNextResource()
     {
         if (this.productFEType != ConstFEType.NONE && this.inputFETypeToCount != null)
         {
@@ -99,7 +99,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
             {
                 this.inventory.RetrieveMultiple(inputFETypeToCount);
                 this.status = STATUS_PROCESSING;
-                Invoke("DistributeFurnaced", this.processTime);
+                Invoke("DistributeProduct", this.processTime);
             }
         }
     }
@@ -124,7 +124,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
     {
         this.productFEType = productFEType;
         FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
-        this.inputFETypeToCount = feTemplate.furnacedFrom;
+        this.inputFETypeToCount = feTemplate.refinedFrom;
     }
 
 
