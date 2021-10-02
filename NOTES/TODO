@@ -9,8 +9,8 @@ X finish implementing cutover to FEData
     - Refinery
 
 - output product for Furnace, Refinery, Assembler, and Biolab:
-    - should be a factory-structure behavior script
-    - user input for selection 
+    - factory-structure behavior script
+    - user input for selection and UI 
 
 - implement Assembler
     - requesting items from storages:
