@@ -64,6 +64,12 @@ public class FEData : MonoBehaviour
     public Sprite cpuSprite;
     public Sprite computerSprite;
     public Sprite programmedCellsSprite;
+    public Sprite shipComponentsSprite;
+    public Sprite thrusterSprite;
+    public Sprite antennaArraySprite;
+    public Sprite propellantSprite;
+    public Sprite bioComputerSprite;
+
     [Space(10)]
     public Sprite harvesterSprite;
     public Sprite distributorSprite;
