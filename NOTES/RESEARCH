@@ -18,15 +18,37 @@ https://wiki.factorio.com/
 Factorio resource tree:
 https://i.imgur.com/qrEpXjb.png
 
+
 Factory/Building games to play:
+
     Factorio
+
     Mini Motorways
+
     Shapez.io
+        - in-house engine developed with javascript
+        - combination of resource patches, processing, and goal shapes
+        - focuses player on increasing scale and resource processing solution design
+        - great execution regarding:
+            - simple game mechanics
+            - clean design
+            - design and communication of player controls
+            - game progression via tool and processing speed unlocks
+        - main takeaways:
+            - concepts -> execution is really good
+            - iterate until the fun is found 
+    
     Dyson Sphere Program
+    
     Learning Factory
+    
     Timberborn
+    
     City Skylines
+    
     Rimworld
+    
     Oxygen Not Included
+    
     Satisfactory
 
