@@ -629,6 +629,20 @@ public class FEData : MonoBehaviour
             { ConstFEType.SILICATES, 10 }
         });
         this.feTypeToFETemplate.Add(ConstFEType.FURNACE, furnaceTemplate);
+        // refinery
+        var refineryTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.REFINERY,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "refinery",
+            sprite: this.refinerySprite,
+            prefab: this.refineryPrefab
+        );
+        refineryTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.DISTRIBUTOR, 2 },
+            { ConstFEType.FURNACE, 4 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.REFINERY, refineryTemplate);
         // mirror
         var mirrorTemplate = new FactoryEntityTemplate(
             type: ConstFEType.MIRROR,
