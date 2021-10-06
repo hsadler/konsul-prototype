@@ -99,7 +99,7 @@ public class FurnaceScript : MonoBehaviour, IFactoryEntity, IFactoryStructure, I
             {
                 this.inventory.RetrieveMultiple(inputFETypeToCount);
                 this.status = STATUS_PROCESSING;
-                Invoke("DistributeFurnaced", this.processTime);
+                Invoke("DistributeProduct", this.processTime);
             }
         }
     }

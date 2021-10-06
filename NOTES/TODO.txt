@@ -2,6 +2,32 @@
 
 TODO
 
+
+BACK UP AND ASSESS:
+    - are we working towards fun?
+    - get back to simplicity for the player:    
+        - 1 part of the game should require deep thought and complexity
+        - the rest should be dead simple
+
+What do we definitely want?:
+
+What can we cut or make more simple?:
+
+- basic UI pass:
+    - FE preselection (mouse hover)
+    - FE selection
+
+
+=======================================================================================
+
+
+Features:
+    - tech tree:
+        - show player what can be built from what
+        - sense of progress from early game items to late game items 
+    - information about each planet's resources
+    - 
+
 - selectable output product for Furnace, Refinery, Assembler, and Biolab:
     - factory-structure behavior script
     - user input for selection and UI
