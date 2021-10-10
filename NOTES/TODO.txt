@@ -10,8 +10,15 @@ BACK UP AND ASSESS:
         - the rest should be dead simple
 
 What do we definitely want?:
+    - Resource gathering
+    - Factory building, processing, and routing
+    - Scale
 
 What can we cut or make more simple?:
+    - controls
+    - resource tree
+    - factory-entity functionality
+    - player goals
 
 - basic UI pass:
     - FE preselection (mouse hover)
