@@ -4,9 +4,9 @@ TODO
 
 
 BACK UP AND ASSESS:
-    - are we working towards fun?
+    - are we validating fun?
     - get back to simplicity for the player:    
-        - 1 part of the game should require deep thought and complexity
+        - 1 part of the game should require deep thought
         - the rest should be dead simple
 
 What do we definitely want?:
