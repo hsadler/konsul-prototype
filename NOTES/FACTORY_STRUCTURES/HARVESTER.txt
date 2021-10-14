@@ -1,0 +1,10 @@
+
+
+HARVESTER
+
+
+Description:
+Extracts a resources and launches in a single direction.
+
+Controls:
+- rotate and place

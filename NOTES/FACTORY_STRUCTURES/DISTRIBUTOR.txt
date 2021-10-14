@@ -1,0 +1,10 @@
+
+
+DISTRIBUTOR
+
+
+Description:
+Recieves items from one side and evenly distributes to other 3 sides.
+
+Controls:
+- rotate and place
