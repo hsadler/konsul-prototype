@@ -3,6 +3,23 @@
 IDEAS
 
 
+Factory + Space:
+    - What can zero-gravity add to a factory game, as a twist on the genre?
+        - launching
+        - gravity bending straight paths
+    - What can space add?
+        - rockets
+        - planets
+        - stars
+        - nebulae
+        - asteroids
+        - black holes
+        - aliens
+        
+
+=======================================================================================
+
+
 Guiding light problems for player to solve:
     - growing factory: resource gathering, production
     - organization: routing, sorting, distribution
