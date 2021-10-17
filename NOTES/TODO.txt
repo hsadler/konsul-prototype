@@ -25,6 +25,12 @@ What can we cut or make more simple?:
     - FE selection
 
 
+Simplification TODOs:
+    - resource tree and Factory Structure costs
+    - controls
+    - goals and goal communication to player
+
+
 =======================================================================================
 
 

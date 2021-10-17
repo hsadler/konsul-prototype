@@ -225,6 +225,8 @@ public class FEData : MonoBehaviour
         });
         this.feTypeToFETemplate.Add(ConstFEType.ORGANICS, organicsTemplate);
 
+        // ====================== SIMPLIFYING TO NOT USE RESOURCES FROM HERE DOWN ====================== //
+
         // nitrogen
         var nitrogenTemplate = new FactoryEntityTemplate(
             type: ConstFEType.NITROGEN,
@@ -362,9 +364,7 @@ public class FEData : MonoBehaviour
         );
         carbonTemplate.SetFurnacedFrom(new Dictionary<int, int>()
         {
-            // { ConstFEType.BIOMASS, 10 },
-            // TESTING
-            { ConstFEType.BIOMASS, 2 },
+            { ConstFEType.BIOMASS, 10 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.CARBON, carbonTemplate);
         // laser
@@ -433,11 +433,9 @@ public class FEData : MonoBehaviour
         );
         cementTemplate.SetRefinedFrom(new Dictionary<int, int>()
         {
-            // TESTING:
-            { ConstFEType.STONE, 2 },
-        //     { ConstFEType.STONE, 5 },
-        //     { ConstFEType.SILICATES, 20 },
-        //     { ConstFEType.WATER, 30 },
+            { ConstFEType.STONE, 5 },
+            { ConstFEType.SILICATES, 20 },
+            { ConstFEType.WATER, 30 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.CEMENT, cementTemplate);
         // glass
@@ -568,8 +566,12 @@ public class FEData : MonoBehaviour
             prefab: this.harvesterPrefab
         );
         harvesterTemplate.SetAssembledFrom(new Dictionary<int, int>() {
-            { ConstFEType.IRON, 10 },
-            { ConstFEType.LASER, 1 },
+            // OLD
+            // { ConstFEType.IRON, 10 },
+            // { ConstFEType.LASER, 1 },
+            // NEW
+            { ConstFEType.METAL, 2 },
+            { ConstFEType.GAS, 2 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.HARVESTER, harvesterTemplate);
         // distributor
@@ -582,8 +584,12 @@ public class FEData : MonoBehaviour
         );
         distributorTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
-            { ConstFEType.IRON, 5 },
-            { ConstFEType.COPPER, 5 }
+            // OLD
+            // { ConstFEType.IRON, 5 },
+            // { ConstFEType.COPPER, 5 }
+            // NEW
+            { ConstFEType.METAL, 2 },
+            { ConstFEType.ORGANICS, 2 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.DISTRIBUTOR, distributorTemplate);
         // storage
@@ -596,10 +602,29 @@ public class FEData : MonoBehaviour
         );
         storageTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
-            { ConstFEType.IRON, 5 },
-            { ConstFEType.STONE, 20 }
+            // OLD
+            // { ConstFEType.IRON, 5 },
+            // { ConstFEType.STONE, 20 },
+            // NEW
+            { ConstFEType.METAL, 5 },
+            { ConstFEType.STONE, 5 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.STORAGE, storageTemplate);
+        // assembler
+        var assemblerTemplate = new FactoryEntityTemplate(
+            type: ConstFEType.ASSEMBLER,
+            group: ConstFEGroup.STRUCTURE,
+            displayName: "assembler",
+            sprite: this.assemblerSprite,
+            prefab: this.assemblerPrefab
+        );
+        assemblerTemplate.SetAssembledFrom(new Dictionary<int, int>()
+        {
+            { ConstFEType.STORAGE, 2 },
+            { ConstFEType.DISTRIBUTOR, 2 },
+        });
+        this.feTypeToFETemplate.Add(ConstFEType.ASSEMBLER, assemblerTemplate);
+
         // resource processor
         var resourceProcessorTemplate = new FactoryEntityTemplate(
             type: ConstFEType.RESOURCE_PROCESSOR,
