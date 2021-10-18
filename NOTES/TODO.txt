@@ -17,7 +17,8 @@ What do we definitely want?:
 What can we cut or make more simple?:
     - controls
     - resource tree
-    - factory-entity functionality
+    - factory structure functionality
+    - worker functionality
     - player goals
 
 - basic UI pass:

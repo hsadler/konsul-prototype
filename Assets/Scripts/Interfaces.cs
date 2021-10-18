@@ -25,6 +25,8 @@ public interface IFactoryDistributor { }
 
 public interface IFactoryStorage { }
 
+public interface IFactoryAssembler { }
+
 public interface IFactoryResourceProcessor { }
 
 public interface IFactoryFurnace { }
