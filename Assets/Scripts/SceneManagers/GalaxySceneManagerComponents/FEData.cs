@@ -10,19 +10,19 @@ public class FEData : MonoBehaviour
     public GameObject harvesterPrefab;
     public GameObject distributorPrefab;
     public GameObject storagePrefab;
-    public GameObject resourceProcessorPrefab;
-    public GameObject furnacePrefab;
-    public GameObject refineryPrefab;
+    // public GameObject resourceProcessorPrefab;
+    // public GameObject furnacePrefab;
+    // public GameObject refineryPrefab;
     public GameObject assemblerPrefab;
-    public GameObject biolabPrefab;
-    public GameObject mirrorPrefab;
-    public GameObject photovoltaicPrefab;
-    public GameObject accumulatorPrefab;
+    // public GameObject biolabPrefab;
+    // public GameObject mirrorPrefab;
+    // public GameObject photovoltaicPrefab;
+    // public GameObject accumulatorPrefab;
     [Space(10)]
     // unit prefabs
     public GameObject workerPrefab;
-    public GameObject probePrefab;
-    public GameObject systemExpansionShipPrefab;
+    // public GameObject probePrefab;
+    // public GameObject systemExpansionShipPrefab;
 
     [Space(20)]
 
@@ -34,58 +34,59 @@ public class FEData : MonoBehaviour
     public Sprite stoneSprite;
     public Sprite metalSprite;
     public Sprite organicsSprite;
-    [Space(10)]
-    public Sprite nitrogenSprite;
-    public Sprite heliumSprite;
-    public Sprite co2Sprite;
-    public Sprite hydrogenSprite;
-    public Sprite oxygenSprite;
-    public Sprite silicatesSprite;
-    public Sprite quartzSprite;
-    public Sprite ironSprite;
-    public Sprite copperSprite;
-    public Sprite aluminumSprite;
-    public Sprite leadSprite;
-    public Sprite rareMetalsSprite;
-    public Sprite biomassSprite;
-    public Sprite cellCultureSprite;
-    [Space(10)]
-    public Sprite carbonSprite;
-    public Sprite laserSprite;
-    public Sprite radiationShieldingSprite;
-    public Sprite steelSprite;
-    public Sprite ceramicsSprite;
-    public Sprite cementSprite;
-    public Sprite glassSprite;
-    public Sprite siliconSprite;
-    public Sprite petroleumSprite;
-    public Sprite plasticSprite;
-    public Sprite electronicsSprite;
-    public Sprite cpuSprite;
-    public Sprite computerSprite;
-    public Sprite programmedCellsSprite;
-    public Sprite shipComponentsSprite;
-    public Sprite thrusterSprite;
-    public Sprite antennaArraySprite;
-    public Sprite propellantSprite;
-    public Sprite bioComputerSprite;
+
+    // [Space(10)]
+    // public Sprite nitrogenSprite;
+    // public Sprite heliumSprite;
+    // public Sprite co2Sprite;
+    // public Sprite hydrogenSprite;
+    // public Sprite oxygenSprite;
+    // public Sprite silicatesSprite;
+    // public Sprite quartzSprite;
+    // public Sprite ironSprite;
+    // public Sprite copperSprite;
+    // public Sprite aluminumSprite;
+    // public Sprite leadSprite;
+    // public Sprite rareMetalsSprite;
+    // public Sprite biomassSprite;
+    // public Sprite cellCultureSprite;
+    // [Space(10)]
+    // public Sprite carbonSprite;
+    // public Sprite laserSprite;
+    // public Sprite radiationShieldingSprite;
+    // public Sprite steelSprite;
+    // public Sprite ceramicsSprite;
+    // public Sprite cementSprite;
+    // public Sprite glassSprite;
+    // public Sprite siliconSprite;
+    // public Sprite petroleumSprite;
+    // public Sprite plasticSprite;
+    // public Sprite electronicsSprite;
+    // public Sprite cpuSprite;
+    // public Sprite computerSprite;
+    // public Sprite programmedCellsSprite;
+    // public Sprite shipComponentsSprite;
+    // public Sprite thrusterSprite;
+    // public Sprite antennaArraySprite;
+    // public Sprite propellantSprite;
+    // public Sprite bioComputerSprite;
 
     [Space(10)]
     public Sprite harvesterSprite;
     public Sprite distributorSprite;
     public Sprite storageSprite;
-    public Sprite resourceProcessorSprite;
-    public Sprite furnaceSprite;
-    public Sprite refinerySprite;
+    // public Sprite resourceProcessorSprite;
+    // public Sprite furnaceSprite;
+    // public Sprite refinerySprite;
     public Sprite assemblerSprite;
-    public Sprite biolabSprite;
-    public Sprite mirrorSprite;
-    public Sprite photovoltaicSprite;
-    public Sprite accumulatorSprite;
+    // public Sprite biolabSprite;
+    // public Sprite mirrorSprite;
+    // public Sprite photovoltaicSprite;
+    // public Sprite accumulatorSprite;
     [Space(10)]
     public Sprite workerSprite;
-    public Sprite probeSprite;
-    public Sprite systemExpansionShipSprite;
+    // public Sprite probeSprite;
+    // public Sprite systemExpansionShipSprite;
 
     private IDictionary<int, FactoryEntityTemplate> feTypeToFETemplate;
 

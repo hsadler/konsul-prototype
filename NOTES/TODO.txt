@@ -21,15 +21,26 @@ What can we cut or make more simple?:
     - worker functionality
     - player goals
 
-- basic UI pass:
-    - FE preselection (mouse hover)
-    - FE selection
-
-
 Simplification TODOs:
-    - resource tree and Factory Structure costs
+    X resource tree and Factory Structure costs
     - controls
     - goals and goal communication to player
+
+
+
+=======================================================================================
+
+
+TODO NEXT:
+    - implement assembler:
+        - functionality
+        - product selection
+        - how to handle inputs?:
+            - call storages?
+            - block non-components from entering? 
+    - UI pass:
+        - FE preselection (mouse hover)
+        - FE selection
 
 
 =======================================================================================
