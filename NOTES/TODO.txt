@@ -12,7 +12,7 @@ BACK UP AND ASSESS:
 What do we definitely want?:
     - Resource gathering
     - Factory building, processing, and routing
-    - Scale
+    - Scale (a growing factory)
 
 What can we cut or make more simple?:
     - controls
