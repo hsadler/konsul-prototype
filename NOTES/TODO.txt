@@ -33,8 +33,8 @@ Simplification TODOs:
 
 TODO NEXT:
     - implement assembler:
-        - functionality
-        - product selection
+        X functionality
+        - player product selection
         - how to handle inputs?:
             - call storages?
             - block non-components from entering? 

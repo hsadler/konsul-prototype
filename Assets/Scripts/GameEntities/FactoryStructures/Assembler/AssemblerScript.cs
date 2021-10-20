@@ -16,7 +16,6 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     public float processTime = 0f;
 
     public int productFEType;
-    private IDictionary<int, int> inputFETypeToCount;
     private int status;
     private const int STATUS_IDLE = 1;
     private const int STATUS_PROCESSING = 2;
@@ -26,6 +25,10 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     private FactoryEntityReceiver receiver;
     private FactoryEntityInventory inventory;
     private FactoryEntityLauncher launcher;
+
+    public GameObject productIndicator;
+    public SpriteRenderer productSprite;
+
 
     // UNITY HOOKS
 
@@ -93,11 +96,12 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     private void CheckAndAssembleNextResource()
     {
-        if (this.productFEType != ConstFEType.NONE && this.inputFETypeToCount != null)
+        if (this.productFEType != ConstFEType.NONE)
         {
-            if (this.inventory.IsMultipleAvailable(this.inputFETypeToCount))
+            FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
+            if (this.inventory.IsMultipleAvailable(feTemplate.assembledFrom))
             {
-                this.inventory.RetrieveMultiple(inputFETypeToCount);
+                this.inventory.RetrieveMultiple(feTemplate.assembledFrom);
                 this.status = STATUS_PROCESSING;
                 Invoke("DistributeProduct", this.processTime);
             }
@@ -123,8 +127,16 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     private void SetProductFEType(int productFEType)
     {
         this.productFEType = productFEType;
-        FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
-        this.inputFETypeToCount = feTemplate.assembledFrom;
+        if (this.productFEType != ConstFEType.NONE)
+        {
+            FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
+            this.productSprite.sprite = feTemplate.sprite;
+            this.productIndicator.SetActive(true);
+        }
+        else
+        {
+            this.productIndicator.SetActive(false);
+        }
     }
 
 
