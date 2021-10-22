@@ -36,7 +36,7 @@ TODO NEXT:
         X functionality
         - player product selection
         - how to handle inputs?:
-            - call storages?
+            - request from storages?
             - block non-components from entering? 
     - UI pass:
         - FE preselection (mouse hover)

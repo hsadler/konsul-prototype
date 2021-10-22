@@ -112,7 +112,7 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
     {
         if (this.io.ResourceIOsExist())
         {
-            // launch furnaced resource
+            // launch assembled product
             Vector3 launchDirection = this.io.GetNextSendDirection();
             this.launcher.Launch(this.productFEType, launchDirection, this.launchImpulse);
             this.status = STATUS_IDLE;

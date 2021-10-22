@@ -473,6 +473,18 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    private void HandleAssemblerProductSelection()
+    {
+        // TODO: implement
+        if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
+        {
+            if (Input.GetKeyDown(ConstPlayerInput.PRODUCT_OUTPUT_SELECTION_MODE_KEY))
+            {
+                Debug.Log("HandleAssemblerProductSelection()...");
+            }
+        }
+    }
+
     private void HandleModeRevert()
     {
         // revert key press

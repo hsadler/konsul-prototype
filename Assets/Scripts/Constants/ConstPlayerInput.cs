@@ -19,6 +19,7 @@ public class ConstPlayerInput
 
     // player input key mappings
     public const KeyCode STRUCTURE_IO_MODE_KEY = KeyCode.E;
+    public const KeyCode PRODUCT_OUTPUT_SELECTION_MODE_KEY = KeyCode.X;
     public const KeyCode CYCLE_IO_SELECT_KEY = KeyCode.Tab;
     public const KeyCode REMOVAL_KEY = KeyCode.D;
     public const KeyCode CANCEL_REMOVAL_KEY = KeyCode.C;
