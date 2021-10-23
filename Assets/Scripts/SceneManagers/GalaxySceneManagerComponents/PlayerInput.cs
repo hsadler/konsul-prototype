@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour
         { ConstPlayerInput.MODE_STRUCTURE_IO_SELECT, "transit select" },
         { ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT, "entity multiselect" },
         { ConstPlayerInput.MODE_MULTI_STRUCTURE_IO, "batch transit create" },
+        { ConstPlayerInput.MODE_PRODUCT_OUTPUT_SELECTION, "product selection" },
     };
 
     public int currentPlacementStructureType;
@@ -67,6 +68,7 @@ public class PlayerInput : MonoBehaviour
             this.HandelCancelRemoval();
             this.HandleStructureIOMode();
             this.HandleCycleIOSelection();
+            this.HandleProductOutputSelectionMode();
             this.HandleModeRevert();
             this.HandleGameQuit();
             if (this.isAdminMode)
@@ -88,6 +90,17 @@ public class PlayerInput : MonoBehaviour
         // camera
         this.HandleCameraMovement();
         this.HandleCameraZoom();
+    }
+
+    // INTERFACE METHODS
+
+    public void SelectOutputProductForCurrentSelectedFactoryStructure(int feType)
+    {
+        if (this.currentEntitySelected != null)
+        {
+            this.currentEntitySelected.GetComponent<AssemblerScript>().SetProductFEType(feType);
+            this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
+        }
     }
 
     // IMPLEMENTATION METHODS
@@ -473,15 +486,17 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void HandleAssemblerProductSelection()
+    private void HandleProductOutputSelectionMode()
     {
-        // TODO: implement
-        if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT)
+        if (
+            this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT &&
+            Input.GetKeyDown(ConstPlayerInput.PRODUCT_OUTPUT_SELECTION_MODE_KEY) &&
+            this.currentEntitySelected.GetComponent<AssemblerScript>() != null
+        )
         {
-            if (Input.GetKeyDown(ConstPlayerInput.PRODUCT_OUTPUT_SELECTION_MODE_KEY))
-            {
-                Debug.Log("HandleAssemblerProductSelection()...");
-            }
+            this.inputMode = ConstPlayerInput.MODE_PRODUCT_OUTPUT_SELECTION;
+            var assemblerScript = this.currentEntitySelected.GetComponent<AssemblerScript>();
+            assemblerScript.OpenProductSelectionUI();
         }
     }
 
@@ -496,7 +511,10 @@ public class PlayerInput : MonoBehaviour
                 this.InitCurrentPlacementStructureType();
                 this.InitCursorFactoryStructureGO();
             }
-            else if (this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT || this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT)
+            else if (
+                this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT ||
+                this.inputMode == ConstPlayerInput.MODE_FACTORY_ENTITY_MULTISELECT
+            )
             {
                 this.inputMode = ConstPlayerInput.MODE_INIT;
                 this.DeselectAllFactoryEntities();
@@ -504,6 +522,11 @@ public class PlayerInput : MonoBehaviour
             else if (this.inputMode == ConstPlayerInput.MODE_STRUCTURE_IO)
             {
                 this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
+            }
+            else if (this.inputMode == ConstPlayerInput.MODE_PRODUCT_OUTPUT_SELECTION)
+            {
+                this.inputMode = ConstPlayerInput.MODE_FACTORY_ENTITY_SELECT;
+                this.currentEntitySelected.GetComponent<AssemblerScript>().CloseProductSelectionUI();
             }
             else if (this.inputMode == ConstPlayerInput.MODE_MULTI_STRUCTURE_IO)
             {

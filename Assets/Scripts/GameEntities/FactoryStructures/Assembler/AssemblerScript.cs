@@ -28,6 +28,7 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
 
     public GameObject productIndicator;
     public SpriteRenderer productSprite;
+    public GameObject productSelectBox;
 
 
     // UNITY HOOKS
@@ -39,7 +40,7 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
         this.receiver = this.gameObject.GetComponent<FactoryEntityReceiver>();
         this.inventory = this.gameObject.GetComponent<FactoryEntityInventory>();
         this.launcher = this.gameObject.GetComponent<FactoryEntityLauncher>();
-        this.SetProductFEType(this.productFEType);
+        this.SetProductFEType(ConstFEType.NONE);
     }
 
     void Start()
@@ -79,6 +80,32 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
         return "product: " + GalaxySceneManager.instance.feData.GetDisplayNameFromFEType(this.productFEType) +
             "\n\n" +
             this.inventory.GetStatus();
+    }
+
+    public void OpenProductSelectionUI()
+    {
+        this.productSelectBox.SetActive(true);
+    }
+
+    public void CloseProductSelectionUI()
+    {
+        this.productSelectBox.SetActive(false);
+    }
+
+    public void SetProductFEType(int productFEType)
+    {
+        this.productFEType = productFEType;
+        if (this.productFEType != ConstFEType.NONE)
+        {
+            FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
+            this.productSprite.sprite = feTemplate.sprite;
+            this.productIndicator.SetActive(true);
+        }
+        else
+        {
+            this.productIndicator.SetActive(false);
+        }
+        this.productSelectBox.SetActive(false);
     }
 
     // IMPLEMENTATION METHODS
@@ -121,21 +148,6 @@ public class AssemblerScript : MonoBehaviour, IFactoryEntity, IFactoryStructure,
         {
             // set status in order to keep trying to distribute until successfull
             this.status = STATUS_DISTRIBUTING;
-        }
-    }
-
-    private void SetProductFEType(int productFEType)
-    {
-        this.productFEType = productFEType;
-        if (this.productFEType != ConstFEType.NONE)
-        {
-            FactoryEntityTemplate feTemplate = GalaxySceneManager.instance.feData.GetFETemplate(this.productFEType);
-            this.productSprite.sprite = feTemplate.sprite;
-            this.productIndicator.SetActive(true);
-        }
-        else
-        {
-            this.productIndicator.SetActive(false);
         }
     }
 

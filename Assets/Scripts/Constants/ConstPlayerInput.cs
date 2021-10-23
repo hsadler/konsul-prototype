@@ -16,6 +16,7 @@ public class ConstPlayerInput
     public const int MODE_STRUCTURE_IO_SELECT = 5;
     public const int MODE_FACTORY_ENTITY_MULTISELECT = 6;
     public const int MODE_MULTI_STRUCTURE_IO = 7;
+    public const int MODE_PRODUCT_OUTPUT_SELECTION = 8;
 
     // player input key mappings
     public const KeyCode STRUCTURE_IO_MODE_KEY = KeyCode.E;
