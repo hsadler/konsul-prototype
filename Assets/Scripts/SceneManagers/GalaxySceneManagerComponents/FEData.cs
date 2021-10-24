@@ -597,12 +597,8 @@ public class FEData : MonoBehaviour
             prefab: this.harvesterPrefab
         );
         harvesterTemplate.SetAssembledFrom(new Dictionary<int, int>() {
-            // OLD
-            // { ConstFEType.IRON, 10 },
-            // { ConstFEType.LASER, 1 },
-            // NEW
-            { ConstFEType.METAL, 2 },
-            { ConstFEType.GAS, 2 },
+            { ConstFEType.METAL, 1 },
+            { ConstFEType.GAS, 1 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.HARVESTER, harvesterTemplate);
 
@@ -616,12 +612,8 @@ public class FEData : MonoBehaviour
         );
         distributorTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
-            // OLD
-            // { ConstFEType.IRON, 5 },
-            // { ConstFEType.COPPER, 5 }
-            // NEW
-            { ConstFEType.METAL, 2 },
-            { ConstFEType.ORGANICS, 2 },
+            { ConstFEType.METAL, 1 },
+            { ConstFEType.ORGANICS, 1 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.DISTRIBUTOR, distributorTemplate);
 
@@ -635,12 +627,8 @@ public class FEData : MonoBehaviour
         );
         storageTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
-            // OLD
-            // { ConstFEType.IRON, 5 },
-            // { ConstFEType.STONE, 20 },
-            // NEW
-            { ConstFEType.METAL, 5 },
-            { ConstFEType.STONE, 5 },
+            { ConstFEType.METAL, 2 },
+            { ConstFEType.STONE, 2 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.STORAGE, storageTemplate);
 
@@ -654,8 +642,8 @@ public class FEData : MonoBehaviour
         );
         assemblerTemplate.SetAssembledFrom(new Dictionary<int, int>()
         {
-            { ConstFEType.STORAGE, 2 },
-            { ConstFEType.DISTRIBUTOR, 2 },
+            { ConstFEType.STORAGE, 1 },
+            { ConstFEType.DISTRIBUTOR, 1 },
         });
         this.feTypeToFETemplate.Add(ConstFEType.ASSEMBLER, assemblerTemplate);
 
