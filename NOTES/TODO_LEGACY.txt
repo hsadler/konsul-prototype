@@ -1,0 +1,129 @@
+
+
+TODO
+
+
+BACK UP AND ASSESS:
+    - are we validating fun?
+    - get back to simplicity for the player:    
+        - 1 part of the game should require deep thought
+        - the rest should be dead simple
+
+What do we definitely want?:
+    - Resource gathering
+    - Factory building, processing, and routing
+    - Scale (a growing factory)
+
+What can we cut or make more simple?:
+    - controls
+    - resource tree
+    - factory structure functionality
+    - worker functionality
+    - player goals
+
+Simplification TODOs:
+    X resource tree and Factory Structure costs
+    - controls
+    - goals and goal communication to player
+
+
+
+=======================================================================================
+
+
+TODO NEXT:
+    - implement assembler:
+        X functionality
+        X player product selection
+        - how to handle inputs?:
+            - request from storages?
+            - block non-components from entering? 
+    - UI pass:
+        - FE preselection (mouse hover)
+        - FE selection
+
+
+=======================================================================================
+
+
+Features:
+    - tech tree:
+        - show player what can be built from what
+        - sense of progress from early game items to late game items 
+    - information about each planet's resources
+    - 
+
+- selectable output product for Furnace, Refinery, Assembler, and Biolab:
+    - factory-structure behavior script
+    - user input for selection and UI
+
+- implement Assembler
+    - requesting items from storages:
+        - ex: an assembler need 5 iron and 5 copper to make a distributor. how does it get these items?
+
+- take some new videos
+
+- structure io filter:
+    - The ability to apply either an include or exclude filter list to an existing structure-io
+    - UX:
+        - select structure
+        - tab to desired io
+        - press edit-key to enter structure-io-edit mode
+        - select either include or exclude filter type
+        - select factory-entities from a list of icons in order to build the filter list
+        - press back-key to back out of structure-io-edit mode
+    - requirements:
+        - structure-io-edit mode player control
+        - edit mode modal
+        - io-filter type selection buttons
+        - io-filter fe-type icons to add or remove from filter
+        - io-filter clear button to remove filter from the selected io
+
+- add music
+
+- test and polish workers:
+    - workers with no task should empty their inventory at the nearest storage
+    - worker shouldn't fetch items if already in inventory
+    - workers shouldn't deliver to storages marked for removal
+    - worker actions should take time:
+        - rotating
+        - retrieving
+        - depositing
+        - placing
+        - building
+
+- POC early game progression:
+    - figure out initial setting
+    - player gets basic factory working
+    - player begins expanding production
+    - player harnesses the power of the sun
+    
+- POC power gathering from stars:
+    - Photovoltaic
+    - Mirror
+    - PowerCell
+
+
+- Bugs and Code Cleanup:
+    - resource-processors shouldn't attempt to process resources that are not processable 
+    - factory-structures without resource-io behavior should not be able to go into transit-mode
+    - I'm probably using interfaces incorrectly. Research and possibly refactor to using classes and inheritance instead.
+
+
+For consideration/prioritization:
+    - removal of a structure by a worker should result in dump of inventory to space
+    - give in-transit entities a TTL
+    - consider a freeze-time control
+    - consider different tiers of power gathering
+        (though prob not for prototype)
+
+
+- CLI gameplay:
+    - TODO
+
+
+Improvements and Polish:
+    - polish black hole, need high-rez sprite image
+    - prevent star overlap by implementing p-system buffer during generation
+    - prevent planetary system overlap with black hole
+    
